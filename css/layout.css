@@ -1,0 +1,35 @@
+.hidden {
+  display: none !important;
+}
+
+.main-container {
+  max-width: 575px;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-sm-full {
+  width: 100%;
+}
+
+.col-sm-half {
+  width: 50%;
+}
+
+.col-sm-5 {
+  width: 5%;
+}
+
+.col-sm-95 {
+  width: 95%;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 900px;
+  }
+}

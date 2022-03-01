@@ -1,0 +1,22 @@
+body {
+  background-color: #333437;
+}
+
+/* HEADER */
+
+#brand-name {
+  margin: 0;
+  margin-top: 0.5rem;
+  margin-left: 0.3rem;
+  color: #d1d0c5;
+}
+
+/* UTILITY CLASSES */
+
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
