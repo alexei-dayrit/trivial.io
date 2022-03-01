@@ -69,7 +69,6 @@ footer span {
   color: var(--white-text-color);
   font-size: 12px;
   padding: 0 0.2rem;
-  white-space: nowrap;
 }
 
 footer a {
