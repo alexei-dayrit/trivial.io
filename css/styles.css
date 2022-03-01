@@ -1,9 +1,20 @@
 body {
-  background-color: #333437;
   line-height: 1.2;
   letter-spacing: 1px;
+  background-color: var(--dark-color);
+  font-family: "Roboto Mono", monospace;
 }
 
+:root {
+  --dark-color: #333437;
+  --light-color: #2e2f31;
+  --text-color: #d1d0c5;
+  --big-text-color: #646669;
+  --accent-color: #e2b714;
+  --incorrect-color: #ca4754;
+}
+
+/* TOGGLE FOR VISUALIZATION */
 .main-container {
   background-color: rgb(160, 155, 155);
   height: 600px;
@@ -15,7 +26,8 @@ body {
   margin: 0;
   margin-top: 0.5rem;
   margin-left: 0.3rem;
-  color: #d1d0c5;
+  font-family: "Lexend Deca", sans-serif;
+  color: var(--text-color);
 }
 
 /* FOOTER */
