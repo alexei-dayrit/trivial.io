@@ -92,6 +92,13 @@ input[name="hard"] {
   background-color: #de785d;
 }
 
+input[name="i'm-crazy"] {
+  background-color: var(--dark-gray-color);
+  color: var(--light-gray-color);
+  margin-top: 2rem;
+  width: 25%;
+}
+
 /* FOOTER */
 
 footer {

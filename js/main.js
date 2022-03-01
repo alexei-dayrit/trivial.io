@@ -43,6 +43,10 @@ function renderDifficuly() {
   $hardDiv.setAttribute('class', 'col-sm-fifth flex justify-center');
   $difficultyWrapper.appendChild($hardDiv);
 
+  var $crazyDiv = document.createElement('div');
+  $crazyDiv.setAttribute('class', 'col-sm-full flex justify-center');
+  $difficultyWrapper.appendChild($crazyDiv);
+
   var $easyButton = document.createElement('input');
   $easyButton.setAttribute('type', 'button');
   $easyButton.setAttribute('name', 'easy');
@@ -64,4 +68,10 @@ function renderDifficuly() {
   $hardButton.setAttribute('value', 'hard');
   $hardDiv.appendChild($hardButton);
 
+  var $crazyButton = document.createElement('input');
+  $crazyButton.setAttribute('type', 'button');
+  $crazyButton.setAttribute('name', 'i\'m-crazy');
+  $crazyButton.setAttribute('class', 'difficulty-button text-capitalize');
+  $crazyButton.setAttribute('value', 'i\'m crazy');
+  $crazyDiv.appendChild($crazyButton);
 }
