@@ -8,33 +8,40 @@ body {
 :root {
   --dark-color: #333437;
   --light-color: #2e2f31;
-  --text-color: #d1d0c5;
-  --big-text-color: #646669;
+  --white-text-color: #d1d0c5;
+  --heading-text-color: #646669;
   --accent-color: #e2b714;
   --incorrect-color: #ca4754;
+  --lexend-font: "Lexend Deca", sans-serif;
 }
 
 /* TOGGLE FOR VISUALIZATION */
+
 .main-container {
-  background-color: rgb(160, 155, 155);
+  background-color: rgb(71, 71, 71);
   height: 600px;
 }
 
-/* HEADER */
-
-#brand-name {
+header #brand-name {
   margin: 0;
   margin-top: 0.5rem;
   margin-left: 0.3rem;
-  font-family: "Lexend Deca", sans-serif;
-  color: var(--text-color);
+  font-family: var(--lexend-font);
+  color: var(--white-text-color);
+}
+
+/* FORM */
+form h2 {
+  font-family: var(--lexend-font);
+  color: var(--heading-text-color);
+  text-align: center;
 }
 
 /* FOOTER */
 
 footer p {
   padding: 0 0.2rem;
-  color: #d1d0c5;
+  color: var(--white-text-color);
   font-size: 12px;
 }
 
@@ -42,12 +49,6 @@ footer a {
   text-decoration: none;
   color: black;
 }
-
-/*
-footer i {
-  text-decoration: none;
-  color: black;
-} */
 
 .footer-logo-item {
   padding: 0 0.3rem;
