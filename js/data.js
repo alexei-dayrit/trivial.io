@@ -1,5 +1,7 @@
 /* exported data */
 
+/*
+
 var data = {
   view: 'create-game'
 };
@@ -15,3 +17,5 @@ function handleBeforeUnload(event) {
 }
 
 window.addEventListener('beforeunload', handleBeforeUnload);
+
+*/

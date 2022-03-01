@@ -4,32 +4,86 @@
 var $mainHeading = document.querySelector('#main-heading');
 var $gameForm = document.querySelector('form');
 var $categoryWrapper = document.querySelector('#category-wrapper');
+var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
+var categorySelection = '';
+var difficultySelection = '';
+
+// API FETCH TESTER
+// API FETCH TESTER
+
+/*
+var $test = document.querySelector('#test');
+var xhr = new XMLHttpRequest();
+// API LINK FOR LIST OF CATEGORY NAMES AND THEIR ID
+xhr.open('GET', 'https://opentdb.com/api' + '_category.php');
+xhr.responseType = 'json';
+xhr.addEventListener('load', function () {
+  console.log('xhr status:', xhr.status);
+  console.log('xhr response:', xhr.response);
+  for (var i = 0; i < xhr.response.trivia_categories.length; i++) {
+    var categoryListItem = document.createElement('li');
+    categoryListItem.textContent = 'ID:' + xhr.response.trivia_categories[i].id +
+    ' Name:' + xhr.response.trivia_categories[i].name;
+    $test.append(categoryListItem);
+  }
+});
+xhr.send();
+*/
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
-  if (event.target.tagName === 'INPUT') {
-    $categoryWrapper.setAttribute('class', 'row hidden');
-    renderDifficuly();
+  if (event.target.tagName !== 'INPUT') {
+    return;
   }
+  // console.log('event.target.name:', event.target.name);
+  if (event.target.name === 'general knowledge') {
+    // console.log('clicking works!!', event.target.name);
+    categorySelection = 'category=9';
+  }
+  $categoryWrapper.setAttribute('class', 'row hidden');
+  renderDifficuly();
 }
+
 // CATEGORY CLICK LISTENER
 $categoryWrapper.addEventListener('click', handleCategoryClicks);
+
+// HANDLE DIFFICULTY CLICKS
+function handleDifficultyClicks(event) {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  }
+
+  if (event.target.name === 'easy') {
+    difficultySelection = 'difficulty=easy';
+  } else if (event.target.name === 'med') {
+    difficultySelection = 'difficulty=medium';
+  } else if (event.target.name === 'hard') {
+    difficultySelection = 'difficulty=hard';
+  }
+}
+
+$difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 
 // HANDLE FORM
 function handleGameForm(event) {
   event.preventDefault();
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://opentdb.com/api.php?amount=2' + '&' + categorySelection + '&' + difficultySelection);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    console.log('xhr status:', xhr.status);
+    console.log('xhr response:', xhr.response);
+  });
+  xhr.send();
 }
+
 // FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
 
 // RENDER DIFFICULTY
 function renderDifficuly() {
   $mainHeading.textContent = 'Select Difficulty';
-
-  var $difficultyWrapper = document.createElement('div');
-  $difficultyWrapper.setAttribute('id', 'difficulty-wrapper');
-  $difficultyWrapper.setAttribute('class', 'row justify-center');
-  $gameForm.appendChild($difficultyWrapper);
 
   var $easyDiv = document.createElement('div');
   $easyDiv.setAttribute('class', 'col-sm-fifth flex justify-center');

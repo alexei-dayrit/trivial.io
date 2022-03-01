@@ -15,7 +15,8 @@
 }
 
 .col-sm-full,
-.col-lg-half {
+.col-lg-half,
+.col-lg-tenth {
   width: 100%;
 }
 
@@ -42,5 +43,13 @@
 
   #brand-name {
     margin: 0.5rem 0 0 !important;
+  }
+
+  .col-lg-tenth {
+    width: 15%;
+  }
+
+  input[name="i'm-crazy"] {
+    max-width: 15%;
   }
 }
