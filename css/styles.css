@@ -1,5 +1,12 @@
 body {
   background-color: #333437;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+
+.main-container {
+  background-color: rgb(160, 155, 155);
+  height: 600px;
 }
 
 /* HEADER */
@@ -9,6 +16,29 @@ body {
   margin-top: 0.5rem;
   margin-left: 0.3rem;
   color: #d1d0c5;
+}
+
+/* FOOTER */
+
+footer p {
+  padding: 0 0.2rem;
+  color: #d1d0c5;
+  font-size: 12px;
+}
+
+footer a {
+  text-decoration: none;
+  color: black;
+}
+
+/*
+footer i {
+  text-decoration: none;
+  color: black;
+} */
+
+.footer-logo-item {
+  padding: 0 0.3rem;
 }
 
 /* UTILITY CLASSES */
