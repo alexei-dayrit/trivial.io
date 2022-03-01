@@ -3,6 +3,7 @@ body {
   font-family: "Roboto Mono", monospace;
   letter-spacing: 1px;
   line-height: 1.2;
+  overflow-x: hidden;
 }
 
 :root {
@@ -17,12 +18,14 @@ body {
 
 /* HEADER */
 
-header #brand-name {
-  margin: 0;
-  margin-top: 0.5rem;
-  margin-left: 0.3rem;
-  font-family: var(--lexend-font);
+#brand-name {
   color: var(--white-text-color);
+  font-family: var(--lexend-font);
+  margin: 0.5rem 0 0 1rem;
+}
+
+#brand-icon {
+  padding-top: 0.3rem;
 }
 
 /* FORM */
@@ -33,7 +36,7 @@ form h2 {
   text-align: center;
 }
 
-#category-wrapper input {
+input {
   background-color: var(--light-gray-color);
   border-radius: 0.5rem;
   border-style: none;
@@ -46,12 +49,27 @@ form h2 {
   width: 100%;
 }
 
+input:hover {
+  background-color: var(--white-text-color);
+  color: var(--dark-gray-color);
+}
+
+input:active {
+  background-color: var(--accent-color);
+  color: var(--dark-gray-color);
+}
+
 /* FOOTER */
 
-footer p {
+footer {
+  margin-top: 1rem;
+}
+
+footer span {
   color: var(--white-text-color);
   font-size: 12px;
   padding: 0 0.2rem;
+  white-space: nowrap;
 }
 
 footer a {
@@ -60,7 +78,7 @@ footer a {
 }
 
 .footer-logo-item {
-  padding: 0 0.3rem;
+  padding: 0 0.4rem;
 }
 
 /* UTILITY CLASSES */
@@ -73,8 +91,16 @@ footer a {
   display: flex;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
 .justify-center {
   justify-content: center;
+}
+
+.margin-top-auto {
+  margin-top: auto;
 }
 
 .text-capitalize {

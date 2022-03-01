@@ -5,6 +5,8 @@
 .main-container {
   margin: 0 auto;
   max-width: 475px;
+  min-height: 100vh;
+  padding: 2rem;
 }
 
 .row {
@@ -12,12 +14,9 @@
   flex-wrap: wrap;
 }
 
-.col-sm-full {
+.col-sm-full,
+.col-lg-half {
   width: 100%;
-}
-
-.col-sm-half {
-  width: 50%;
 }
 
 .col-sm-5 {
@@ -29,7 +28,15 @@
 }
 
 @media screen and (min-width: 768px) {
-  .container {
-    max-width: 900px;
+  .main-container {
+    max-width: 1000px;
+  }
+
+  .col-lg-half {
+    width: 50%;
+  }
+
+  #brand-name {
+    margin: 0.5rem 0 0 !important;
   }
 }
