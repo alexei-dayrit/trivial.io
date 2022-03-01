@@ -1,26 +1,21 @@
 body {
-  line-height: 1.2;
-  letter-spacing: 1px;
-  background-color: var(--dark-color);
+  background-color: var(--dark-gray-color);
   font-family: "Roboto Mono", monospace;
+  letter-spacing: 1px;
+  line-height: 1.2;
 }
 
 :root {
-  --dark-color: #333437;
-  --light-color: #2e2f31;
-  --white-text-color: #d1d0c5;
-  --heading-text-color: #646669;
   --accent-color: #e2b714;
+  --dark-gray-color: #333437;
+  --heading-text-color: #646669;
   --incorrect-color: #ca4754;
   --lexend-font: "Lexend Deca", sans-serif;
+  --light-gray-color: #2e2f31;
+  --white-text-color: #d1d0c5;
 }
 
-/* TOGGLE FOR VISUALIZATION */
-
-.main-container {
-  background-color: rgb(71, 71, 71);
-  height: 600px;
-}
+/* HEADER */
 
 header #brand-name {
   margin: 0;
@@ -31,23 +26,37 @@ header #brand-name {
 }
 
 /* FORM */
+
 form h2 {
-  font-family: var(--lexend-font);
   color: var(--heading-text-color);
+  font-family: var(--lexend-font);
   text-align: center;
+}
+
+#category-wrapper input {
+  background-color: var(--light-gray-color);
+  border-radius: 0.5rem;
+  border-style: none;
+  color: var(--white-text-color);
+  cursor: pointer;
+  font-family: inherit;
+  margin: 0.2rem;
+  padding: 0.4rem;
+  text-align: center;
+  width: 100%;
 }
 
 /* FOOTER */
 
 footer p {
-  padding: 0 0.2rem;
   color: var(--white-text-color);
   font-size: 12px;
+  padding: 0 0.2rem;
 }
 
 footer a {
-  text-decoration: none;
   color: black;
+  text-decoration: none;
 }
 
 .footer-logo-item {
@@ -56,10 +65,18 @@ footer a {
 
 /* UTILITY CLASSES */
 
+.align-center {
+  align-items: center;
+}
+
 .flex {
   display: flex;
 }
 
-.align-center {
-  align-items: center;
+.justify-center {
+  justify-content: center;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
 }
