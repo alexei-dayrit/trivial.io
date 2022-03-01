@@ -27,6 +27,10 @@
   width: 95%;
 }
 
+.col-sm-fifth {
+  width: 25%;
+}
+
 @media screen and (min-width: 768px) {
   .main-container {
     max-width: 1000px;

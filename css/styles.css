@@ -30,11 +30,17 @@ body {
 
 /* FORM */
 
+#main-heading {
+  margin-bottom: 1.8rem;
+}
+
 form h2 {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
 }
+
+/* CATEGORY BUTTONS */
 
 input {
   background-color: var(--light-gray-color);
@@ -43,6 +49,7 @@ input {
   color: var(--white-text-color);
   cursor: pointer;
   font-family: inherit;
+  font-weight: 500;
   margin: 0.2rem;
   padding: 0.4rem;
   text-align: center;
@@ -57,6 +64,32 @@ input:hover {
 input:active {
   background-color: var(--accent-color);
   color: var(--dark-gray-color);
+}
+
+/* DIFFICULTY BUTTONS */
+.difficulty-button {
+  color: var(--dark-gray-color);
+  line-height: 2;
+  margin-left: 0.8rem;
+  margin-right: 0.8rem;
+  width: 80%;
+}
+
+.difficulty-button:hover {
+  background-color: var(--white-text-color);
+  color: var(--dark-gray-color);
+}
+
+input[name="easy"] {
+  background-color: #9fc7f0;
+}
+
+input[name="med"] {
+  background-color: #e0c156;
+}
+
+input[name="hard"] {
+  background-color: #de785d;
 }
 
 /* FOOTER */
