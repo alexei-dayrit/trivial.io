@@ -1,10 +1,10 @@
 /* exported data */
 
-/*
-
 var data = {
   view: 'create-game'
 };
+
+/*
 
 var previousData = localStorage.getItem('quiz-crack-local-storage');
 if (previousData !== null) {

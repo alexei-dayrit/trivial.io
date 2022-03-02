@@ -41,7 +41,7 @@ form h2 {
   text-align: center;
 }
 
-/* CATEGORY BUTTONS */
+/* BUTTONS */
 
 input {
   background-color: var(--light-gray-color);
@@ -57,17 +57,6 @@ input {
   width: 100%;
 }
 
-input:hover {
-  background-color: var(--white-text-color);
-  color: var(--dark-gray-color);
-}
-
-input:active {
-  background-color: var(--accent-color);
-  color: var(--dark-gray-color);
-}
-
-/* DIFFICULTY BUTTONS */
 .difficulty-button {
   color: var(--dark-gray-color);
   line-height: 2;
@@ -93,15 +82,32 @@ input[name="hard"] {
   background-color: #de785d;
 }
 
-input[name="i'm-crazy"] {
+input[name="i\'m-crazy1"],
+input[name="i\'m-crazy2"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
+  line-height: 2;
   margin-top: 2rem;
-  width: 25%;
+  width: 30%;
+}
+
+input:hover {
+  background-color: var(--white-text-color);
+  color: var(--dark-gray-color);
+}
+
+input:active {
+  background-color: var(--accent-color);
+  color: var(--dark-gray-color);
+}
+
+input[name="i\'m-crazy1"]:hover,
+input[name="i\'m-crazy2"]:hover {
+  background-color: var(--heading-text-color);
+  color: var(--accent-color);
 }
 
 /* FOOTER */
-
 footer {
   margin-top: 1rem;
 }

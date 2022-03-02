@@ -35,10 +35,17 @@ function handleCategoryClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   }
-  // console.log('event.target.name:', event.target.name);
-  if (event.target.name === 'general knowledge') {
-    // console.log('clicking works!!', event.target.name);
+
+  if (event.target.name === 'i\'m crazy') {
+    categorySelection = '';
+  } else if (event.target.name === 'general knowledge') {
     categorySelection = 'category=9';
+  } else if (event.target.name === 'books') {
+    categorySelection = 'category=10';
+  } else if (event.target.name === 'film') {
+    categorySelection = 'category=11';
+  } else if (event.target.name === 'music') {
+    categorySelection = 'category=12';
   }
   $categoryWrapper.setAttribute('class', 'row hidden');
   renderDifficuly();
@@ -52,13 +59,12 @@ function handleDifficultyClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   }
-
   if (event.target.name === 'easy') {
-    difficultySelection = 'difficulty=easy';
+    difficultySelection = 'easy';
   } else if (event.target.name === 'med') {
-    difficultySelection = 'difficulty=medium';
+    difficultySelection = 'medium';
   } else if (event.target.name === 'hard') {
-    difficultySelection = 'difficulty=hard';
+    difficultySelection = 'hard';
   }
 }
 
@@ -67,9 +73,11 @@ $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 // HANDLE FORM
 function handleGameForm(event) {
   event.preventDefault();
-
+  // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://opentdb.com/api.php?amount=2' + '&' + categorySelection + '&' + difficultySelection);
+  xhr.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
+          categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
+          'type=multiple');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     console.log('xhr status:', xhr.status);
@@ -109,11 +117,14 @@ function renderDifficuly() {
   $easyDiv.appendChild($easyButton);
 
   var $medButton = document.createElement('input');
-  $medButton.setAttribute('type', 'button');
+  $medButton.setAttribute('type', 'submit');
   $medButton.setAttribute('name', 'med');
   $medButton.setAttribute('class', 'difficulty-button text-capitalize');
   $medButton.setAttribute('value', 'med');
   $medDiv.appendChild($medButton);
+
+  // CHANGE BACK TYPE
+  // CHANGE BACK TYPE
 
   var $hardButton = document.createElement('input');
   $hardButton.setAttribute('type', 'button');
@@ -124,7 +135,7 @@ function renderDifficuly() {
 
   var $crazyButton = document.createElement('input');
   $crazyButton.setAttribute('type', 'button');
-  $crazyButton.setAttribute('name', 'i\'m-crazy');
+  $crazyButton.setAttribute('name', 'i\'m-crazy2');
   $crazyButton.setAttribute('class', 'difficulty-button text-capitalize');
   $crazyButton.setAttribute('value', 'i\'m crazy');
   $crazyDiv.appendChild($crazyButton);
