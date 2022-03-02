@@ -5,6 +5,7 @@ var $mainHeading = document.querySelector('#main-heading');
 var $gameForm = document.querySelector('form');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
+var $lengthWrapper = document.querySelector('#length-wrapper');
 var categorySelection = '';
 var difficultySelection = '';
 var sessionCode = '';
@@ -18,7 +19,8 @@ function handleCategoryClicks(event) {
   var categoryID = $closestCategory.getAttribute('data-category-id');
   categorySelection = categoryID.toString();
   $categoryWrapper.setAttribute('class', 'row hidden');
-  renderDifficuly();
+  data.view = 'difficulty-select';
+  renderQuizDifficuly();
 }
 
 // CATEGORY CLICK LISTENER
@@ -40,24 +42,32 @@ function handleDifficultyClicks(event) {
 
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 
+// GET GAME URL FROM API
+function getGame(token) {
+  var xhrGame = new XMLHttpRequest();
+  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
+    categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
+    'type=multiple' + '&' + 'token=' + token);
+  xhrGame.responseType = 'json';
+  xhrGame.addEventListener('load', function () {
+    console.log('xhr status:', xhrGame.status);
+    console.log('xhr response:', xhrGame.response);
+    console.log('xhr response:', xhrGame.responseURL);
+  });
+  xhrGame.send();
+}
+
 // HANDLE FORM
 function handleGameForm(event) {
   event.preventDefault();
-  // GET SESSION TOKEN AND GET GAME URL
+  // GET SESSION TOKEN FROM API
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
   xhrToken.addEventListener('load', function getSessionToken() {
     var xhrTokenCode = xhrToken.response.token;
     sessionCode = xhrTokenCode;
-    var xhrGame = new XMLHttpRequest();
-    xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
-      categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
-      'type=multiple' + '&' + 'token=' + sessionCode);
-    xhrGame.responseType = 'json';
-    xhrGame.addEventListener('load', function () {
-    });
-    xhrGame.send();
+    getGame(sessionCode);
   });
   xhrToken.send();
 }
@@ -66,7 +76,7 @@ function handleGameForm(event) {
 $gameForm.addEventListener('submit', handleGameForm);
 
 // RENDER DIFFICULTY
-function renderDifficuly() {
+function renderQuizDifficuly() {
   $mainHeading.textContent = 'Select Difficulty';
 
   var $easyDiv = document.createElement('div');
@@ -93,14 +103,11 @@ function renderDifficuly() {
   $easyDiv.appendChild($easyButton);
 
   var $medButton = document.createElement('input');
-  $medButton.setAttribute('type', 'submit');
+  $medButton.setAttribute('type', 'button');
   $medButton.setAttribute('name', 'med');
   $medButton.setAttribute('class', 'difficulty-button text-capitalize');
   $medButton.setAttribute('value', 'med');
   $medDiv.appendChild($medButton);
-
-  // CHANGE BACK TYPE
-  // CHANGE BACK TYPE
 
   var $hardButton = document.createElement('input');
   $hardButton.setAttribute('type', 'button');
@@ -115,6 +122,56 @@ function renderDifficuly() {
   $insaneButton.setAttribute('class', 'difficulty-button text-capitalize');
   $insaneButton.setAttribute('value', 'i\'m insane');
   $insaneDiv.appendChild($insaneButton);
+
+  data.view = 'difficulty-select';
+}
+
+function renderQuizLength() {
+  var $tenQdiv = document.createElement('div');
+  $tenQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $lengthWrapper.appendChild($tenQdiv);
+
+  var $tenQButton = document.createElement('input');
+  $tenQButton.setAttribute('type', 'button');
+  $tenQButton.setAttribute('name', 'ten-qs');
+  $tenQButton.setAttribute('class', 'length-button text-capitalize');
+  $tenQButton.setAttribute('value', '10 q\'s');
+  $tenQdiv.appendChild($tenQButton);
+
+  var $fifteenQdiv = document.createElement('div');
+  $fifteenQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $lengthWrapper.appendChild($fifteenQdiv);
+
+  var $fifteenQButton = document.createElement('input');
+  $fifteenQButton.setAttribute('type', 'button');
+  $fifteenQButton.setAttribute('name', 'fifteen-qs');
+  $fifteenQButton.setAttribute('class', 'length-button text-capitalize');
+  $fifteenQButton.setAttribute('value', '15 q\'s');
+  $fifteenQdiv.appendChild($fifteenQButton);
+
+  var $twentyQdiv = document.createElement('div');
+  $twentyQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $lengthWrapper.appendChild($twentyQdiv);
+
+  var $twentyQButton = document.createElement('input');
+  $twentyQButton.setAttribute('type', 'button');
+  $twentyQButton.setAttribute('name', 'twenty-qs');
+  $twentyQButton.setAttribute('class', 'length-button text-capitalize');
+  $twentyQButton.setAttribute('value', '20 q\'s');
+  $twentyQdiv.appendChild($twentyQButton);
+
+  var $thirtyQdiv = document.createElement('div');
+  $thirtyQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $lengthWrapper.appendChild($thirtyQdiv);
+
+  var $thirtyQButton = document.createElement('input');
+  $thirtyQButton.setAttribute('type', 'button');
+  $thirtyQButton.setAttribute('name', 'thirty-qs');
+  $thirtyQButton.setAttribute('class', 'length-button text-capitalize');
+  $thirtyQButton.setAttribute('value', '30 q\'s');
+  $thirtyQdiv.appendChild($thirtyQButton);
+
+  data.view = 'length-select';
 }
 
 // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
