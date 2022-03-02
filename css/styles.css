@@ -1,0 +1,154 @@
+body {
+  background-color: var(--dark-gray-color);
+  color: var(--white-text-color);
+  font-family: "Roboto Mono", monospace;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  overflow-x: hidden;
+}
+
+:root {
+  --accent-color: #e2b714;
+  --dark-gray-color: #333437;
+  --heading-text-color: #646669;
+  --incorrect-color: #ca4754;
+  --lexend-font: "Lexend Deca", sans-serif;
+  --light-gray-color: #2e2f31;
+  --white-text-color: #d1d0c5;
+}
+
+/* HEADER */
+
+#brand-name {
+  color: var(--white-text-color);
+  font-family: var(--lexend-font);
+  margin: 0.5rem 0 0 1rem;
+}
+
+#brand-icon {
+  padding-top: 0.3rem;
+}
+
+/* FORM */
+
+#main-heading {
+  margin-bottom: 1.8rem;
+}
+
+form h2 {
+  color: var(--heading-text-color);
+  font-family: var(--lexend-font);
+  text-align: center;
+}
+
+/* BUTTONS */
+
+input {
+  background-color: var(--light-gray-color);
+  border-radius: 0.5rem;
+  border-style: none;
+  color: var(--white-text-color);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  margin: 0.2rem;
+  padding: 0.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.difficulty-button {
+  color: var(--dark-gray-color);
+  line-height: 2;
+  margin-left: 0.8rem;
+  margin-right: 0.8rem;
+  width: 80%;
+}
+
+.difficulty-button:hover {
+  background-color: var(--white-text-color);
+  color: var(--dark-gray-color);
+}
+
+input[name="easy"] {
+  background-color: #9fc7f0;
+}
+
+input[name="med"] {
+  background-color: #e0c156;
+}
+
+input[name="hard"] {
+  background-color: #de785d;
+}
+
+input[name="im-crazy"],
+input[name="im-insane"] {
+  background-color: var(--dark-gray-color);
+  color: var(--light-gray-color);
+  line-height: 2;
+  margin-top: 2rem;
+  width: 30%;
+}
+
+input:hover {
+  background-color: var(--white-text-color);
+  color: var(--dark-gray-color);
+}
+
+input:active {
+  background-color: var(--accent-color);
+  color: var(--dark-gray-color);
+}
+
+input[name="im-crazy"]:hover,
+input[name="im-insane"]:hover {
+  background-color: var(--heading-text-color);
+  color: var(--accent-color);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 1rem;
+}
+
+footer span {
+  color: var(--white-text-color);
+  font-size: 12px;
+  padding: 0 0.2rem;
+}
+
+footer a {
+  color: black;
+  text-decoration: none;
+}
+
+.footer-logo-item {
+  padding: 0 0.4rem;
+}
+
+/* UTILITY CLASSES */
+
+.align-center {
+  align-items: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.margin-top-auto {
+  margin-top: auto;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,184 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
-  <header>
-  </header>
-  <main>
-  </main>
+  <div class="main-container">
+    <!-- HEADER -->
+    <header class="row">
+      <div class="col-sm-full">
+        <div class="row">
+          <div class="col-sm-5 flex align-center">
+            <img id="brand-icon" src="images/brand-icon-32px.png" alt="Brand Icon">
+          </div>
+          <div class="col-sm-95 flex align-center">
+            <h1 id="brand-name">Quiz Crack</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- MAIN -->
+    <main>
+
+      <!-- TEST -->
+      <div class="row">
+        <div class="col-sm-full">
+          <ul id="test">
+
+          </ul>
+        </div>
+      </div>
+      <!-- QUIZ FORM -->
+      <form data-view="create-game">
+        <div class="row">
+          <div class="col-sm-full">
+            <h2 id="main-heading">Select Category</h2>
+          </div>
+        </div>
+        <!-- CATEGORIES -->
+        <div id="category-wrapper" class="row">
+          <div class="col-sm-full col-lg-half flex justify-center text-capitalize">
+            <input data-category-id="9" type="button" name="general knowledge" class="category-button text-capitalize"
+              value="general knowledge">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="10" type="button" name="books" class="category-button text-capitalize"
+              value="books">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="11" type="button" name="film" class="category-button text-capitalize" value="film">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="12" type="button" name="music" class="category-button text-capitalize"
+              value="music">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="13" type="button" name="musicals &amp; theaters"
+              class="category-button text-capitalize" value="musicals &amp; theaters">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="14" type="button" name="television" class="category-button text-capitalize"
+              value="television">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="15" type="button" name="video games" class="category-button text-capitalize"
+              value="video games">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="16" type="button" name="board games" class="category-button text-capitalize"
+              value="board games">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="17" type="button" name="science &amp; nature"
+              class="category-button text-capitalize" value="science &amp; nature">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="18" type="button" name="computers" class="category-button text-capitalize"
+              value="computers">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="19" type="button" name="mathematics" class="category-button text-capitalize"
+              value="mathematics">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="20" type="button" name="mythology" class="category-button text-capitalize"
+              value="mythology">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="21" type="button" name="sports" class="category-button text-capitalize"
+              value="sports">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="22" type="button" name="geography" class="category-button text-capitalize"
+              value="geography">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="23" type="button" name="history" class="category-button text-capitalize"
+              value="history">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="24" type="button" name="politics" class="category-button text-capitalize"
+              value="politics">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="25" type="button" name="art" class="category-button text-capitalize" value="art">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="26" type="button" name="celebrities" class="category-button text-capitalize"
+              value="celebrities">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="27" type="button" name="animals" class="category-button text-capitalize"
+              value="animals">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="28" type="button" name="vehicles" class="category-button text-capitalize"
+              value="vehicles">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="29" type="button" name="comics" class="category-button text-capitalize"
+              value="comics">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="30" type="button" name="gadgets" class="category-button text-capitalize"
+              value="gadgets">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="31" type="button" name="japanese anime &amp; manga"
+              class="category-button text-capitalize" value="japanese anime &amp; manga">
+          </div>
+          <div class="col-sm-full col-lg-half flex justify-center">
+            <input data-category-id="32" type="button" name="cartoon &amp; animations"
+              class="category-button text-capitalize" value="cartoon &amp; animations">
+          </div>
+          <div class="col-sm-full flex justify-center text-capitalize">
+            <input data-category-id="" type="button" name="im-crazy" class="category-button text-capitalize"
+              value="i'm crazy">
+          </div>
+        </div>
+        <!-- DIFFICULTY BUTTONS DOM OUTLINE-->
+        <div id="difficulty-wrapper" class="row justify-center">
+        </div>
+        <!-- FORM - CLOSING TAG -->
+      </form>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="row">
+      <div class="col-sm-full">
+        <div class="row">
+          <div class="col-sm-one-fourth footer-logo-item flex align-center">
+            <a href="https://github.com/alexei-dayrit">
+              <i class="fab fa-github-square"></i><span>GitHub</span>
+            </a>
+          </div>
+          <div class="col-sm-one-fourth footer-logo-item flex align-center">
+            <a href="mailto:alexeigdayrit@gmail.com?subject=Mail%20from%20Quiz%20Crack%20Project">
+              <i class="fas fa-envelope"></i><span>Contact</span>
+            </a>
+          </div>
+          <div class="col-sm-one-fourth footer-logo-item flex align-center">
+            <a href="credits.html">
+              <img src="images/quotes-credit-16px.png" alt="Credits Logo"><span>Credits</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- MAIN CONTAINER - CLOSING TAG -->
+  </div>
+
+  <!-- SCRIPTS -->
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
