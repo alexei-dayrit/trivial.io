@@ -18,9 +18,7 @@ function handleCategoryClicks(event) {
   var $closestCategory = event.target.closest('[data-category-id]');
   var categoryID = $closestCategory.getAttribute('data-category-id');
   categorySelection = categoryID.toString();
-  $categoryWrapper.setAttribute('class', 'row hidden');
-  data.view = 'difficulty-select';
-  renderQuizDifficuly();
+  viewDifficultySelection();
 }
 
 // CATEGORY CLICK LISTENER
@@ -38,6 +36,7 @@ function handleDifficultyClicks(event) {
   } else if (event.target.name === 'hard') {
     difficultySelection = 'hard';
   }
+  viewLengthSelection();
 }
 
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
@@ -172,6 +171,20 @@ function renderQuizLength() {
   $thirtyQdiv.appendChild($thirtyQButton);
 
   data.view = 'length-select';
+}
+
+// VIEW SWAP TO DIFFICULTY SELECT
+function viewDifficultySelection() {
+  $categoryWrapper.setAttribute('class', 'row hidden');
+  data.view = 'difficulty-select';
+  renderQuizDifficuly();
+}
+
+// VIEW SWAP TO LENGTH SELECT
+function viewLengthSelection() {
+  $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  data.view = 'length-select';
+  renderQuizLength();
 }
 
 // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
