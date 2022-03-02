@@ -58,7 +58,7 @@ function handleQuizLength(event) {
     lengthSelection = '30';
   }
   console.log('hi');
-  // viewTypeSelection();
+  viewTypeSelection();
 }
 
 // HANDLE LENGTH LISTENER
@@ -267,6 +267,13 @@ function viewLengthSelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   data.view = 'length-select';
   renderQuizLength();
+}
+
+// VIEW SWAP TO TYPE SELECT
+function viewTypeSelection() {
+  $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+  data.view = 'type-select';
+  renderQuizType();
 }
 
 // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
