@@ -57,24 +57,25 @@ function handleQuizLength(event) {
   } else if (event.target.name === 'thirty-qs') {
     lengthSelection = '30';
   }
-  console.log('hi');
   viewTypeSelection();
 }
 
 // HANDLE LENGTH LISTENER
 $lengthWrapper.addEventListener('click', handleQuizLength);
 
-// // HANDLE TYPE CLICKS
-// function handleQuizType(event) {
-//   if (event.target.name === 'multiple-type') {
-//     typeSelection = 'multiple';
-//   } else if (event.target.name === 'true-or-false') {
-//     typeSelection = 'boolean';
-//   }
-// }
+// HANDLE TYPE CLICKS
+function handleQuizType(event) {
+  if (event.target.name === 'multiple-choice') {
+    typeSelection = 'multiple';
+  } else if (event.target.name === 'true-or-false') {
+    typeSelection = 'boolean';
+  } else if (event.target.name === 'any-type') {
+    typeSelection = '';
+  }
+}
 
 // HANDLE TYPE LISTENER
-// $typeWrapper.addEventListener('click', handleQuizType);
+$typeWrapper.addEventListener('click', handleQuizType);
 
 // GET GAME URL FROM API
 function getGame(token) {
