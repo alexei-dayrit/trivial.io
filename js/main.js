@@ -45,13 +45,12 @@ function handleGameForm(event) {
   event.preventDefault();
   // GET SESSION TOKEN AND GET GAME URL
   var xhrToken = new XMLHttpRequest();
-  var xhrGame = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
-
   xhrToken.addEventListener('load', function getSessionToken() {
     var xhrTokenCode = xhrToken.response.token;
     sessionCode = xhrTokenCode;
+    var xhrGame = new XMLHttpRequest();
     xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
       categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
       'type=multiple' + '&' + 'token=' + sessionCode);
