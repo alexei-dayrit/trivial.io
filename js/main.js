@@ -8,6 +8,7 @@ var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var categorySelection = '';
 var difficultySelection = '';
+var lengthSelection = '';
 var sessionCode = '';
 
 // HANDLE CATEGORY CLICKS
@@ -17,7 +18,7 @@ function handleCategoryClicks(event) {
   }
   var $closestCategory = event.target.closest('[data-category-id]');
   var categoryID = $closestCategory.getAttribute('data-category-id');
-  categorySelection = categoryID.toString();
+  categorySelection = categoryID;
   viewDifficultySelection();
 }
 
@@ -39,14 +40,33 @@ function handleDifficultyClicks(event) {
   viewLengthSelection();
 }
 
+// DIFFICULTY CLICK LISTENER
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
+
+// HANDLE LENGTH CLICKS
+function handleQuizLength(event) {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  }
+  if (event.target.name === 'ten-qs') {
+    lengthSelection = '10';
+  } else if (event.target.name === 'fiteen-qs') {
+    lengthSelection = '15';
+  } else if (event.target.name === 'twenty-qs') {
+    lengthSelection = '20';
+  } else if (event.target.name === 'thirty-qs') {
+    lengthSelection = '30';
+  }
+}
+
+$lengthWrapper.addEventListener('click', handleQuizLength);
 
 // GET GAME URL FROM API
 function getGame(token) {
   var xhrGame = new XMLHttpRequest();
-  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
-    categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
-    'type=multiple' + '&' + 'token=' + token);
+  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
+      '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
+      '&' + 'type=multiple' + '&' + 'token=' + token);
   xhrGame.responseType = 'json';
   xhrGame.addEventListener('load', function () {
     console.log('xhr status:', xhrGame.status);
@@ -130,8 +150,11 @@ function renderQuizLength() {
   $tenQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $lengthWrapper.appendChild($tenQdiv);
 
+  // CHANGE TYPE BACK TO BUTTON
+  // CHANGE TYPE BACK TO BUTTON
+
   var $tenQButton = document.createElement('input');
-  $tenQButton.setAttribute('type', 'button');
+  $tenQButton.setAttribute('type', 'submit');
   $tenQButton.setAttribute('name', 'ten-qs');
   $tenQButton.setAttribute('class', 'length-button text-capitalize');
   $tenQButton.setAttribute('value', '10 q\'s');
