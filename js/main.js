@@ -110,9 +110,6 @@ function getGame(token) {
       '&' + 'type=' + typeSelection + '&' + 'token=' + token);
   xhrGame.responseType = 'json';
   xhrGame.addEventListener('load', function () {
-    console.log('xhr status:', xhrGame.status);
-    console.log('xhr response:', xhrGame.response);
-    console.log('xhr response:', xhrGame.responseURL);
   });
   xhrGame.send();
 }
@@ -187,6 +184,8 @@ function renderQuizDifficuly() {
 }
 
 function renderQuizLength() {
+  $mainHeading.textContent = 'Select Quiz Length';
+
   var $tenQdiv = document.createElement('div');
   $tenQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $lengthWrapper.appendChild($tenQdiv);
@@ -235,6 +234,8 @@ function renderQuizLength() {
 }
 
 function renderQuizType() {
+  $mainHeading.textContent = 'Select Quiz Type';
+
   var $anyTypeDiv = document.createElement('div');
   $anyTypeDiv.setAttribute('class', 'col-sm-full flex justify-center');
   $typeWrapper.appendChild($anyTypeDiv);
