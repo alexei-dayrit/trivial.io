@@ -1,12 +1,3 @@
-body {
-  background-color: var(--dark-gray-color);
-  color: var(--white-text-color);
-  font-family: "Roboto Mono", monospace;
-  letter-spacing: 1px;
-  line-height: 1.2;
-  overflow-x: hidden;
-}
-
 :root {
   --accent-color: #e2b714;
   --dark-gray-color: #333437;
@@ -39,6 +30,10 @@ form h2 {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
+}
+
+#category-wrapper {
+  padding-bottom: 4rem;
 }
 
 /* BUTTONS */
@@ -88,7 +83,7 @@ input[name="im-insane"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
-  margin-top: 2rem;
+  margin: 1rem 0 2rem;
   width: 30%;
 }
 
@@ -133,7 +128,9 @@ input:active {
 
 /* FOOTER */
 footer {
-  margin-top: 1rem;
+  bottom: 0;
+  margin: 2rem 0;
+  position: absolute;
 }
 
 footer span {
