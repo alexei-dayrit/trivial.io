@@ -7,46 +7,16 @@ var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var categorySelection = '';
 var difficultySelection = '';
-
-// API FETCH TESTER
-// API FETCH TESTER
-
-/*
-var $test = document.querySelector('#test');
-var xhr = new XMLHttpRequest();
-// API LINK FOR LIST OF CATEGORY NAMES AND THEIR ID
-xhr.open('GET', 'https://opentdb.com/api' + '_category.php');
-xhr.responseType = 'json';
-xhr.addEventListener('load', function () {
-  console.log('xhr status:', xhr.status);
-  console.log('xhr response:', xhr.response);
-  for (var i = 0; i < xhr.response.trivia_categories.length; i++) {
-    var categoryListItem = document.createElement('li');
-    categoryListItem.textContent = 'ID:' + xhr.response.trivia_categories[i].id +
-    ' Name:' + xhr.response.trivia_categories[i].name;
-    $test.append(categoryListItem);
-  }
-});
-xhr.send();
-*/
+var sessionCode = '';
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   }
-
-  if (event.target.name === 'i\'m crazy') {
-    categorySelection = '';
-  } else if (event.target.name === 'general knowledge') {
-    categorySelection = 'category=9';
-  } else if (event.target.name === 'books') {
-    categorySelection = 'category=10';
-  } else if (event.target.name === 'film') {
-    categorySelection = 'category=11';
-  } else if (event.target.name === 'music') {
-    categorySelection = 'category=12';
-  }
+  var $closestCategory = event.target.closest('[data-category-id]');
+  var categoryID = $closestCategory.getAttribute('data-category-id');
+  categorySelection = categoryID.toString();
   $categoryWrapper.setAttribute('class', 'row hidden');
   renderDifficuly();
 }
@@ -73,17 +43,28 @@ $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 // HANDLE FORM
 function handleGameForm(event) {
   event.preventDefault();
-  // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
-          categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
-          'type=multiple');
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function () {
-    console.log('xhr status:', xhr.status);
-    console.log('xhr response:', xhr.response);
+  // GET SESSION TOKEN
+  var xhrToken = new XMLHttpRequest();
+  xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
+  xhrToken.responseType = 'json';
+  xhrToken.addEventListener('load', function getSessionToken() {
+    console.log('token status', xhrToken.status);
+    console.log('token response', xhrToken.response);
+    var xhrTokenCode = xhrToken.response.token;
+    sessionCode = xhrTokenCode;
   });
-  xhr.send();
+  xhrToken.send();
+  // GET QUIZ QUESTIONS
+  var xhrGame = new XMLHttpRequest();
+  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
+          categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
+          'type=multiple' + '&' + sessionCode);
+  xhrGame.responseType = 'json';
+  xhrGame.addEventListener('load', function () {
+    console.log('xhr status:', xhrGame.status);
+    console.log('xhr response:', xhrGame.response);
+  });
+  xhrGame.send();
 }
 
 // FORM SUBMIT LISTENER
@@ -140,3 +121,5 @@ function renderDifficuly() {
   $crazyButton.setAttribute('value', 'i\'m crazy');
   $crazyDiv.appendChild($crazyButton);
 }
+
+// EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
