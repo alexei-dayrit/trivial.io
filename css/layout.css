@@ -51,6 +51,14 @@
     max-width: 60%;
   }
 
+  .type-button {
+    width: 40%;
+  }
+
+  .submit-button {
+    max-width: 10%;
+  }
+
   input[name="im-crazy"],
   input[name="im-insane"] {
     max-width: 20%;
