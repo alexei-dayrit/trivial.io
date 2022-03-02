@@ -28,8 +28,8 @@
   width: 95%;
 }
 
-.col-sm-fifth {
-  width: 25%;
+.col-sm-fourth {
+  width: 20%;
 }
 
 @media screen and (min-width: 768px) {
@@ -45,8 +45,12 @@
     margin: 0.5rem 0 0 !important;
   }
 
-  .col-lg-tenth {
+  .col-lg-15 {
     width: 15%;
+  }
+
+  .difficulty-button {
+    max-width: 60%;
   }
 
   input[name="i\'m-crazy1"],

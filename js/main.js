@@ -75,15 +75,15 @@ function renderDifficuly() {
   $mainHeading.textContent = 'Select Difficulty';
 
   var $easyDiv = document.createElement('div');
-  $easyDiv.setAttribute('class', 'col-sm-fifth flex justify-center');
+  $easyDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
   $difficultyWrapper.appendChild($easyDiv);
 
   var $medDiv = document.createElement('div');
-  $medDiv.setAttribute('class', 'col-sm-fifth flex justify-center');
+  $medDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
   $difficultyWrapper.appendChild($medDiv);
 
   var $hardDiv = document.createElement('div');
-  $hardDiv.setAttribute('class', 'col-sm-fifth flex justify-center');
+  $hardDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
   $difficultyWrapper.appendChild($hardDiv);
 
   var $crazyDiv = document.createElement('div');
