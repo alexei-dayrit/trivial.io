@@ -14,9 +14,7 @@
   flex-wrap: wrap;
 }
 
-.col-sm-full,
-.col-lg-half,
-.col-lg-tenth {
+.col-sm-full {
   width: 100%;
 }
 
