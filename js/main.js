@@ -1,6 +1,7 @@
 /* global data */
 /* exported data */
 
+var $brandName = document.querySelector('#brand-name');
 var $mainHeading = document.querySelector('#main-heading');
 var $gameForm = document.querySelector('form');
 var $categoryWrapper = document.querySelector('#category-wrapper');
@@ -12,6 +13,30 @@ var difficultySelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+
+// CLEAR DOM TREE FOR GAME RESET
+function removeChildNodes(parent) {
+  while (parent.childNodes.length > 0) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+// RESET GAME AND RETURN TO CATEGORY SELECT
+function resetGame() {
+  $categoryWrapper.setAttribute('class', 'row');
+  removeChildNodes($difficultyWrapper);
+  removeChildNodes($typeWrapper);
+  removeChildNodes($lengthWrapper);
+  data.view = 'category-select';
+  $gameForm.reset();
+}
+// HANDLE BRAND CLICKS
+function handleBrandClicks(event) {
+  if (event.target.tagName === 'H1') {
+    resetGame();
+  }
+}
+// HANDLE BRAND LISTENER
+$brandName.addEventListener('click', handleBrandClicks);
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
@@ -254,17 +279,23 @@ function renderQuizType() {
   $submitButton.setAttribute('value', 'begin');
   $submitDiv.appendChild($submitButton);
 
+  data.view = 'type-select';
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
 function viewDifficultySelection() {
+  $difficultyWrapper.setAttribute('class', 'row justify-center');
   $categoryWrapper.setAttribute('class', 'row hidden');
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
   data.view = 'difficulty-select';
   renderQuizDifficuly();
 }
 
 // VIEW SWAP TO LENGTH SELECT
 function viewLengthSelection() {
+  $lengthWrapper.setAttribute('class', 'row justify-center');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   data.view = 'length-select';
   renderQuizLength();
@@ -272,6 +303,7 @@ function viewLengthSelection() {
 
 // VIEW SWAP TO TYPE SELECT
 function viewTypeSelection() {
+  $typeWrapper.setAttribute('class', 'row justify-center');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   data.view = 'type-select';
   renderQuizType();

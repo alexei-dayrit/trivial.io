@@ -5,6 +5,7 @@ body {
   letter-spacing: 1px;
   line-height: 1.2;
   overflow-x: hidden;
+  position: relative;
 }
 
 .hidden {
@@ -16,7 +17,6 @@ body {
   max-width: 475px;
   min-height: 100vh;
   padding: 2rem;
-  position: relative;
 }
 
 .row {

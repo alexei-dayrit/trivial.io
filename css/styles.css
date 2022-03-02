@@ -12,6 +12,7 @@
 
 #brand-name {
   color: var(--white-text-color);
+  cursor: pointer;
   font-family: var(--lexend-font);
   margin: 0.5rem 0 0 1rem;
 }
