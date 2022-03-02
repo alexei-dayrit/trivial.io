@@ -41,7 +41,7 @@ form h2 {
 
 input {
   background-color: var(--light-gray-color);
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   border-style: none;
   color: var(--white-text-color);
   cursor: pointer;
@@ -55,11 +55,11 @@ input {
 }
 
 .difficulty-button {
+  border-style: none;
   color: var(--dark-gray-color);
   line-height: 2;
-  margin-left: 0.8rem;
-  margin-right: 0.8rem;
-  width: 80%;
+  margin: 0 0.8rem;
+  width: 100%;
 }
 
 .difficulty-button:hover {
