@@ -51,8 +51,8 @@
     max-width: 60%;
   }
 
-  input[name="i\'m-crazy1"],
-  input[name="i\'m-crazy2"] {
+  input[name="im-crazy"],
+  input[name="im-insane"] {
     max-width: 20%;
   }
 }

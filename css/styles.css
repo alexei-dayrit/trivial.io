@@ -82,8 +82,8 @@ input[name="hard"] {
   background-color: #de785d;
 }
 
-input[name="i\'m-crazy1"],
-input[name="i\'m-crazy2"] {
+input[name="im-crazy"],
+input[name="im-insane"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
@@ -101,8 +101,8 @@ input:active {
   color: var(--dark-gray-color);
 }
 
-input[name="i\'m-crazy1"]:hover,
-input[name="i\'m-crazy2"]:hover {
+input[name="im-crazy"]:hover,
+input[name="im-insane"]:hover {
   background-color: var(--heading-text-color);
   color: var(--accent-color);
 }

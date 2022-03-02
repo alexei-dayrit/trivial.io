@@ -43,28 +43,24 @@ $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 // HANDLE FORM
 function handleGameForm(event) {
   event.preventDefault();
-  // GET SESSION TOKEN
+  // GET SESSION TOKEN AND GET GAME URL
   var xhrToken = new XMLHttpRequest();
+  var xhrGame = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
+
   xhrToken.addEventListener('load', function getSessionToken() {
-    console.log('token status', xhrToken.status);
-    console.log('token response', xhrToken.response);
     var xhrTokenCode = xhrToken.response.token;
     sessionCode = xhrTokenCode;
+    xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
+      categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
+      'type=multiple' + '&' + 'token=' + sessionCode);
+    xhrGame.responseType = 'json';
+    xhrGame.addEventListener('load', function () {
+    });
+    xhrGame.send();
   });
   xhrToken.send();
-  // GET QUIZ QUESTIONS
-  var xhrGame = new XMLHttpRequest();
-  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=5' + '&' + 'category=' +
-          categorySelection + '&' + 'difficulty=' + difficultySelection + '&' +
-          'type=multiple' + '&' + sessionCode);
-  xhrGame.responseType = 'json';
-  xhrGame.addEventListener('load', function () {
-    console.log('xhr status:', xhrGame.status);
-    console.log('xhr response:', xhrGame.response);
-  });
-  xhrGame.send();
 }
 
 // FORM SUBMIT LISTENER
@@ -86,9 +82,9 @@ function renderDifficuly() {
   $hardDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
   $difficultyWrapper.appendChild($hardDiv);
 
-  var $crazyDiv = document.createElement('div');
-  $crazyDiv.setAttribute('class', 'col-sm-full flex justify-center');
-  $difficultyWrapper.appendChild($crazyDiv);
+  var $insaneDiv = document.createElement('div');
+  $insaneDiv.setAttribute('class', 'col-sm-full flex justify-center');
+  $difficultyWrapper.appendChild($insaneDiv);
 
   var $easyButton = document.createElement('input');
   $easyButton.setAttribute('type', 'button');
@@ -114,12 +110,12 @@ function renderDifficuly() {
   $hardButton.setAttribute('value', 'hard');
   $hardDiv.appendChild($hardButton);
 
-  var $crazyButton = document.createElement('input');
-  $crazyButton.setAttribute('type', 'button');
-  $crazyButton.setAttribute('name', 'i\'m-crazy2');
-  $crazyButton.setAttribute('class', 'difficulty-button text-capitalize');
-  $crazyButton.setAttribute('value', 'i\'m crazy');
-  $crazyDiv.appendChild($crazyButton);
+  var $insaneButton = document.createElement('input');
+  $insaneButton.setAttribute('type', 'button');
+  $insaneButton.setAttribute('name', 'im-insane');
+  $insaneButton.setAttribute('class', 'difficulty-button text-capitalize');
+  $insaneButton.setAttribute('value', 'i\'m insane');
+  $insaneDiv.appendChild($insaneButton);
 }
 
 // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
