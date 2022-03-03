@@ -3,18 +3,19 @@
 
 var $brandName = document.querySelector('#brand-name');
 var $mainHeading = document.querySelector('#main-heading');
-var $gameForm = document.querySelector('form');
+var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
-var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
-var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
 var categorySelection = '';
 var difficultySelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $quizForm = document.querySelector('form[data-view="quiz-form"]');
+var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
+var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
 
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
@@ -144,8 +145,11 @@ function handleGameForm(event) {
   viewQuiz();
 }
 
-// FORM SUBMIT LISTENER
+// GAME FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
+
+// USER QUIZ FORM SUBMIT LISTENER
+$quizForm.addEventListener('submit', function () {});
 
 function renderMultipleChoice() {
   var $option1Div = document.createElement('div');
@@ -153,7 +157,7 @@ function renderMultipleChoice() {
   $multipleChoiceWrapper.appendChild($option1Div);
 
   var $option1 = document.createElement('input');
-  $option1.setAttribute('type', 'submit');
+  $option1.setAttribute('type', 'button');
   $option1.setAttribute('name', 'option1-ans');
   $option1.setAttribute('class', 'answer-button text-capitalize');
   $option1.setAttribute('value', '');
@@ -164,7 +168,7 @@ function renderMultipleChoice() {
   $multipleChoiceWrapper.appendChild($option2Div);
 
   var $option2 = document.createElement('input');
-  $option2.setAttribute('type', 'submit');
+  $option2.setAttribute('type', 'button');
   $option2.setAttribute('name', 'option2-ans');
   $option2.setAttribute('class', 'answer-button text-capitalize');
   $option2.setAttribute('value', '');
@@ -175,7 +179,7 @@ function renderMultipleChoice() {
   $multipleChoiceWrapper.appendChild($option3Div);
 
   var $option3 = document.createElement('input');
-  $option3.setAttribute('type', 'submit');
+  $option3.setAttribute('type', 'button');
   $option3.setAttribute('name', 'option3-ans');
   $option3.setAttribute('class', 'answer-button text-capitalize');
   $option3.setAttribute('value', '');
@@ -186,7 +190,7 @@ function renderMultipleChoice() {
   $multipleChoiceWrapper.appendChild($option4Div);
 
   var $option4 = document.createElement('input');
-  $option4.setAttribute('type', 'submit');
+  $option4.setAttribute('type', 'button');
   $option4.setAttribute('name', 'option4-ans');
   $option4.setAttribute('class', 'answer-button text-capitalize');
   $option4.setAttribute('value', '');
@@ -199,7 +203,7 @@ function renderTrueOrFalse() {
   $trueFalseWrapper.appendChild($trueDiv);
 
   var $trueAns = document.createElement('input');
-  $trueAns.setAttribute('type', 'submit');
+  $trueAns.setAttribute('type', 'button');
   $trueAns.setAttribute('name', 'true-ans');
   $trueAns.setAttribute('class', 'answer-button text-capitalize');
   $trueAns.setAttribute('value', 'true');
@@ -210,7 +214,7 @@ function renderTrueOrFalse() {
   $trueFalseWrapper.appendChild($falseDiv);
 
   var $falseAns = document.createElement('input');
-  $falseAns.setAttribute('type', 'submit');
+  $falseAns.setAttribute('type', 'button');
   $falseAns.setAttribute('name', 'false-ans');
   $falseAns.setAttribute('class', 'answer-button text-capitalize');
   $falseAns.setAttribute('value', 'false');
@@ -252,6 +256,4 @@ function viewQuiz() {
   $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
   renderMultipleChoice();
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
-  // REMOVE WHEN QUIZ PROPERLY DISPLAYED
-  $mainHeading.textContent = 'PLACEHOLDER';
 }
