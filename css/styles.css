@@ -23,11 +23,17 @@
 
 /* FORM */
 
-#main-heading {
+#main-heading,
+#quiz-question-heading {
   margin-bottom: 1.8rem;
 }
 
-form h2 {
+#quiz-question-heading {
+  margin-top: 1.8rem;
+}
+
+form h2,
+form h3 {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;

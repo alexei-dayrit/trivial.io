@@ -13,6 +13,7 @@ var difficultySelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $quizHeading = document.querySelector('#quiz-question-heading');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
@@ -111,22 +112,40 @@ function getGame(token) {
       quizArray.push(xhrGame.response.results[i]);
     }
     console.log('Useable array:', quizArray);
-    displayOneMultipleChoice(quizArray);
+    displayOneMultipleChoice(quizArray[0]);
   });
   xhrGame.send();
 }
 
+// ARRAY RANDOMIZER
+function shuffle(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
+
 // FUNCTION TO DISPLAY ONE QUESTION
-function displayOneMultipleChoice(quizArray) {
-  $mainHeading.textContent = quizArray[0].question;
+function displayOneMultipleChoice(quizObject) {
+  var answersArray = [];
+  answersArray.push(quizObject.correct_answer);
+  for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
+    answersArray.push(quizObject.incorrect_answers[i]);
+  }
+  var randomizedArray = shuffle(answersArray);
+
+  $quizHeading.textContent = quizObject.question;
   var $option1 = document.querySelector('input[name=option1-ans]');
-  $option1.value = quizArray[0].correct_answer;
+  $option1.value = randomizedArray[0];
   var $option2 = document.querySelector('input[name=option2-ans]');
-  $option2.value = quizArray[0].incorrect_answers[0];
+  $option2.value = quizObject.incorrect_answers[1];
   var $option3 = document.querySelector('input[name=option3-ans]');
-  $option3.value = quizArray[0].incorrect_answers[1];
+  $option3.value = quizObject.incorrect_answers[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
-  $option4.value = quizArray[0].incorrect_answers[2];
+  $option4.value = quizObject.incorrect_answers[3];
 }
 
 // HANDLE FORM
@@ -160,7 +179,7 @@ function renderMultipleChoice() {
   $option1.setAttribute('type', 'button');
   $option1.setAttribute('name', 'option1-ans');
   $option1.setAttribute('class', 'answer-button text-capitalize');
-  $option1.setAttribute('value', '');
+  $option1.setAttribute('value', 'Loading');
   $option1Div.appendChild($option1);
 
   var $option2Div = document.createElement('div');
@@ -171,7 +190,7 @@ function renderMultipleChoice() {
   $option2.setAttribute('type', 'button');
   $option2.setAttribute('name', 'option2-ans');
   $option2.setAttribute('class', 'answer-button text-capitalize');
-  $option2.setAttribute('value', '');
+  $option2.setAttribute('value', 'Loading');
   $option2Div.appendChild($option2);
 
   var $option3Div = document.createElement('div');
@@ -182,7 +201,7 @@ function renderMultipleChoice() {
   $option3.setAttribute('type', 'button');
   $option3.setAttribute('name', 'option3-ans');
   $option3.setAttribute('class', 'answer-button text-capitalize');
-  $option3.setAttribute('value', '');
+  $option3.setAttribute('value', 'Loading');
   $option3Div.appendChild($option3);
 
   var $option4Div = document.createElement('div');
@@ -193,7 +212,7 @@ function renderMultipleChoice() {
   $option4.setAttribute('type', 'button');
   $option4.setAttribute('name', 'option4-ans');
   $option4.setAttribute('class', 'answer-button text-capitalize');
-  $option4.setAttribute('value', '');
+  $option4.setAttribute('value', 'Loading');
   $option4Div.appendChild($option4);
 }
 
@@ -256,4 +275,5 @@ function viewQuiz() {
   $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
   renderMultipleChoice();
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
+  $mainHeading.textContent = '';
 }
