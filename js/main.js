@@ -152,6 +152,7 @@ function displayMultipleChoice(quizObject) {
 
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
+  // CORRECTLY DISPLAYS TRUE/FALSE QUESTIONS
   data.correctAnswer = quizObject.correct_answer;
   $quizHeading.textContent = quizObject.question;
 }
