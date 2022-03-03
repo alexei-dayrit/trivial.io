@@ -14,25 +14,11 @@ var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
 
-// CLEAR DOM TREE FOR GAME RESET
-function removeChildNodes(parent) {
-  while (parent.childNodes.length > 0) {
-    parent.removeChild(parent.firstChild);
-  }
-}
-// RESET GAME AND RETURN TO CATEGORY SELECT
-function resetGame() {
-  $categoryWrapper.setAttribute('class', 'row');
-  removeChildNodes($difficultyWrapper);
-  removeChildNodes($typeWrapper);
-  removeChildNodes($lengthWrapper);
-  data.view = 'category-select';
-  $gameForm.reset();
-}
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
   if (event.target.tagName === 'H1') {
-    resetGame();
+    $gameForm.reset();
+    viewCategorySelection();
   }
 }
 // HANDLE BRAND LISTENER
@@ -62,6 +48,8 @@ function handleDifficultyClicks(event) {
     difficultySelection = 'medium';
   } else if (event.target.name === 'hard') {
     difficultySelection = 'hard';
+  } else if (event.target.name === 'im-insane') {
+    difficultySelection = '';
   }
   viewLengthSelection();
 }
@@ -75,7 +63,7 @@ function handleQuizLength(event) {
     return;
   } else if (event.target.name === 'ten-qs') {
     lengthSelection = '10';
-  } else if (event.target.name === 'fiteen-qs') {
+  } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
     lengthSelection = '20';
@@ -132,182 +120,34 @@ function handleGameForm(event) {
 // FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
 
-// RENDER DIFFICULTY
-function renderQuizDifficuly() {
-  $mainHeading.textContent = 'Select Difficulty';
-
-  var $easyDiv = document.createElement('div');
-  $easyDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
-  $difficultyWrapper.appendChild($easyDiv);
-
-  var $medDiv = document.createElement('div');
-  $medDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
-  $difficultyWrapper.appendChild($medDiv);
-
-  var $hardDiv = document.createElement('div');
-  $hardDiv.setAttribute('class', 'col-sm-fourth col-lg-15 flex justify-center');
-  $difficultyWrapper.appendChild($hardDiv);
-
-  var $insaneDiv = document.createElement('div');
-  $insaneDiv.setAttribute('class', 'col-sm-full flex justify-center');
-  $difficultyWrapper.appendChild($insaneDiv);
-
-  var $easyButton = document.createElement('input');
-  $easyButton.setAttribute('type', 'button');
-  $easyButton.setAttribute('name', 'easy');
-  $easyButton.setAttribute('class', 'difficulty-button text-capitalize');
-  $easyButton.setAttribute('value', 'easy');
-  $easyDiv.appendChild($easyButton);
-
-  var $medButton = document.createElement('input');
-  $medButton.setAttribute('type', 'button');
-  $medButton.setAttribute('name', 'med');
-  $medButton.setAttribute('class', 'difficulty-button text-capitalize');
-  $medButton.setAttribute('value', 'med');
-  $medDiv.appendChild($medButton);
-
-  var $hardButton = document.createElement('input');
-  $hardButton.setAttribute('type', 'button');
-  $hardButton.setAttribute('name', 'hard');
-  $hardButton.setAttribute('class', 'difficulty-button text-capitalize');
-  $hardButton.setAttribute('value', 'hard');
-  $hardDiv.appendChild($hardButton);
-
-  var $insaneButton = document.createElement('input');
-  $insaneButton.setAttribute('type', 'button');
-  $insaneButton.setAttribute('name', 'im-insane');
-  $insaneButton.setAttribute('class', 'difficulty-button text-capitalize');
-  $insaneButton.setAttribute('value', 'i\'m insane');
-  $insaneDiv.appendChild($insaneButton);
-
-  data.view = 'difficulty-select';
-}
-
-function renderQuizLength() {
-  $mainHeading.textContent = 'Select Quiz Length';
-
-  var $tenQdiv = document.createElement('div');
-  $tenQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
-  $lengthWrapper.appendChild($tenQdiv);
-
-  var $tenQButton = document.createElement('input');
-  $tenQButton.setAttribute('type', 'button');
-  $tenQButton.setAttribute('name', 'ten-qs');
-  $tenQButton.setAttribute('class', 'length-button text-capitalize');
-  $tenQButton.setAttribute('value', '10 q\'s');
-  $tenQdiv.appendChild($tenQButton);
-
-  var $fifteenQdiv = document.createElement('div');
-  $fifteenQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
-  $lengthWrapper.appendChild($fifteenQdiv);
-
-  var $fifteenQButton = document.createElement('input');
-  $fifteenQButton.setAttribute('type', 'button');
-  $fifteenQButton.setAttribute('name', 'fifteen-qs');
-  $fifteenQButton.setAttribute('class', 'length-button text-capitalize');
-  $fifteenQButton.setAttribute('value', '15 q\'s');
-  $fifteenQdiv.appendChild($fifteenQButton);
-
-  var $twentyQdiv = document.createElement('div');
-  $twentyQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
-  $lengthWrapper.appendChild($twentyQdiv);
-
-  var $twentyQButton = document.createElement('input');
-  $twentyQButton.setAttribute('type', 'button');
-  $twentyQButton.setAttribute('name', 'twenty-qs');
-  $twentyQButton.setAttribute('class', 'length-button text-capitalize');
-  $twentyQButton.setAttribute('value', '20 q\'s');
-  $twentyQdiv.appendChild($twentyQButton);
-
-  var $thirtyQdiv = document.createElement('div');
-  $thirtyQdiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
-  $lengthWrapper.appendChild($thirtyQdiv);
-
-  var $thirtyQButton = document.createElement('input');
-  $thirtyQButton.setAttribute('type', 'button');
-  $thirtyQButton.setAttribute('name', 'thirty-qs');
-  $thirtyQButton.setAttribute('class', 'length-button text-capitalize');
-  $thirtyQButton.setAttribute('value', '30 q\'s');
-  $thirtyQdiv.appendChild($thirtyQButton);
-
-  data.view = 'length-select';
-}
-
-function renderQuizType() {
-  $mainHeading.textContent = 'Select Quiz Type';
-
-  var $anyTypeDiv = document.createElement('div');
-  $anyTypeDiv.setAttribute('class', 'col-sm-full flex justify-center');
-  $typeWrapper.appendChild($anyTypeDiv);
-
-  var $anyTypeButton = document.createElement('input');
-  $anyTypeButton.setAttribute('type', 'button');
-  $anyTypeButton.setAttribute('name', 'any-type');
-  $anyTypeButton.setAttribute('class', 'type-button text-capitalize');
-  $anyTypeButton.setAttribute('value', 'any type');
-  $anyTypeDiv.appendChild($anyTypeButton);
-
-  var $multipleTypeDiv = document.createElement('div');
-  $multipleTypeDiv.setAttribute('class', 'col-sm-full flex justify-center');
-  $typeWrapper.appendChild($multipleTypeDiv);
-
-  var $multipleTypeButton = document.createElement('input');
-  $multipleTypeButton.setAttribute('type', 'button');
-  $multipleTypeButton.setAttribute('name', 'multiple-choice');
-  $multipleTypeButton.setAttribute('class', 'type-button text-capitalize');
-  $multipleTypeButton.setAttribute('value', 'multiple choice');
-  $multipleTypeDiv.appendChild($multipleTypeButton);
-
-  var $trueOrFalseDiv = document.createElement('div');
-  $trueOrFalseDiv.setAttribute('class', 'col-sm-full flex justify-center');
-  $typeWrapper.appendChild($trueOrFalseDiv);
-
-  var $trueOrFalseButton = document.createElement('input');
-  $trueOrFalseButton.setAttribute('type', 'button');
-  $trueOrFalseButton.setAttribute('name', 'true-or-false');
-  $trueOrFalseButton.setAttribute('class', 'type-button text-capitalize');
-  $trueOrFalseButton.setAttribute('value', 'true or false');
-  $trueOrFalseDiv.appendChild($trueOrFalseButton);
-
-  var $submitDiv = document.createElement('div');
-  $submitDiv.setAttribute('class', 'col-sm-full flex justify-center');
-  $typeWrapper.appendChild($submitDiv);
-
-  var $submitButton = document.createElement('input');
-  $submitButton.setAttribute('type', 'submit');
-  $submitButton.setAttribute('name', 'submit');
-  $submitButton.setAttribute('class', 'submit-button text-upper');
-  $submitButton.setAttribute('value', 'begin');
-  $submitDiv.appendChild($submitButton);
-
-  data.view = 'type-select';
+// VIEW SWAP TO CATEGORY SELECT
+function viewCategorySelection() {
+  $categoryWrapper.setAttribute('class', 'row');
+  $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $typeWrapper.setAttribute('class', 'row justify-center hidden');
+  $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+  $mainHeading.textContent = 'Select Category';
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
 function viewDifficultySelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center');
   $categoryWrapper.setAttribute('class', 'row hidden');
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-  data.view = 'difficulty-select';
-  renderQuizDifficuly();
+  $mainHeading.textContent = 'Select Difficulty';
 }
 
 // VIEW SWAP TO LENGTH SELECT
 function viewLengthSelection() {
   $lengthWrapper.setAttribute('class', 'row justify-center');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
-  data.view = 'length-select';
-  renderQuizLength();
+  $mainHeading.textContent = 'Select Quiz Length';
 }
 
 // VIEW SWAP TO TYPE SELECT
 function viewTypeSelection() {
   $typeWrapper.setAttribute('class', 'row justify-center');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
-  data.view = 'type-select';
-  renderQuizType();
+  $mainHeading.textContent = 'Select Quiz Type';
 }
 
 // EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
