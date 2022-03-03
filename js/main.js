@@ -92,6 +92,8 @@ function handleQuizType(event) {
 // HANDLE TYPE LISTENER
 $typeWrapper.addEventListener('click', handleQuizType);
 
+// VAR TO HOLD DATA FROM API REQUEST
+var quizArray = [];
 // GET GAME URL FROM API
 function getGame(token) {
   var xhrGame = new XMLHttpRequest();
@@ -100,8 +102,30 @@ function getGame(token) {
       '&' + 'type=' + typeSelection + '&' + 'token=' + token);
   xhrGame.responseType = 'json';
   xhrGame.addEventListener('load', function () {
+    console.log('xhrGame status:', xhrGame.status);
+    console.log('xhrGame response:', xhrGame.response);
+    // BRINGS UP OBJECT OF ONE QUESTION
+    console.log('xhrGame response:', xhrGame.responseURL);
+    for (var i = 0; i < xhrGame.response.results.length; i++) {
+      quizArray.push(xhrGame.response.results[i]);
+    }
+    console.log('Useable array:', quizArray);
+    displayOneMultipleChoice(quizArray);
   });
   xhrGame.send();
+}
+
+// FUNCTION TO DISPLAY ONE QUESTION
+function displayOneMultipleChoice(quizArray) {
+  $mainHeading.textContent = quizArray[0].question;
+  var $option1 = document.querySelector('input[name=option1-ans]');
+  $option1.value = quizArray[0].correct_answer;
+  var $option2 = document.querySelector('input[name=option2-ans]');
+  $option2.value = quizArray[0].incorrect_answers[0];
+  var $option3 = document.querySelector('input[name=option3-ans]');
+  $option3.value = quizArray[0].incorrect_answers[1];
+  var $option4 = document.querySelector('input[name=option4-ans]');
+  $option4.value = quizArray[0].incorrect_answers[2];
 }
 
 // HANDLE FORM
@@ -117,6 +141,7 @@ function handleGameForm(event) {
     getGame(sessionCode);
   });
   xhrToken.send();
+  viewQuiz();
 }
 
 // FORM SUBMIT LISTENER
@@ -162,7 +187,7 @@ function renderMultipleChoice() {
 
   var $option4 = document.createElement('input');
   $option4.setAttribute('type', 'submit');
-  $option4.setAttribute('name', 'option3-ans');
+  $option4.setAttribute('name', 'option4-ans');
   $option4.setAttribute('class', 'answer-button text-capitalize');
   $option4.setAttribute('value', '');
   $option4Div.appendChild($option4);
@@ -220,4 +245,13 @@ function viewTypeSelection() {
   $typeWrapper.setAttribute('class', 'row justify-center');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Quiz Type';
+}
+
+// VIEW SWAP TO QUIZ
+function viewQuiz() {
+  $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
+  renderMultipleChoice();
+  $typeWrapper.setAttribute('class', 'row justify-center hidden');
+  // REMOVE WHEN QUIZ PROPERLY DISPLAYED
+  $mainHeading.textContent = 'PLACEHOLDER';
 }
