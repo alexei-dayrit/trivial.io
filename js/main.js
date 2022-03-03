@@ -8,6 +8,8 @@ var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
+var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
+var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
 var categorySelection = '';
 var difficultySelection = '';
 var lengthSelection = '';
@@ -120,6 +122,76 @@ function handleGameForm(event) {
 // FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
 
+function renderMultipleChoice() {
+  var $option1Div = document.createElement('div');
+  $option1Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $multipleChoiceWrapper.appendChild($option1Div);
+
+  var $option1 = document.createElement('input');
+  $option1.setAttribute('type', 'submit');
+  $option1.setAttribute('name', 'option1-ans');
+  $option1.setAttribute('class', 'answer-button text-capitalize');
+  $option1.setAttribute('value', '');
+  $option1Div.appendChild($option1);
+
+  var $option2Div = document.createElement('div');
+  $option2Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $multipleChoiceWrapper.appendChild($option2Div);
+
+  var $option2 = document.createElement('input');
+  $option2.setAttribute('type', 'submit');
+  $option2.setAttribute('name', 'option2-ans');
+  $option2.setAttribute('class', 'answer-button text-capitalize');
+  $option2.setAttribute('value', '');
+  $option2Div.appendChild($option2);
+
+  var $option3Div = document.createElement('div');
+  $option3Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $multipleChoiceWrapper.appendChild($option3Div);
+
+  var $option3 = document.createElement('input');
+  $option3.setAttribute('type', 'submit');
+  $option3.setAttribute('name', 'option3-ans');
+  $option3.setAttribute('class', 'answer-button text-capitalize');
+  $option3.setAttribute('value', '');
+  $option3Div.appendChild($option3);
+
+  var $option4Div = document.createElement('div');
+  $option4Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $multipleChoiceWrapper.appendChild($option4Div);
+
+  var $option4 = document.createElement('input');
+  $option4.setAttribute('type', 'submit');
+  $option4.setAttribute('name', 'option3-ans');
+  $option4.setAttribute('class', 'answer-button text-capitalize');
+  $option4.setAttribute('value', '');
+  $option4Div.appendChild($option4);
+}
+
+function renderTrueOrFalse() {
+  var $trueDiv = document.createElement('div');
+  $trueDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $trueFalseWrapper.appendChild($trueDiv);
+
+  var $trueAns = document.createElement('input');
+  $trueAns.setAttribute('type', 'submit');
+  $trueAns.setAttribute('name', 'true-ans');
+  $trueAns.setAttribute('class', 'answer-button text-capitalize');
+  $trueAns.setAttribute('value', 'true');
+  $trueDiv.appendChild($trueAns);
+
+  var $falseDiv = document.createElement('div');
+  $falseDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
+  $trueFalseWrapper.appendChild($falseDiv);
+
+  var $falseAns = document.createElement('input');
+  $falseAns.setAttribute('type', 'submit');
+  $falseAns.setAttribute('name', 'false-ans');
+  $falseAns.setAttribute('class', 'answer-button text-capitalize');
+  $falseAns.setAttribute('value', 'false');
+  $falseDiv.appendChild($falseAns);
+}
+
 // VIEW SWAP TO CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
@@ -149,5 +221,3 @@ function viewTypeSelection() {
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Quiz Type';
 }
-
-// EX LINK: https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple
