@@ -94,8 +94,6 @@ function handleQuizType(event) {
 // HANDLE TYPE LISTENER
 $typeWrapper.addEventListener('click', handleQuizType);
 
-// VAR TO HOLD DATA FROM API REQUEST
-var quizArray = [];
 // GET GAME URL FROM API
 function getGame(token) {
   var xhrGame = new XMLHttpRequest();
@@ -106,13 +104,11 @@ function getGame(token) {
   xhrGame.addEventListener('load', function () {
     console.log('xhrGame status:', xhrGame.status);
     console.log('xhrGame response:', xhrGame.response);
-    // BRINGS UP OBJECT OF ONE QUESTION
     console.log('xhrGame response:', xhrGame.responseURL);
     for (var i = 0; i < xhrGame.response.results.length; i++) {
-      quizArray.push(xhrGame.response.results[i]);
+      data.quizArray.push(xhrGame.response.results[i]);
     }
-    console.log('Useable array:', quizArray);
-    displayOneMultipleChoice(quizArray[0]);
+    displayOneMultipleChoice(data.quizArray[0]);
   });
   xhrGame.send();
 }
@@ -132,6 +128,7 @@ function shuffle(array) {
 function displayOneMultipleChoice(quizObject) {
   var answersArray = [];
   answersArray.push(quizObject.correct_answer);
+  data.correctAnswer = quizObject.correct_answer;
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
@@ -147,6 +144,14 @@ function displayOneMultipleChoice(quizObject) {
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = quizObject.incorrect_answers[3];
 }
+
+// function checkAnswer() {
+//   for (var b = 0; b < randomizedArray.length; b++) {
+//     if (randomizedArray[b] === quizObject.correct_answer) {
+//       correctAnswer = quizObject.correctAnswer;
+//     }
+//   }
+// }
 
 // HANDLE FORM
 function handleGameForm(event) {
