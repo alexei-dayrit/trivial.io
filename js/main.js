@@ -66,7 +66,12 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'ten-qs') {
-    lengthSelection = '10';
+
+    // NEED TO CHANGE BACK TO 10
+    // NEED TO CHANGE BACK TO 10
+    // NEED TO CHANGE BACK TO 10
+
+    lengthSelection = '1';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
@@ -108,7 +113,7 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
-    displayOneMultipleChoice(data.quizArray[0]);
+    viewQuiz();
   });
   xhrGame.send();
 }
@@ -124,8 +129,8 @@ function shuffle(array) {
   return array;
 }
 
-// FUNCTION TO DISPLAY ONE QUESTION
-function displayOneMultipleChoice(quizObject) {
+// FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
+function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
   answersArray.push(quizObject.correct_answer);
@@ -145,8 +150,14 @@ function displayOneMultipleChoice(quizObject) {
   $option4.value = randomizedArray[3];
 }
 
+// FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
+function displayTrueOrFalse(quizObject) {
+  data.correctAnswer = quizObject.correct_answer;
+  $quizHeading.textContent = quizObject.question;
+}
+
 // HANDLE MULTIPLE CHOICE ANSWER CLICKS
-function handleMultipleChoiceClicks() {
+function handleMultipleChoiceClicks(event) {
   if (event.target.name === 'option1-ans') {
     data.userAnswer = event.target.value;
   } else if (event.target.name === 'option2-ans') {
@@ -156,6 +167,7 @@ function handleMultipleChoiceClicks() {
   } else if (event.target.name === 'option4-ans') {
     data.userAnswer = event.target.value;
   }
+  checkAnswer();
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
@@ -169,14 +181,14 @@ $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 // TRUE FALSE CLICK LISTENER
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
-// REWORK, CHANGED OTHER FUNCTIONS
-// function checkAnswer(userChoice) {
-//   for (var i = 0; i < randomizedArray.length; i++) {
-//     if (randomizedArray[i] === data.correctAnswer) {
-//       correctAnswer = data.correctAnswer;
-//     }
-//   }
-// }
+// CHECKS IF USER ANSWER IS CORRECT
+function checkAnswer() {
+  if (data.userAnswer === data.correctAnswer) {
+    console.log('CORRECT');
+  } else {
+    console.log('INCORRECT');
+  }
+}
 
 // HANDLE FORM
 function handleGameForm(event) {
@@ -191,7 +203,6 @@ function handleGameForm(event) {
     getGame(sessionCode);
   });
   xhrToken.send();
-  viewQuiz();
 }
 
 // GAME FORM SUBMIT LISTENER
@@ -276,6 +287,9 @@ function viewCategorySelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+  $quizHeading.setAttribute('class', 'hidden');
+  $multipleChoiceWrapper.setAttribute('class', 'row justify-center hidden');
+  $trueFalseWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Category';
 }
 
@@ -302,8 +316,18 @@ function viewTypeSelection() {
 
 // VIEW SWAP TO QUIZ
 function viewQuiz() {
-  $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
-  renderMultipleChoice();
+  if (data.quizArray[0].type === 'multiple') {
+    console.log('hello');
+    $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
+    renderMultipleChoice();
+    displayMultipleChoice(data.quizArray[0]);
+  } else if (data.quizArray[0].type === 'boolean') {
+    console.log('bye');
+    $trueFalseWrapper.setAttribute('class', 'row justify-center');
+    renderTrueOrFalse();
+    displayTrueOrFalse(data.quizArray[0]);
+  }
+
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = '';
 }
