@@ -3,7 +3,8 @@
 var data = {
   view: 'category-select',
   quizArray: [],
-  correctAnswer: ''
+  correctAnswer: '',
+  userAnswer: ''
 };
 
 function handleBeforeUnload(event) {

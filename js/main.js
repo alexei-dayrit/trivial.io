@@ -127,8 +127,8 @@ function shuffle(array) {
 // FUNCTION TO DISPLAY ONE QUESTION
 function displayOneMultipleChoice(quizObject) {
   var answersArray = [];
-  answersArray.push(quizObject.correct_answer);
   data.correctAnswer = quizObject.correct_answer;
+  answersArray.push(quizObject.correct_answer);
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
@@ -138,17 +138,42 @@ function displayOneMultipleChoice(quizObject) {
   var $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
   var $option2 = document.querySelector('input[name=option2-ans]');
-  $option2.value = quizObject.incorrect_answers[1];
+  $option2.value = randomizedArray[1];
   var $option3 = document.querySelector('input[name=option3-ans]');
-  $option3.value = quizObject.incorrect_answers[2];
+  $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
-  $option4.value = quizObject.incorrect_answers[3];
+  $option4.value = randomizedArray[3];
 }
 
-// function checkAnswer() {
-//   for (var b = 0; b < randomizedArray.length; b++) {
-//     if (randomizedArray[b] === quizObject.correct_answer) {
-//       correctAnswer = quizObject.correctAnswer;
+// HANDLE MULTIPLE CHOICE ANSWER CLICKS
+function handleMultipleChoiceClicks() {
+  if (event.target.name === 'option1-ans') {
+    data.userAnswer = event.target.value;
+  } else if (event.target.name === 'option2-ans') {
+    data.userAnswer = event.target.value;
+  } else if (event.target.name === 'option3-ans') {
+    data.userAnswer = event.target.value;
+  } else if (event.target.name === 'option4-ans') {
+    data.userAnswer = event.target.value;
+  }
+}
+
+// HANDLE TRUE FALSE ANSWER CLICKS
+function handleTrueFalseClicks() {
+
+}
+
+// MULTIPLE CHOICE CLICK LISTENER
+$multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
+
+// TRUE FALSE CLICK LISTENER
+$trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
+
+// REWORK, CHANGED OTHER FUNCTIONS
+// function checkAnswer(userChoice) {
+//   for (var i = 0; i < randomizedArray.length; i++) {
+//     if (randomizedArray[i] === data.correctAnswer) {
+//       correctAnswer = data.correctAnswer;
 //     }
 //   }
 // }
