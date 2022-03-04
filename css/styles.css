@@ -149,7 +149,8 @@ input:active {
   margin-top: 1.8rem;
   padding: 0;
   text-align: center;
-  width: 23%;
+  width: 35%;
+  height: 60px;
 }
 
 .submit-button:hover {
@@ -191,6 +192,10 @@ footer a {
 
 .flex-column {
   flex-direction: column;
+}
+
+.height-77px {
+  height: 4.844rem;
 }
 
 .justify-center {
