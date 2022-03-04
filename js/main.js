@@ -164,11 +164,13 @@ function displayTrueOrFalse(quizObject) {
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
-function checkAnswer() {
+function checkAnswer(button) {
   if (data.userAnswer === data.correctAnswer) {
+    button.setAttribute('class', 'right-answer');
     renderAnswerResult('Correct');
     console.log('CORRECT');
   } else {
+    button.setAttribute('class', 'wrong-answer');
     renderAnswerResult('Incorrect');
     console.log('INCORRECT');
   }
@@ -187,8 +189,23 @@ function handleMultipleChoiceClicks(event) {
   } else if (event.target.name === 'option4-ans') {
     data.userAnswer = event.target.value;
   }
-  checkAnswer();
+  // GIVES HTML ELEMENT
+  console.log('target', event.target);
+
+  var $allAnswerButtons = document.querySelectorAll('.answer-button');
+  for (var i = 0; i < $allAnswerButtons.length; i++) {
+    if ($allAnswerButtons[i].value === data.correctAnswer) {
+      $allAnswerButtons[i].setAttribute('class', 'right-answer');
+    }
+  }
+
+  checkAnswer(event.target);
 }
+
+// console.log('event.target', event.target);
+// console.log('event.target.value', event.target.value);
+// console.log('event.target.name', event.target.name);
+// var $closestButton = event.target.closest()
 
 // HANDLE TRUE FALSE ANSWER CLICKS
 function handleTrueFalseClicks(event) {
@@ -199,7 +216,7 @@ function handleTrueFalseClicks(event) {
   } else if (event.target.name === 'false-ans') {
     data.userAnswer = event.target.value;
   }
-  checkAnswer();
+  checkAnswer(event.target);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
@@ -311,6 +328,10 @@ function renderAnswerResult(result) {
   $answerResultHeader.setAttribute('id', 'answer-result');
   $answerResultDiv.appendChild($answerResultHeader);
   $answerResultHeader.textContent = result;
+  if (result === 'Incorrect') {
+    $answerResultHeader.setAttribute('class', 'incorrect');
+  }
+  return result;
 }
 
 // VIEW SWAP TO CATEGORY SELECT

@@ -1,5 +1,6 @@
 :root {
   --accent-color: #e2b714;
+  --correct-color: #6ebf8b;
   --dark-gray-color: #333437;
   --heading-text-color: #646669;
   --incorrect-color: #ca4754;
@@ -48,8 +49,22 @@ form h3 {
   margin-top: 1.8rem;
 }
 
+.correct {
+  color: var(--correct-color) !important;
+}
+
 .incorrect {
-  color: var(--incorrect-color);
+  color: var(--incorrect-color) !important;
+}
+
+.right-answer {
+  background-color: var(--correct-color);
+  color: var(--dark-gray-color);
+}
+
+.wrong-answer {
+  background-color: var(--incorrect-color);
+  color: var(--dark-gray-color);
 }
 
 /* BUTTONS */
