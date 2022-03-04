@@ -135,6 +135,7 @@ function displayMultipleChoice(quizObject) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
   var randomizedArray = shuffle(answersArray);
+  $quizHeadingWrapper.setAttribute('class', 'row');
   $quizHeading.innerHTML = quizObject.question;
 
   var $option1 = document.querySelector('input[name=option1-ans]');
@@ -150,6 +151,7 @@ function displayMultipleChoice(quizObject) {
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
+  $quizHeadingWrapper.setAttribute('class', 'row');
   $quizHeading.innerHTML = quizObject.question;
 
   var $trueAns = document.querySelector('input[name=true-ans]');
@@ -194,6 +196,8 @@ function handleMultipleChoiceClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
+  removeChildNodes($multipleChoiceWrapper);
+  removeChildNodes($answerResultWrapper);
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
@@ -206,6 +210,8 @@ function handleTrueFalseClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
+  removeChildNodes($trueFalseWrapper);
+  removeChildNodes($answerResultWrapper);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
@@ -336,7 +342,7 @@ function viewCategorySelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
-  $quizHeading.setAttribute('class', 'hidden');
+  $quizHeadingWrapper.setAttribute('class', 'hidden');
   $multipleChoiceWrapper.setAttribute('class', 'row justify-center hidden');
   $trueFalseWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Category';
