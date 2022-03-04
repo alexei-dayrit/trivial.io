@@ -5,7 +5,7 @@ var data = {
   quizArray: [],
   correctAnswer: '',
   userAnswer: '',
-  currentQuestion: 0
+  currentQuestionNum: 0
 };
 
 function handleBeforeUnload(event) {

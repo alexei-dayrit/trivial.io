@@ -148,18 +148,19 @@ function displayMultipleChoice(quizObject) {
 
 // FUNCTION TO DISPLAY NEXT QUESTION
 function displayNextQuestion() {
-  data.currentQuestion++;
-  var currentIndex = data.currentQuestion;
-  if (data.quizArray[currentIndex].type === 'multiple') {
+  data.currentQuestionNum++;
+  var currentIndex = data.currentQuestionNum;
+
+  if (data.quizArray[currentIndex] === undefined) {
+    alert('Quiz Completed');
+  } else if (data.quizArray[currentIndex].type === 'multiple') {
     $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
     renderMultipleChoice();
     displayMultipleChoice(data.quizArray[currentIndex]);
-    console.log('Hi, displayNextQuestion multiple choice');
   } else if (data.quizArray[currentIndex].type === 'boolean') {
     $trueFalseWrapper.setAttribute('class', 'row justify-center');
     renderTrueOrFalse();
     displayTrueOrFalse(data.quizArray[currentIndex]);
-    console.log('Hi, displayNextQuestion true or false');
   }
 }
 
@@ -378,7 +379,7 @@ function clearData(data) {
   data.quizArray = [];
   data.correctAnswer = '';
   data.userAnswer = '';
-  data.currentQuestion = 0;
+  data.currentQuestionNum = 0;
 }
 
 // VIEW SWAP TO HOME/CATEGORY SELECT
