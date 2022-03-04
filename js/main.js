@@ -107,6 +107,9 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
+    console.log('xhrGame status:', xhrGame.status);
+    console.log('xhrGame response:', xhrGame.response);
+    console.log('xhrGame response:', xhrGame.responseURL);
     viewQuiz();
   });
   xhrGame.send();
@@ -231,6 +234,13 @@ $gameForm.addEventListener('submit', handleGameForm);
 
 // USER QUIZ FORM SUBMIT LISTENER
 $quizForm.addEventListener('submit', function () {});
+
+// REMOVES DOM TREE
+function removeChildNodes(parent) {
+  while (parent.childNodes.length > 0) {
+    parent.removeChild(parent.firstChild);
+  }
+}
 
 // RENDER MULTIPLE CHOICE QUESTION
 function renderMultipleChoice() {
