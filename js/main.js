@@ -14,7 +14,6 @@ var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
-var $quizHeading = document.querySelector('#quiz-question-heading');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
@@ -126,6 +125,8 @@ function shuffle(array) {
   return array;
 }
 
+//
+
 // FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
@@ -135,8 +136,8 @@ function displayMultipleChoice(quizObject) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
   var randomizedArray = shuffle(answersArray);
-  $quizHeadingWrapper.setAttribute('class', 'row');
-  $quizHeading.innerHTML = quizObject.question;
+  var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
+  $quizQuestionHeading.innerHTML = quizObject.question;
 
   var $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
@@ -152,7 +153,8 @@ function displayMultipleChoice(quizObject) {
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
   $quizHeadingWrapper.setAttribute('class', 'row');
-  $quizHeading.innerHTML = quizObject.question;
+  var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
+  $quizQuestionHeading.innerHTML = quizObject.question;
 
   var $trueAns = document.querySelector('input[name=true-ans]');
   $trueAns.value = 'True';
@@ -196,8 +198,10 @@ function handleMultipleChoiceClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
+  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
@@ -210,6 +214,7 @@ function handleTrueFalseClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
+  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
 }
@@ -250,6 +255,15 @@ function removeChildNodes(parent) {
 
 // RENDER MULTIPLE CHOICE QUESTION
 function renderMultipleChoice() {
+  var $quizQuestionDiv = document.createElement('div');
+  $quizQuestionDiv.setAttribute('class', 'col-sm-full');
+  $quizHeadingWrapper.appendChild($quizQuestionDiv);
+
+  var $quizQuestionHeading = document.createElement('h3');
+  $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
+  $quizQuestionHeading.textContent = 'TESTER';
+  $quizQuestionDiv.appendChild($quizQuestionHeading);
+
   var $option1Div = document.createElement('div');
   $option1Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $multipleChoiceWrapper.appendChild($option1Div);
@@ -297,6 +311,15 @@ function renderMultipleChoice() {
 
 // RENDER TRUE/FALSE QUESTION
 function renderTrueOrFalse() {
+  var $quizQuestionDiv = document.createElement('div');
+  $quizQuestionDiv.setAttribute('class', 'col-sm-full');
+  $quizHeadingWrapper.appendChild($quizQuestionDiv);
+
+  var $quizQuestionHeading = document.createElement('h3');
+  $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
+  $quizQuestionHeading.textContent = 'TESTER';
+  $quizQuestionDiv.appendChild($quizQuestionHeading);
+
   var $trueDiv = document.createElement('div');
   $trueDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $trueFalseWrapper.appendChild($trueDiv);
@@ -342,7 +365,8 @@ function viewCategorySelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
-  $quizHeadingWrapper.setAttribute('class', 'hidden');
+  // $quizHeadingWrapper.setAttribute('class', 'hidden');
+  removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
   removeChildNodes($trueFalseWrapper);
   $mainHeading.textContent = 'Select Category';
