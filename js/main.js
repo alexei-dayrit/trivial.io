@@ -343,8 +343,8 @@ function viewCategorySelection() {
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $quizHeadingWrapper.setAttribute('class', 'hidden');
-  $multipleChoiceWrapper.setAttribute('class', 'row justify-center hidden');
-  $trueFalseWrapper.setAttribute('class', 'row justify-center hidden');
+  removeChildNodes($multipleChoiceWrapper);
+  removeChildNodes($trueFalseWrapper);
   $mainHeading.textContent = 'Select Category';
 }
 
