@@ -296,9 +296,16 @@ function renderTrueOrFalse() {
 }
 
 // RENDER CORRECT/INCORRECT RESULT
-// function renderAnswerResult() {
-//   var $;
-// }
+function renderAnswerResult() {
+  var $answerResultDiv = document.createElement('div');
+  $answerResultDiv.setAttribute('class', 'col-sm-full');
+  $answerResultWrapper.appendChild($answerResultDiv);
+
+  var $answerResultHeader = document.createElement('h2');
+  $answerResultHeader.setAttribute('id', 'answer-result');
+  $answerResultDiv.appendChild($answerResultHeader);
+  $answerResultHeader.textContent = 'TESTER';
+}
 
 // VIEW SWAP TO CATEGORY SELECT
 function viewCategorySelection() {
@@ -350,3 +357,10 @@ function viewQuiz() {
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = '';
 }
+
+// DECODES HTML CHARACTERS
+// function decodeHtml(html) {
+//   var txt = document.createElement("textarea");
+//   txt.innerHTML = html;
+//   return txt.value;
+// }
