@@ -152,7 +152,7 @@ function displayNextQuestion() {
   var currentIndex = data.currentQuestionNum;
 
   if (data.quizArray[currentIndex] === undefined) {
-    alert('Quiz Completed');
+    displayTotalScore();
   } else if (data.quizArray[currentIndex].type === 'multiple') {
     $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
     renderMultipleChoice();
@@ -180,12 +180,32 @@ function displayTrueOrFalse(quizObject) {
 // CHECKS IF USER ANSWER IS CORRECT
 function checkAnswer(button) {
   if (data.userAnswer === data.correctAnswer) {
+    data.correctScore++;
     button.setAttribute('class', 'right-answer');
     renderAnswerResult('Correct');
-  } else {
+  } else if (data.userAnswer !== data.correctAnswer) {
+    data.incorrectScore++;
     button.setAttribute('class', 'wrong-answer');
     renderAnswerResult('Incorrect');
     highlightCorrectAnswer();
+  }
+  console.log('Correct Count', data.correctScore);
+  console.log('Incorrect Count', data.incorrectScore);
+}
+
+// DISPLAYS TOTAL SCORE
+function displayTotalScore() {
+  var passing = Math.round(0.7 * data.quizArray.length);
+
+  if (data.correctScore === data.quizArray.length) {
+    console.log('AMAZING!');
+    console.log('passing value:', passing);
+  } else if (data.correctScore >= passing) {
+    console.log('Good Job!');
+    console.log('passing value:', passing);
+  } else if (data.correctScore < passing) {
+    console.log('Needs More Practice...');
+    console.log('passing value:', passing);
   }
 }
 
@@ -376,6 +396,8 @@ function clearData(data) {
   data.correctAnswer = '';
   data.userAnswer = '';
   data.currentQuestionNum = 0;
+  data.correctScore = 0;
+  data.incorrectScore = 0;
 }
 
 // VIEW SWAP TO HOME/CATEGORY SELECT

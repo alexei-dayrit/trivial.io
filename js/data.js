@@ -5,7 +5,7 @@ var data = {
   correctAnswer: '',
   userAnswer: '',
   currentQuestionNum: 0,
-  currentScore: 0,
+  correctScore: 0,
   incorrectScore: 0
 };
 
