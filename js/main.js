@@ -168,11 +168,9 @@ function checkAnswer(button) {
   if (data.userAnswer === data.correctAnswer) {
     button.setAttribute('class', 'right-answer');
     renderAnswerResult('Correct');
-    console.log('CORRECT');
   } else {
     button.setAttribute('class', 'wrong-answer');
     renderAnswerResult('Incorrect');
-    console.log('INCORRECT');
   }
 }
 
@@ -189,23 +187,14 @@ function handleMultipleChoiceClicks(event) {
   } else if (event.target.name === 'option4-ans') {
     data.userAnswer = event.target.value;
   }
-  // GIVES HTML ELEMENT
-  console.log('target', event.target);
-
   var $allAnswerButtons = document.querySelectorAll('.answer-button');
   for (var i = 0; i < $allAnswerButtons.length; i++) {
     if ($allAnswerButtons[i].value === data.correctAnswer) {
       $allAnswerButtons[i].setAttribute('class', 'right-answer');
     }
   }
-
   checkAnswer(event.target);
 }
-
-// console.log('event.target', event.target);
-// console.log('event.target.value', event.target.value);
-// console.log('event.target.name', event.target.name);
-// var $closestButton = event.target.closest()
 
 // HANDLE TRUE FALSE ANSWER CLICKS
 function handleTrueFalseClicks(event) {
@@ -384,10 +373,3 @@ function viewQuiz() {
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = '';
 }
-
-// DECODES HTML CHARACTERS
-// function decodeHtml(html) {
-//   var txt = document.createElement("textarea");
-//   txt.innerHTML = html;
-//   return txt.value;
-// }
