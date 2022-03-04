@@ -43,6 +43,15 @@ form h3 {
   padding-bottom: 4rem;
 }
 
+#answer-result {
+  color: var(--accent-color);
+  margin-top: 1.8rem;
+}
+
+.incorrect {
+  color: var(--incorrect-color);
+}
+
 /* BUTTONS */
 
 input {

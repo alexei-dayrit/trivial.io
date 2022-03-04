@@ -13,10 +13,12 @@ var difficultySelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizHeading = document.querySelector('#quiz-question-heading');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
+var $answerResultWrapper = document.querySelector('#answer-result-wrapper');
 
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
@@ -138,8 +140,8 @@ function displayMultipleChoice(quizObject) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
   var randomizedArray = shuffle(answersArray);
-
   $quizHeading.textContent = quizObject.question;
+
   var $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
   var $option2 = document.querySelector('input[name=option2-ans]');
@@ -152,9 +154,22 @@ function displayMultipleChoice(quizObject) {
 
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
-  // CORRECTLY DISPLAYS TRUE/FALSE QUESTIONS
   data.correctAnswer = quizObject.correct_answer;
   $quizHeading.textContent = quizObject.question;
+
+  var $trueAns = document.querySelector('input[name=true-ans]');
+  $trueAns.value = 'True';
+  var $falseAns = document.querySelector('input[name=false-ans]');
+  $falseAns.value = 'False';
+}
+
+// CHECKS IF USER ANSWER IS CORRECT
+function checkAnswer() {
+  if (data.userAnswer === data.correctAnswer) {
+    console.log('CORRECT');
+  } else {
+    console.log('INCORRECT');
+  }
 }
 
 // HANDLE MULTIPLE CHOICE ANSWER CLICKS
@@ -172,8 +187,13 @@ function handleMultipleChoiceClicks(event) {
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
-function handleTrueFalseClicks() {
-
+function handleTrueFalseClicks(event) {
+  if (event.target.name === 'true-ans') {
+    data.userAnswer = event.target.value;
+  } else if (event.target.name === 'false-ans') {
+    data.userAnswer = event.target.value;
+  }
+  checkAnswer();
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
@@ -181,15 +201,6 @@ $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 
 // TRUE FALSE CLICK LISTENER
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
-
-// CHECKS IF USER ANSWER IS CORRECT
-function checkAnswer() {
-  if (data.userAnswer === data.correctAnswer) {
-    console.log('CORRECT');
-  } else {
-    console.log('INCORRECT');
-  }
-}
 
 // HANDLE FORM
 function handleGameForm(event) {
@@ -212,6 +223,7 @@ $gameForm.addEventListener('submit', handleGameForm);
 // USER QUIZ FORM SUBMIT LISTENER
 $quizForm.addEventListener('submit', function () {});
 
+// RENDER MULTIPLE CHOICE QUESTION
 function renderMultipleChoice() {
   var $option1Div = document.createElement('div');
   $option1Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
@@ -258,6 +270,7 @@ function renderMultipleChoice() {
   $option4Div.appendChild($option4);
 }
 
+// RENDER TRUE/FALSE QUESTION
 function renderTrueOrFalse() {
   var $trueDiv = document.createElement('div');
   $trueDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
@@ -267,7 +280,7 @@ function renderTrueOrFalse() {
   $trueAns.setAttribute('type', 'button');
   $trueAns.setAttribute('name', 'true-ans');
   $trueAns.setAttribute('class', 'answer-button text-capitalize');
-  $trueAns.setAttribute('value', 'true');
+  $trueAns.setAttribute('value', 'Loading');
   $trueDiv.appendChild($trueAns);
 
   var $falseDiv = document.createElement('div');
@@ -278,9 +291,14 @@ function renderTrueOrFalse() {
   $falseAns.setAttribute('type', 'button');
   $falseAns.setAttribute('name', 'false-ans');
   $falseAns.setAttribute('class', 'answer-button text-capitalize');
-  $falseAns.setAttribute('value', 'false');
+  $falseAns.setAttribute('value', 'Loading');
   $falseDiv.appendChild($falseAns);
 }
+
+// RENDER CORRECT/INCORRECT RESULT
+// function renderAnswerResult() {
+//   var $;
+// }
 
 // VIEW SWAP TO CATEGORY SELECT
 function viewCategorySelection() {
@@ -318,17 +336,17 @@ function viewTypeSelection() {
 // VIEW SWAP TO QUIZ
 function viewQuiz() {
   if (data.quizArray[0].type === 'multiple') {
-    console.log('hello');
+    console.log('multiple choice question');
     $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
     renderMultipleChoice();
     displayMultipleChoice(data.quizArray[0]);
   } else if (data.quizArray[0].type === 'boolean') {
-    console.log('bye');
+    console.log('boolean question');
     $trueFalseWrapper.setAttribute('class', 'row justify-center');
     renderTrueOrFalse();
     displayTrueOrFalse(data.quizArray[0]);
   }
-
+  $quizHeadingWrapper.setAttribute('class', 'row');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = '';
 }
