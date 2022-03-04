@@ -359,17 +359,24 @@ function renderAnswerResult(result) {
   return result;
 }
 
+// CLEAR DATA MODEL
+function clearData(data) {
+  data.quizArray = [];
+  data.correctAnswer = '';
+  data.userAnswer = '';
+}
+
 // VIEW SWAP TO CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
-  // $quizHeadingWrapper.setAttribute('class', 'hidden');
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
   removeChildNodes($trueFalseWrapper);
   $mainHeading.textContent = 'Select Category';
+  clearData(data);
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
