@@ -180,11 +180,23 @@
           <div class="col-sm-full flex justify-center">
             <input type="button" name="true-or-false" class="type-button text-capitalize" value="true or false">
           </div>
-          <div class="col-sm-full flex justify-center">
+          <div class="col-sm-full flex justify-center height-77px">
             <input type="submit" name="submit" class="submit-button text-upper" value="begin">
           </div>
         </div>
-        <!-- FORM - CLOSING TAG -->
+      </form>
+      <!-- USER QUIZ FORM -->
+      <form data-view="quiz-form">
+        <div id="quiz-heading-wrapper" class="row hidden">
+          <div class="col-sm-full">
+            <h3 id="quiz-question-heading"></h3>
+          </div>
+        </div>
+        <!-- DOM OUTLINE FOR QUIZ QUESTION -->
+        <div id="multiple-choice-wrapper" class="row justify-center hidden"></div>
+        <div id="true-or-false-wrapper" class="row justify-center hidden"></div>
+        <div id="answer-result-wrapper" class="row">
+        </div>
       </form>
     </main>
 
@@ -210,7 +222,6 @@
         </div>
       </div>
     </footer>
-
     <!-- MAIN CONTAINER - CLOSING TAG -->
   </div>
 

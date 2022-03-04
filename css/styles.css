@@ -1,5 +1,6 @@
 :root {
   --accent-color: #e2b714;
+  --correct-color: #6ebf8b;
   --dark-gray-color: #333437;
   --heading-text-color: #646669;
   --incorrect-color: #ca4754;
@@ -23,11 +24,17 @@
 
 /* FORM */
 
-#main-heading {
+#main-heading,
+#quiz-question-heading {
   margin-bottom: 1.8rem;
 }
 
-form h2 {
+#quiz-question-heading {
+  margin-top: 1.8rem;
+}
+
+form h2,
+form h3 {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
@@ -35,6 +42,29 @@ form h2 {
 
 #category-wrapper {
   padding-bottom: 4rem;
+}
+
+#answer-result {
+  color: var(--accent-color);
+  margin-top: 1.8rem;
+}
+
+.correct {
+  color: var(--correct-color) !important;
+}
+
+.incorrect {
+  color: var(--incorrect-color) !important;
+}
+
+.right-answer {
+  background-color: var(--correct-color);
+  color: var(--dark-gray-color);
+}
+
+.wrong-answer {
+  background-color: var(--incorrect-color);
+  color: var(--dark-gray-color);
 }
 
 /* BUTTONS */
@@ -119,7 +149,8 @@ input:active {
   margin-top: 1.8rem;
   padding: 0;
   text-align: center;
-  width: 23%;
+  width: 35%;
+  height: 60px;
 }
 
 .submit-button:hover {
@@ -130,7 +161,7 @@ input:active {
 /* FOOTER */
 footer {
   bottom: 0;
-  margin: 2rem 0;
+  margin: 4rem 0 2rem;
   position: absolute;
 }
 
@@ -161,6 +192,10 @@ footer a {
 
 .flex-column {
   flex-direction: column;
+}
+
+.height-77px {
+  height: 4.844rem;
 }
 
 .justify-center {
