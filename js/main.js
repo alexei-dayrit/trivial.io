@@ -22,7 +22,6 @@ var $answerResultWrapper = document.querySelector('#answer-result-wrapper');
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
   if (event.target.tagName === 'H1') {
-    $gameForm.reset();
     viewCategorySelection();
   }
 }
@@ -127,7 +126,7 @@ function shuffle(array) {
 
 //
 
-// FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
+// FUNCTION TO DISPLAY FIRST MULTIPLE CHOICE QUESTION
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
@@ -149,7 +148,7 @@ function displayMultipleChoice(quizObject) {
   $option4.value = randomizedArray[3];
 }
 
-// FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
+// FUNCTION TO DISPLAY FIRST TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
   $quizHeadingWrapper.setAttribute('class', 'row');
@@ -366,7 +365,7 @@ function clearData(data) {
   data.userAnswer = '';
 }
 
-// VIEW SWAP TO CATEGORY SELECT
+// VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
@@ -377,6 +376,8 @@ function viewCategorySelection() {
   removeChildNodes($trueFalseWrapper);
   $mainHeading.textContent = 'Select Category';
   clearData(data);
+  $gameForm.reset();
+  $quizForm.reset();
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
