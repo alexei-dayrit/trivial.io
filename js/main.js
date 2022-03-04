@@ -105,9 +105,6 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
-    console.log('xhrGame status:', xhrGame.status);
-    console.log('xhrGame response:', xhrGame.response);
-    console.log('xhrGame response:', xhrGame.responseURL);
     viewQuiz();
   });
   xhrGame.send();
