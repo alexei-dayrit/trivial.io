@@ -166,15 +166,19 @@ function displayTrueOrFalse(quizObject) {
 // CHECKS IF USER ANSWER IS CORRECT
 function checkAnswer() {
   if (data.userAnswer === data.correctAnswer) {
+    renderAnswerResult('Correct');
     console.log('CORRECT');
   } else {
+    renderAnswerResult('Incorrect');
     console.log('INCORRECT');
   }
 }
 
 // HANDLE MULTIPLE CHOICE ANSWER CLICKS
 function handleMultipleChoiceClicks(event) {
-  if (event.target.name === 'option1-ans') {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  } else if (event.target.name === 'option1-ans') {
     data.userAnswer = event.target.value;
   } else if (event.target.name === 'option2-ans') {
     data.userAnswer = event.target.value;
@@ -188,7 +192,9 @@ function handleMultipleChoiceClicks(event) {
 
 // HANDLE TRUE FALSE ANSWER CLICKS
 function handleTrueFalseClicks(event) {
-  if (event.target.name === 'true-ans') {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  } else if (event.target.name === 'true-ans') {
     data.userAnswer = event.target.value;
   } else if (event.target.name === 'false-ans') {
     data.userAnswer = event.target.value;
@@ -296,7 +302,7 @@ function renderTrueOrFalse() {
 }
 
 // RENDER CORRECT/INCORRECT RESULT
-function renderAnswerResult() {
+function renderAnswerResult(result) {
   var $answerResultDiv = document.createElement('div');
   $answerResultDiv.setAttribute('class', 'col-sm-full');
   $answerResultWrapper.appendChild($answerResultDiv);
@@ -304,7 +310,7 @@ function renderAnswerResult() {
   var $answerResultHeader = document.createElement('h2');
   $answerResultHeader.setAttribute('id', 'answer-result');
   $answerResultDiv.appendChild($answerResultHeader);
-  $answerResultHeader.textContent = 'TESTER';
+  $answerResultHeader.textContent = result;
 }
 
 // VIEW SWAP TO CATEGORY SELECT
