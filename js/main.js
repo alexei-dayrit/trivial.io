@@ -105,6 +105,9 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
+    console.log('xhrGame status:', xhrGame.status);
+    console.log('xhrGame response:', xhrGame.response);
+    console.log('xhrGame responseURL:', xhrGame.responseURL);
     viewQuiz();
   });
   xhrGame.send();
@@ -238,10 +241,9 @@ $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 // TRUE FALSE CLICK LISTENER
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
-// HANDLE FORM
+// HANDLE GAME FORM
 function handleGameForm(event) {
   event.preventDefault();
-  // GET SESSION TOKEN FROM API
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
@@ -255,9 +257,6 @@ function handleGameForm(event) {
 
 // GAME FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
-
-// USER QUIZ FORM SUBMIT LISTENER
-$quizForm.addEventListener('submit', function () {});
 
 // REMOVES DOM TREE
 function removeChildNodes(parent) {
