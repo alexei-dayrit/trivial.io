@@ -196,8 +196,8 @@ function handleMultipleChoiceClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
-  removeChildNodes($multipleChoiceWrapper);
-  removeChildNodes($answerResultWrapper);
+  setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
@@ -210,8 +210,8 @@ function handleTrueFalseClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
-  removeChildNodes($trueFalseWrapper);
-  removeChildNodes($answerResultWrapper);
+  setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
