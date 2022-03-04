@@ -14,7 +14,6 @@ var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
-var $quizHeading = document.querySelector('#quiz-question-heading');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
@@ -23,7 +22,6 @@ var $answerResultWrapper = document.querySelector('#answer-result-wrapper');
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
   if (event.target.tagName === 'H1') {
-    $gameForm.reset();
     viewCategorySelection();
   }
 }
@@ -132,7 +130,8 @@ function displayMultipleChoice(quizObject) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
   var randomizedArray = shuffle(answersArray);
-  $quizHeading.innerHTML = quizObject.question;
+  var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
+  $quizQuestionHeading.innerHTML = quizObject.question;
 
   var $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
@@ -144,10 +143,30 @@ function displayMultipleChoice(quizObject) {
   $option4.value = randomizedArray[3];
 }
 
+// FUNCTION TO DISPLAY NEXT QUESTION
+function displayNextQuestion() {
+  data.currentQuestionNum++;
+  var currentIndex = data.currentQuestionNum;
+
+  if (data.quizArray[currentIndex] === undefined) {
+    alert('Quiz Completed');
+  } else if (data.quizArray[currentIndex].type === 'multiple') {
+    $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
+    renderMultipleChoice();
+    displayMultipleChoice(data.quizArray[currentIndex]);
+  } else if (data.quizArray[currentIndex].type === 'boolean') {
+    $trueFalseWrapper.setAttribute('class', 'row justify-center');
+    renderTrueOrFalse();
+    displayTrueOrFalse(data.quizArray[currentIndex]);
+  }
+}
+
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
-  $quizHeading.innerHTML = quizObject.question;
+  $quizHeadingWrapper.setAttribute('class', 'row');
+  var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
+  $quizQuestionHeading.innerHTML = quizObject.question;
 
   var $trueAns = document.querySelector('input[name=true-ans]');
   $trueAns.value = 'True';
@@ -191,6 +210,10 @@ function handleMultipleChoiceClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
+  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
@@ -203,6 +226,10 @@ function handleTrueFalseClicks(event) {
     data.userAnswer = event.target.value;
   }
   checkAnswer(event.target);
+  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
@@ -232,8 +259,23 @@ $gameForm.addEventListener('submit', handleGameForm);
 // USER QUIZ FORM SUBMIT LISTENER
 $quizForm.addEventListener('submit', function () {});
 
+// REMOVES DOM TREE
+function removeChildNodes(parent) {
+  while (parent.childNodes.length > 0) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
 // RENDER MULTIPLE CHOICE QUESTION
 function renderMultipleChoice() {
+  var $quizQuestionDiv = document.createElement('div');
+  $quizQuestionDiv.setAttribute('class', 'col-sm-full');
+  $quizHeadingWrapper.appendChild($quizQuestionDiv);
+
+  var $quizQuestionHeading = document.createElement('h3');
+  $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
+  $quizQuestionDiv.appendChild($quizQuestionHeading);
+
   var $option1Div = document.createElement('div');
   $option1Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $multipleChoiceWrapper.appendChild($option1Div);
@@ -281,6 +323,15 @@ function renderMultipleChoice() {
 
 // RENDER TRUE/FALSE QUESTION
 function renderTrueOrFalse() {
+  var $quizQuestionDiv = document.createElement('div');
+  $quizQuestionDiv.setAttribute('class', 'col-sm-full');
+  $quizHeadingWrapper.appendChild($quizQuestionDiv);
+
+  var $quizQuestionHeading = document.createElement('h3');
+  $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
+  $quizQuestionHeading.textContent = 'TESTER';
+  $quizQuestionDiv.appendChild($quizQuestionHeading);
+
   var $trueDiv = document.createElement('div');
   $trueDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $trueFalseWrapper.appendChild($trueDiv);
@@ -320,16 +371,27 @@ function renderAnswerResult(result) {
   return result;
 }
 
-// VIEW SWAP TO CATEGORY SELECT
+// CLEAR DATA MODEL
+function clearData(data) {
+  data.quizArray = [];
+  data.correctAnswer = '';
+  data.userAnswer = '';
+  data.currentQuestionNum = 0;
+}
+
+// VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
-  $quizHeading.setAttribute('class', 'hidden');
-  $multipleChoiceWrapper.setAttribute('class', 'row justify-center hidden');
-  $trueFalseWrapper.setAttribute('class', 'row justify-center hidden');
+  removeChildNodes($quizHeadingWrapper);
+  removeChildNodes($multipleChoiceWrapper);
+  removeChildNodes($trueFalseWrapper);
   $mainHeading.textContent = 'Select Category';
+  clearData(data);
+  $gameForm.reset();
+  $quizForm.reset();
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
