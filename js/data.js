@@ -4,7 +4,8 @@ var data = {
   view: 'category-select',
   quizArray: [],
   correctAnswer: '',
-  userAnswer: ''
+  userAnswer: '',
+  currentQuestion: 0
 };
 
 function handleBeforeUnload(event) {

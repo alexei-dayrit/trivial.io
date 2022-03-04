@@ -124,9 +124,7 @@ function shuffle(array) {
   return array;
 }
 
-//
-
-// FUNCTION TO DISPLAY FIRST MULTIPLE CHOICE QUESTION
+// FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
@@ -148,7 +146,24 @@ function displayMultipleChoice(quizObject) {
   $option4.value = randomizedArray[3];
 }
 
-// FUNCTION TO DISPLAY FIRST TRUE/FALSE QUESTION
+// FUNCTION TO DISPLAY NEXT QUESTION
+function displayNextQuestion() {
+  data.currentQuestion++;
+  var currentIndex = data.currentQuestion;
+  if (data.quizArray[currentIndex].type === 'multiple') {
+    $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
+    renderMultipleChoice();
+    displayMultipleChoice(data.quizArray[currentIndex]);
+    console.log('Hi, displayNextQuestion multiple choice');
+  } else if (data.quizArray[currentIndex].type === 'boolean') {
+    $trueFalseWrapper.setAttribute('class', 'row justify-center');
+    renderTrueOrFalse();
+    displayTrueOrFalse(data.quizArray[currentIndex]);
+    console.log('Hi, displayNextQuestion true or false');
+  }
+}
+
+// FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
   $quizHeadingWrapper.setAttribute('class', 'row');
@@ -200,7 +215,7 @@ function handleMultipleChoiceClicks(event) {
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
-
+  setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
 // HANDLE TRUE FALSE ANSWER CLICKS
@@ -216,6 +231,7 @@ function handleTrueFalseClicks(event) {
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
@@ -260,7 +276,6 @@ function renderMultipleChoice() {
 
   var $quizQuestionHeading = document.createElement('h3');
   $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
-  $quizQuestionHeading.textContent = 'TESTER';
   $quizQuestionDiv.appendChild($quizQuestionHeading);
 
   var $option1Div = document.createElement('div');
@@ -363,6 +378,7 @@ function clearData(data) {
   data.quizArray = [];
   data.correctAnswer = '';
   data.userAnswer = '';
+  data.currentQuestion = 0;
 }
 
 // VIEW SWAP TO HOME/CATEGORY SELECT
