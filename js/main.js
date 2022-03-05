@@ -109,6 +109,13 @@ function shuffle(array) {
   return array;
 }
 
+// DECODE HTML
+function decodeEntity(inputStr) {
+  var textarea = document.createElement('textarea');
+  textarea.innerHTML = inputStr;
+  return textarea.value;
+}
+
 // FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
@@ -118,9 +125,14 @@ function displayMultipleChoice(quizObject) {
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
+  for (var a = 0; a < answersArray.length; a++) {
+    var decoded = decodeEntity(answersArray[a]);
+    answersArray.splice(a, 1, decoded);
+  }
+
   var randomizedArray = shuffle(answersArray);
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
-  $quizQuestionHeading.innerHTML = quizObject.question;
+  $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
 
   var $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
@@ -156,7 +168,7 @@ function displayTrueOrFalse(quizObject) {
   data.userAnswer = '';
   $quizHeadingWrapper.setAttribute('class', 'row');
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
-  $quizQuestionHeading.innerHTML = quizObject.question;
+  $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
 
   var $trueAns = document.querySelector('input[name=true-ans]');
   $trueAns.value = 'True';
