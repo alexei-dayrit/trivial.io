@@ -97,22 +97,6 @@ function handleQuizType(event) {
 // HANDLE TYPE LISTENER
 $typeWrapper.addEventListener('click', handleQuizType);
 
-// GET GAME URL FROM API
-function getGame(token) {
-  var xhrGame = new XMLHttpRequest();
-  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
-      '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
-      '&' + 'type=' + typeSelection + '&' + 'token=' + token);
-  xhrGame.responseType = 'json';
-  xhrGame.addEventListener('load', function () {
-    for (var i = 0; i < xhrGame.response.results.length; i++) {
-      data.quizArray.push(xhrGame.response.results[i]);
-    }
-    viewQuiz();
-  });
-  xhrGame.send();
-}
-
 // ARRAY RANDOMIZER
 function shuffle(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -196,7 +180,6 @@ function checkAnswer(button) {
 // DISPLAYS TOTAL SCORE
 function displayTotalScore() {
   var passingScore = Math.round(0.7 * data.quizArray.length);
-  // var percentCorrect = (data.correctScore * 100) + '%';
   var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'TOTAL SCORE';
@@ -264,6 +247,22 @@ $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 
 // TRUE FALSE CLICK LISTENER
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
+
+// GET GAME URL FROM API
+function getGame(token) {
+  var xhrGame = new XMLHttpRequest();
+  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
+    '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
+    '&' + 'type=' + typeSelection + '&' + 'token=' + token);
+  xhrGame.responseType = 'json';
+  xhrGame.addEventListener('load', function () {
+    for (var i = 0; i < xhrGame.response.results.length; i++) {
+      data.quizArray.push(xhrGame.response.results[i]);
+    }
+    viewQuiz();
+  });
+  xhrGame.send();
+}
 
 // HANDLE GAME FORM
 function handleGameForm(event) {
