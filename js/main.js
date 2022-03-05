@@ -9,6 +9,7 @@ var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
+var $beginButton = document.querySelector('input[type="submit"]');
 var categorySelection = '';
 var difficultySelection = '';
 var lengthSelection = '';
@@ -276,6 +277,7 @@ function handleGameForm(event) {
     getGame(sessionCode);
   });
   xhrToken.send();
+  $beginButton.setAttribute('disabled', 'true');
 }
 
 // GAME FORM SUBMIT LISTENER
