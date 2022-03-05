@@ -449,6 +449,7 @@ function viewCategorySelection() {
   removeChildNodes($scoreWrapper);
   removeChildNodes($responseMessageWrapper);
   clearData(data);
+  $beginButton.removeAttribute('disabled');
   $gameForm.reset();
   $quizForm.reset();
 }
