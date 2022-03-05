@@ -14,6 +14,7 @@ var difficultySelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $scoreWrapper = document.querySelector('#score-wrapper');
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
@@ -67,7 +68,7 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'ten-qs') {
-    lengthSelection = '3';
+    lengthSelection = '1';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
@@ -201,7 +202,7 @@ function checkAnswer(button) {
 function displayTotalScore() {
   var passing = Math.round(0.7 * data.quizArray.length);
   $mainHeadingWrapper.setAttribute('class', 'row');
-  $mainHeading.textContent = 'Total Score';
+  $mainHeading.textContent = 'TOTAL SCORE';
 
   if (data.correctScore === data.quizArray.length) {
     renderResponseMessage('AMAZING!');
@@ -402,6 +403,19 @@ function renderResponseMessage(message) {
     $responseMessageHeader.setAttribute('class', 'score-message');
   }
   return message;
+}
+
+// RENDER QUIZ SCORE
+function renderQuizScore(score) {
+  var $scoreDiv = document.createElement('div');
+  $scoreDiv.setAttribute('class', 'col-sm-full');
+  $scoreWrapper.appendChild($scoreDiv);
+
+  var $scoreHeading = document.createElement('h1');
+  $scoreHeading.setAttribute('id', 'score-heading');
+  $scoreDiv.appendChild($scoreHeading);
+
+  $scoreHeading.textContent = score;
 }
 
 // CLEAR DATA MODEL
