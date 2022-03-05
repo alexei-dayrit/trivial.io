@@ -27,6 +27,7 @@ function handleBrandClicks(event) {
     viewCategorySelection();
   }
 }
+
 // HANDLE BRAND LISTENER
 $brandName.addEventListener('click', handleBrandClicks);
 
