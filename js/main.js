@@ -21,6 +21,7 @@ var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
 var $responseMessageWrapper = document.querySelector('#response-message-wrapper');
+var clickCounter = 0;
 
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
@@ -142,10 +143,12 @@ function displayMultipleChoice(quizObject) {
   $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
+
 }
 
 // FUNCTION TO DISPLAY NEXT QUESTION
 function displayNextQuestion() {
+  addClicks();
   data.currentQuestionNum++;
   var currentIndex = data.currentQuestionNum;
 
@@ -221,6 +224,7 @@ function highlightCorrectAnswer() {
 
 // HANDLE MULTIPLE CHOICE ANSWER CLICKS
 function handleMultipleChoiceClicks(event) {
+  clickCounter++;
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'option1-ans') {
@@ -232,6 +236,7 @@ function handleMultipleChoiceClicks(event) {
   } else if (event.target.name === 'option4-ans') {
     data.userAnswer = event.target.value;
   }
+  removeClicks();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
@@ -241,6 +246,7 @@ function handleMultipleChoiceClicks(event) {
 
 // HANDLE TRUE FALSE ANSWER CLICKS
 function handleTrueFalseClicks(event) {
+  clickCounter++;
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'true-ans') {
@@ -248,11 +254,29 @@ function handleTrueFalseClicks(event) {
   } else if (event.target.name === 'false-ans') {
     data.userAnswer = event.target.value;
   }
+  removeClicks();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
   setTimeout(function () { displayNextQuestion(); }, 3000);
+}
+
+// REMOVE CLICKS ON ANSWER BUTTONS
+function removeClicks() {
+  console.log('click counter removeClicks:', clickCounter);
+  if (clickCounter > 0) {
+    $multipleChoiceWrapper.removeEventListener('click', handleMultipleChoiceClicks);
+    $trueFalseWrapper.removeEventListener('click', handleTrueFalseClicks);
+  }
+}
+
+// ADD CLICKS ON ANSWER BUTTONS
+function addClicks() {
+  clickCounter = 0;
+  console.log('click counter addClicks:', clickCounter);
+  $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
+  $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
