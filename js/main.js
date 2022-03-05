@@ -2,6 +2,7 @@
 /* exported data */
 
 var $brandName = document.querySelector('#brand-name');
+var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
@@ -17,7 +18,7 @@ var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
-var $answerResultWrapper = document.querySelector('#answer-result-wrapper');
+var $responseMessageWrapper = document.querySelector('#response-message-wrapper');
 
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
@@ -66,7 +67,7 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'ten-qs') {
-    lengthSelection = '10';
+    lengthSelection = '3';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
@@ -128,6 +129,7 @@ function shuffle(array) {
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
+  data.userAnswer = '';
   answersArray.push(quizObject.correct_answer);
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
@@ -162,11 +164,13 @@ function displayNextQuestion() {
     renderTrueOrFalse();
     displayTrueOrFalse(data.quizArray[currentIndex]);
   }
+  console.log('answer: ', data.correctAnswer);
 }
 
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
+  data.userAnswer = '';
   $quizHeadingWrapper.setAttribute('class', 'row');
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
   $quizQuestionHeading.innerHTML = quizObject.question;
@@ -182,11 +186,11 @@ function checkAnswer(button) {
   if (data.userAnswer === data.correctAnswer) {
     data.correctScore++;
     button.setAttribute('class', 'right-answer');
-    renderAnswerResult('Correct');
+    renderResponseMessage('Correct');
   } else if (data.userAnswer !== data.correctAnswer) {
     data.incorrectScore++;
     button.setAttribute('class', 'wrong-answer');
-    renderAnswerResult('Incorrect');
+    renderResponseMessage('Incorrect');
     highlightCorrectAnswer();
   }
   console.log('Correct Count', data.correctScore);
@@ -196,14 +200,19 @@ function checkAnswer(button) {
 // DISPLAYS TOTAL SCORE
 function displayTotalScore() {
   var passing = Math.round(0.7 * data.quizArray.length);
+  $mainHeadingWrapper.setAttribute('class', 'row');
+  $mainHeading.textContent = 'Total Score';
 
   if (data.correctScore === data.quizArray.length) {
+    renderResponseMessage('AMAZING!');
     console.log('AMAZING!');
     console.log('passing value:', passing);
   } else if (data.correctScore >= passing) {
+    renderResponseMessage('Good Job!');
     console.log('Good Job!');
     console.log('passing value:', passing);
   } else if (data.correctScore < passing) {
+    renderResponseMessage('Needs More Practice...');
     console.log('Needs More Practice...');
     console.log('passing value:', passing);
   }
@@ -235,7 +244,7 @@ function handleMultipleChoiceClicks(event) {
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
@@ -251,7 +260,7 @@ function handleTrueFalseClicks(event) {
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
@@ -375,19 +384,24 @@ function renderTrueOrFalse() {
 }
 
 // RENDER CORRECT/INCORRECT RESULT
-function renderAnswerResult(result) {
-  var $answerResultDiv = document.createElement('div');
-  $answerResultDiv.setAttribute('class', 'col-sm-full');
-  $answerResultWrapper.appendChild($answerResultDiv);
+function renderResponseMessage(message) {
+  var $responseMessageDiv = document.createElement('div');
+  $responseMessageDiv.setAttribute('class', 'col-sm-full');
+  $responseMessageWrapper.appendChild($responseMessageDiv);
 
-  var $answerResultHeader = document.createElement('h2');
-  $answerResultHeader.setAttribute('id', 'answer-result');
-  $answerResultDiv.appendChild($answerResultHeader);
-  $answerResultHeader.textContent = result;
-  if (result === 'Incorrect') {
-    $answerResultHeader.setAttribute('class', 'incorrect');
+  var $responseMessageHeader = document.createElement('h2');
+  $responseMessageHeader.setAttribute('id', 'answer-result');
+  $responseMessageDiv.appendChild($responseMessageHeader);
+  $responseMessageHeader.textContent = message;
+
+  if (message === 'Correct') {
+    $responseMessageHeader.setAttribute('class', 'accent-message');
+  } else if (message === 'Incorrect') {
+    $responseMessageHeader.setAttribute('class', 'incorrect');
+  } else if (message === 'AMAZING!' || message === 'Good Job!' || message === 'Needs More Practice...') {
+    $responseMessageHeader.setAttribute('class', 'score-message');
   }
-  return result;
+  return message;
 }
 
 // CLEAR DATA MODEL
@@ -403,13 +417,14 @@ function clearData(data) {
 // VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
+  $mainHeadingWrapper.setAttribute('class', 'row');
+  $mainHeading.textContent = 'Select Category';
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
   removeChildNodes($trueFalseWrapper);
-  $mainHeading.textContent = 'Select Category';
   clearData(data);
   $gameForm.reset();
   $quizForm.reset();
@@ -449,5 +464,5 @@ function viewQuiz() {
   }
   $quizHeadingWrapper.setAttribute('class', 'row');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
-  $mainHeading.textContent = '';
+  $mainHeadingWrapper.setAttribute('class', 'row hidden');
 }

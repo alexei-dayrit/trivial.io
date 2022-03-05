@@ -49,6 +49,14 @@ form h3 {
   margin-top: 1.8rem;
 }
 
+.correct-message {
+  color: var(--accent-color) !important;
+}
+
+.score-message {
+  color: var(--white-text-color) !important;
+}
+
 .correct {
   color: var(--correct-color) !important;
 }
