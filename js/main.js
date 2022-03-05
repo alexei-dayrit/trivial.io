@@ -69,7 +69,7 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'ten-qs') {
-    lengthSelection = '6';
+    lengthSelection = '10';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
