@@ -11,6 +11,10 @@
 
 /* HEADER */
 
+header {
+  position: relative;
+}
+
 #brand-name {
   color: var(--white-text-color);
   cursor: pointer;
@@ -22,12 +26,23 @@
   padding-top: 0.3rem;
 }
 
+#timer {
+  position: absolute;
+  right: 0;
+}
+
+.timer-text {
+  color: var(--accent-color);
+  margin: 1rem 0 0;
+  font-size: 24px;
+}
+
 /* FORM */
 
 #main-heading,
 #quiz-question-heading {
   margin-bottom: 1.8rem;
-  margin-top: 4rem;
+  margin-top: 6rem;
 }
 
 form h2,
@@ -39,9 +54,9 @@ form h3,
 }
 
 #score-heading {
+  color: var(--accent-color);
   font-size: 40px;
   margin: 0;
-  color: var(--accent-color);
 }
 
 #category-wrapper {
@@ -93,6 +108,7 @@ input {
   margin: 0.2rem;
   padding: 0.4rem;
   text-align: center;
+  white-space: normal;
   width: 100%;
 }
 
@@ -173,7 +189,7 @@ input:active {
 /* FOOTER */
 footer {
   bottom: 0;
-  margin: 4rem 0 2rem;
+  margin: 2rem 0;
   position: absolute;
 }
 

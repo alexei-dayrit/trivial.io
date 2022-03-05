@@ -15,7 +15,7 @@ body {
 .main-container {
   margin: 0 auto;
   max-width: 475px;
-  min-height: 90vh;
+  min-height: 100vh;
   padding: 2rem;
 }
 
