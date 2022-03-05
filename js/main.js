@@ -68,7 +68,7 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'ten-qs') {
-    lengthSelection = '3';
+    lengthSelection = '6';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
@@ -107,9 +107,6 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
-    console.log('xhrGame status:', xhrGame.status);
-    console.log('xhrGame response:', xhrGame.response);
-    console.log('xhrGame responseURL:', xhrGame.responseURL);
     viewQuiz();
   });
   xhrGame.send();
@@ -147,8 +144,6 @@ function displayMultipleChoice(quizObject) {
   $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
-
-  console.log('answer: ', data.correctAnswer);
 }
 
 // FUNCTION TO DISPLAY NEXT QUESTION
@@ -167,7 +162,6 @@ function displayNextQuestion() {
     renderTrueOrFalse();
     displayTrueOrFalse(data.quizArray[currentIndex]);
   }
-  console.log('answer: ', data.correctAnswer);
 }
 
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
@@ -182,8 +176,6 @@ function displayTrueOrFalse(quizObject) {
   $trueAns.value = 'True';
   var $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
-
-  console.log('answer: ', data.correctAnswer);
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
@@ -198,8 +190,6 @@ function checkAnswer(button) {
     renderResponseMessage('Incorrect');
     highlightCorrectAnswer();
   }
-  console.log('Correct Count', data.correctScore);
-  console.log('Incorrect Count', data.incorrectScore);
 }
 
 // DISPLAYS TOTAL SCORE
@@ -213,18 +203,12 @@ function displayTotalScore() {
   if (data.correctScore === data.quizArray.length) {
     renderQuizScore(percentCorrect);
     renderResponseMessage('AMAZING!');
-    console.log('AMAZING!');
-    console.log('passing value:', passingScore);
   } else if (data.correctScore >= passingScore) {
     renderQuizScore(percentCorrect);
     renderResponseMessage('Good Job!');
-    console.log('Good Job!');
-    console.log('passing value:', passingScore);
   } else if (data.correctScore < passingScore) {
     renderQuizScore(percentCorrect);
     renderResponseMessage('Needs More Practice...');
-    console.log('Needs More Practice...');
-    console.log('passing value:', passingScore);
   }
 }
 
