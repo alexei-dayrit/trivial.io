@@ -68,7 +68,7 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'ten-qs') {
-    lengthSelection = '1';
+    lengthSelection = '3';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
@@ -448,6 +448,8 @@ function viewCategorySelection() {
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
   removeChildNodes($trueFalseWrapper);
+  removeChildNodes($scoreWrapper);
+  removeChildNodes($responseMessageWrapper);
   clearData(data);
   $gameForm.reset();
   $quizForm.reset();
