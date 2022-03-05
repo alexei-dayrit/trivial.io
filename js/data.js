@@ -1,11 +1,12 @@
 /* exported data */
 
 var data = {
-  view: 'category-select',
   quizArray: [],
   correctAnswer: '',
   userAnswer: '',
-  currentQuestionNum: 0
+  currentQuestionNum: 0,
+  correctScore: 0,
+  incorrectScore: 0
 };
 
 function handleBeforeUnload(event) {

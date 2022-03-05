@@ -27,17 +27,21 @@
 #main-heading,
 #quiz-question-heading {
   margin-bottom: 1.8rem;
-}
-
-#quiz-question-heading {
-  margin-top: 1.8rem;
+  margin-top: 4rem;
 }
 
 form h2,
-form h3 {
+form h3,
+#score-heading {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
+}
+
+#score-heading {
+  font-size: 40px;
+  margin: 0;
+  color: var(--accent-color);
 }
 
 #category-wrapper {
@@ -47,6 +51,14 @@ form h3 {
 #answer-result {
   color: var(--accent-color);
   margin-top: 1.8rem;
+}
+
+.correct-message {
+  color: var(--accent-color) !important;
+}
+
+.score-message {
+  color: var(--white-text-color) !important;
 }
 
 .correct {

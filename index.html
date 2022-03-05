@@ -36,7 +36,7 @@
     <main>
       <!-- QUIZ FORM -->
       <form data-view="create-game">
-        <div class="row">
+        <div id="main-heading-wrapper" class="row">
           <div class="col-sm-full">
             <h2 id="main-heading">Select Category</h2>
           </div>
@@ -185,19 +185,20 @@
           </div>
         </div>
       </form>
+      <!-- SCORE TEXT -->
+      <div id="score-wrapper" class="row">
+      </div>
       <!-- USER QUIZ FORM -->
       <form data-view="quiz-form">
         <div id="quiz-heading-wrapper" class="row hidden"></div>
         <!-- DOM OUTLINE FOR QUIZ QUESTION -->
         <div id="multiple-choice-wrapper" class="row justify-center hidden"></div>
         <div id="true-or-false-wrapper" class="row justify-center hidden"></div>
-        <div id="answer-result-wrapper" class="row">
+        <div id="response-message-wrapper" class="row">
         </div>
       </form>
     </main>
-
     <!-- FOOTER -->
-    <!-- REMOVE HIDDEN AFTER EACH ISSUE -->
     <footer class="row">
       <div class="col-sm-full">
         <div class="row">

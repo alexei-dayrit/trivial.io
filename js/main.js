@@ -2,22 +2,25 @@
 /* exported data */
 
 var $brandName = document.querySelector('#brand-name');
+var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
+var $beginButton = document.querySelector('input[type="submit"]');
 var categorySelection = '';
 var difficultySelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $scoreWrapper = document.querySelector('#score-wrapper');
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
-var $answerResultWrapper = document.querySelector('#answer-result-wrapper');
+var $responseMessageWrapper = document.querySelector('#response-message-wrapper');
 
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
@@ -25,6 +28,7 @@ function handleBrandClicks(event) {
     viewCategorySelection();
   }
 }
+
 // HANDLE BRAND LISTENER
 $brandName.addEventListener('click', handleBrandClicks);
 
@@ -94,22 +98,6 @@ function handleQuizType(event) {
 // HANDLE TYPE LISTENER
 $typeWrapper.addEventListener('click', handleQuizType);
 
-// GET GAME URL FROM API
-function getGame(token) {
-  var xhrGame = new XMLHttpRequest();
-  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
-      '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
-      '&' + 'type=' + typeSelection + '&' + 'token=' + token);
-  xhrGame.responseType = 'json';
-  xhrGame.addEventListener('load', function () {
-    for (var i = 0; i < xhrGame.response.results.length; i++) {
-      data.quizArray.push(xhrGame.response.results[i]);
-    }
-    viewQuiz();
-  });
-  xhrGame.send();
-}
-
 // ARRAY RANDOMIZER
 function shuffle(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -121,17 +109,30 @@ function shuffle(array) {
   return array;
 }
 
+// DECODE HTML
+function decodeEntity(inputStr) {
+  var textarea = document.createElement('textarea');
+  textarea.innerHTML = inputStr;
+  return textarea.value;
+}
+
 // FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
+  data.userAnswer = '';
   answersArray.push(quizObject.correct_answer);
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
+  for (var a = 0; a < answersArray.length; a++) {
+    var decoded = decodeEntity(answersArray[a]);
+    answersArray.splice(a, 1, decoded);
+  }
+
   var randomizedArray = shuffle(answersArray);
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
-  $quizQuestionHeading.innerHTML = quizObject.question;
+  $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
 
   var $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
@@ -149,7 +150,7 @@ function displayNextQuestion() {
   var currentIndex = data.currentQuestionNum;
 
   if (data.quizArray[currentIndex] === undefined) {
-    alert('Quiz Completed');
+    displayTotalScore();
   } else if (data.quizArray[currentIndex].type === 'multiple') {
     $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
     renderMultipleChoice();
@@ -164,9 +165,10 @@ function displayNextQuestion() {
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
+  data.userAnswer = '';
   $quizHeadingWrapper.setAttribute('class', 'row');
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
-  $quizQuestionHeading.innerHTML = quizObject.question;
+  $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
 
   var $trueAns = document.querySelector('input[name=true-ans]');
   $trueAns.value = 'True';
@@ -177,12 +179,33 @@ function displayTrueOrFalse(quizObject) {
 // CHECKS IF USER ANSWER IS CORRECT
 function checkAnswer(button) {
   if (data.userAnswer === data.correctAnswer) {
+    data.correctScore++;
     button.setAttribute('class', 'right-answer');
-    renderAnswerResult('Correct');
-  } else {
+    renderResponseMessage('Correct');
+  } else if (data.userAnswer !== data.correctAnswer) {
+    data.incorrectScore++;
     button.setAttribute('class', 'wrong-answer');
-    renderAnswerResult('Incorrect');
+    renderResponseMessage('Incorrect');
     highlightCorrectAnswer();
+  }
+}
+
+// DISPLAYS TOTAL SCORE
+function displayTotalScore() {
+  var passingScore = Math.round(0.7 * data.quizArray.length);
+  var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
+  $mainHeadingWrapper.setAttribute('class', 'row');
+  $mainHeading.textContent = 'TOTAL SCORE';
+
+  if (data.correctScore === data.quizArray.length) {
+    renderQuizScore(percentCorrect);
+    renderResponseMessage('AMAZING!');
+  } else if (data.correctScore >= passingScore) {
+    renderQuizScore(percentCorrect);
+    renderResponseMessage('Good Job!');
+  } else if (data.correctScore < passingScore) {
+    renderQuizScore(percentCorrect);
+    renderResponseMessage('Needs More Practice...');
   }
 }
 
@@ -212,7 +235,7 @@ function handleMultipleChoiceClicks(event) {
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
@@ -228,7 +251,7 @@ function handleTrueFalseClicks(event) {
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($answerResultWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
@@ -238,10 +261,25 @@ $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 // TRUE FALSE CLICK LISTENER
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
-// HANDLE FORM
+// GET GAME URL FROM API
+function getGame(token) {
+  var xhrGame = new XMLHttpRequest();
+  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
+    '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
+    '&' + 'type=' + typeSelection + '&' + 'token=' + token);
+  xhrGame.responseType = 'json';
+  xhrGame.addEventListener('load', function () {
+    for (var i = 0; i < xhrGame.response.results.length; i++) {
+      data.quizArray.push(xhrGame.response.results[i]);
+    }
+    viewQuiz();
+  });
+  xhrGame.send();
+}
+
+// HANDLE GAME FORM
 function handleGameForm(event) {
   event.preventDefault();
-  // GET SESSION TOKEN FROM API
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
@@ -251,13 +289,11 @@ function handleGameForm(event) {
     getGame(sessionCode);
   });
   xhrToken.send();
+  $beginButton.setAttribute('disabled', 'true');
 }
 
 // GAME FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
-
-// USER QUIZ FORM SUBMIT LISTENER
-$quizForm.addEventListener('submit', function () {});
 
 // REMOVES DOM TREE
 function removeChildNodes(parent) {
@@ -356,19 +392,37 @@ function renderTrueOrFalse() {
 }
 
 // RENDER CORRECT/INCORRECT RESULT
-function renderAnswerResult(result) {
-  var $answerResultDiv = document.createElement('div');
-  $answerResultDiv.setAttribute('class', 'col-sm-full');
-  $answerResultWrapper.appendChild($answerResultDiv);
+function renderResponseMessage(message) {
+  var $responseMessageDiv = document.createElement('div');
+  $responseMessageDiv.setAttribute('class', 'col-sm-full');
+  $responseMessageWrapper.appendChild($responseMessageDiv);
 
-  var $answerResultHeader = document.createElement('h2');
-  $answerResultHeader.setAttribute('id', 'answer-result');
-  $answerResultDiv.appendChild($answerResultHeader);
-  $answerResultHeader.textContent = result;
-  if (result === 'Incorrect') {
-    $answerResultHeader.setAttribute('class', 'incorrect');
+  var $responseMessageHeader = document.createElement('h2');
+  $responseMessageHeader.setAttribute('id', 'answer-result');
+  $responseMessageDiv.appendChild($responseMessageHeader);
+  $responseMessageHeader.textContent = message;
+
+  if (message === 'Correct') {
+    $responseMessageHeader.setAttribute('class', 'accent-message');
+  } else if (message === 'Incorrect') {
+    $responseMessageHeader.setAttribute('class', 'incorrect');
+  } else if (message === 'AMAZING!' || message === 'Good Job!' || message === 'Needs More Practice...') {
+    $responseMessageHeader.setAttribute('class', 'score-message');
   }
-  return result;
+  return message;
+}
+
+// RENDER QUIZ SCORE
+function renderQuizScore(score) {
+  var $scoreDiv = document.createElement('div');
+  $scoreDiv.setAttribute('class', 'col-sm-full');
+  $scoreWrapper.appendChild($scoreDiv);
+
+  var $scoreHeading = document.createElement('h1');
+  $scoreHeading.setAttribute('id', 'score-heading');
+  $scoreDiv.appendChild($scoreHeading);
+
+  $scoreHeading.textContent = score;
 }
 
 // CLEAR DATA MODEL
@@ -377,19 +431,25 @@ function clearData(data) {
   data.correctAnswer = '';
   data.userAnswer = '';
   data.currentQuestionNum = 0;
+  data.correctScore = 0;
+  data.incorrectScore = 0;
 }
 
 // VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
+  $mainHeadingWrapper.setAttribute('class', 'row');
+  $mainHeading.textContent = 'Select Category';
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
   removeChildNodes($trueFalseWrapper);
-  $mainHeading.textContent = 'Select Category';
+  removeChildNodes($scoreWrapper);
+  removeChildNodes($responseMessageWrapper);
   clearData(data);
+  $beginButton.removeAttribute('disabled');
   $gameForm.reset();
   $quizForm.reset();
 }
@@ -428,5 +488,5 @@ function viewQuiz() {
   }
   $quizHeadingWrapper.setAttribute('class', 'row');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
-  $mainHeading.textContent = '';
+  $mainHeadingWrapper.setAttribute('class', 'row hidden');
 }
