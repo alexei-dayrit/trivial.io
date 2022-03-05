@@ -27,10 +27,7 @@
 #main-heading,
 #quiz-question-heading {
   margin-bottom: 1.8rem;
-}
-
-#quiz-question-heading {
-  margin-top: 1.8rem;
+  margin-top: 4rem;
 }
 
 form h2,
