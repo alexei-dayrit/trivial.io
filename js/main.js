@@ -147,6 +147,8 @@ function displayMultipleChoice(quizObject) {
   $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
+
+  console.log('answer: ', data.correctAnswer);
 }
 
 // FUNCTION TO DISPLAY NEXT QUESTION
@@ -180,6 +182,8 @@ function displayTrueOrFalse(quizObject) {
   $trueAns.value = 'True';
   var $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
+
+  console.log('answer: ', data.correctAnswer);
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
@@ -200,22 +204,27 @@ function checkAnswer(button) {
 
 // DISPLAYS TOTAL SCORE
 function displayTotalScore() {
-  var passing = Math.round(0.7 * data.quizArray.length);
+  var passingScore = Math.round(0.7 * data.quizArray.length);
+  // var percentCorrect = (data.correctScore * 100) + '%';
+  var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'TOTAL SCORE';
 
   if (data.correctScore === data.quizArray.length) {
+    renderQuizScore(percentCorrect);
     renderResponseMessage('AMAZING!');
     console.log('AMAZING!');
-    console.log('passing value:', passing);
-  } else if (data.correctScore >= passing) {
+    console.log('passing value:', passingScore);
+  } else if (data.correctScore >= passingScore) {
+    renderQuizScore(percentCorrect);
     renderResponseMessage('Good Job!');
     console.log('Good Job!');
-    console.log('passing value:', passing);
-  } else if (data.correctScore < passing) {
+    console.log('passing value:', passingScore);
+  } else if (data.correctScore < passingScore) {
+    renderQuizScore(percentCorrect);
     renderResponseMessage('Needs More Practice...');
     console.log('Needs More Practice...');
-    console.log('passing value:', passing);
+    console.log('passing value:', passingScore);
   }
 }
 
