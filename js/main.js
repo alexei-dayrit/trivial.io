@@ -143,7 +143,6 @@ function displayMultipleChoice(quizObject) {
   $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
-
 }
 
 // FUNCTION TO DISPLAY NEXT QUESTION
@@ -264,7 +263,6 @@ function handleTrueFalseClicks(event) {
 
 // REMOVE CLICKS ON ANSWER BUTTONS
 function removeClicks() {
-  console.log('click counter removeClicks:', clickCounter);
   if (clickCounter > 0) {
     $multipleChoiceWrapper.removeEventListener('click', handleMultipleChoiceClicks);
     $trueFalseWrapper.removeEventListener('click', handleTrueFalseClicks);
@@ -274,7 +272,6 @@ function removeClicks() {
 // ADD CLICKS ON ANSWER BUTTONS
 function addClicks() {
   clickCounter = 0;
-  console.log('click counter addClicks:', clickCounter);
   $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
   $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 }
@@ -296,6 +293,9 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
+    console.log('xhrGame status:', xhrGame.status);
+    console.log('xhrGame response:', xhrGame.response);
+    console.log('xhrGame responseURL:', xhrGame.responseURL);
     viewQuiz();
   });
   xhrGame.send();
