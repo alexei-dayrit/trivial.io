@@ -26,12 +26,12 @@ header {
   padding-top: 0.3rem;
 }
 
-#timer {
+#countdown-timer {
   position: absolute;
   right: 0;
 }
 
-.timer-text {
+.countdown-text {
   color: var(--accent-color);
   margin: 1rem 0 0;
   font-size: 24px;

@@ -4,14 +4,17 @@
 var $brandName = document.querySelector('#brand-name');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
+var $countdownTimer = document.querySelector('#countdown-timer');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
+var $timeLimitWrapper = document.querySelector('#time-limit-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
 var $beginButton = document.querySelector('input[type="submit"]');
 var categorySelection = '';
 var difficultySelection = '';
+var timeSelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
@@ -60,11 +63,30 @@ function handleDifficultyClicks(event) {
   } else if (event.target.name === 'im-insane') {
     difficultySelection = '';
   }
-  viewLengthSelection();
+  viewTimeLimitSelection();
 }
 
 // DIFFICULTY CLICK LISTENER
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
+
+// HANDLE TIME LIMIT CLICKS
+function handleTimeLimit(event) {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  } else if (event.target.name === '5s') {
+    timeSelection = 5;
+  } else if (event.target.name === '10s') {
+    timeSelection = 10;
+  } else if (event.target.name === '15s') {
+    timeSelection = 15;
+  } else if (event.target.name === '20s') {
+    timeSelection = 20;
+  }
+  viewLengthSelection();
+}
+
+// TIME LIMIT LISTENER
+$timeLimitWrapper.addEventListener('click', handleTimeLimit);
 
 // HANDLE LENGTH CLICKS
 function handleQuizLength(event) {
@@ -464,7 +486,9 @@ function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'Select Category';
+  $countdownTimer.setAttribute('class', 'hidden');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   removeChildNodes($quizHeadingWrapper);
@@ -485,10 +509,17 @@ function viewDifficultySelection() {
   $mainHeading.textContent = 'Select Difficulty';
 }
 
+// VIEW SWAP TO TIME LIMIT SELECT
+function viewTimeLimitSelection() {
+  $timeLimitWrapper.setAttribute('class', 'row justify-center');
+  $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $mainHeading.textContent = 'Select Time Limit';
+}
+
 // VIEW SWAP TO LENGTH SELECT
 function viewLengthSelection() {
   $lengthWrapper.setAttribute('class', 'row justify-center');
-  $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Quiz Length';
 }
 
