@@ -41,7 +41,6 @@ $brandName.addEventListener('click', handleBrandClicks);
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
-  var questionCount = 0;
   if (event.target.tagName !== 'INPUT') {
     return;
   }
@@ -53,11 +52,6 @@ function handleCategoryClicks(event) {
   xhrQuestionCount.responseType = 'json';
   xhrQuestionCount.addEventListener('load', function () {
     data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
-    console.log('total:', xhrQuestionCount.response.category_question_count.total_question_count);
-    console.log('xhrGame status:', xhrQuestionCount.status);
-    console.log('xhrGame response:', xhrQuestionCount.response);
-    console.log('xhrGame responseURL:', xhrQuestionCount.responseURL);
-    console.log('api:', xhrQuestionCount.response.category_question_count.total_question_count);
   });
   xhrQuestionCount.send();
   viewLengthSelection();
@@ -109,7 +103,7 @@ function skipSelections() {
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
     $mainHeading.setAttribute('class', 'remove-margin-bottom');
     viewTimeLimitSelection();
-    console.log('skipped!');
+    console.log('SKIPPED OPTIONS!');
   } else {
     viewTypeSelection();
   }
