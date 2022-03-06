@@ -4,7 +4,7 @@
 var $brandName = document.querySelector('#brand-name');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
-var $countdownTimer = document.querySelector('#countdown-timer');
+var $countdownWrapper = document.querySelector('#countdown-wrapper');
 var $countdownText = document.querySelector('.countdown-text');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
@@ -75,20 +75,20 @@ $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 function handleTimeLimit(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
-  } else if (event.target.name === '5s') {
+  } else if (event.target.name === '5-sec') {
     // CHANGE BACK TO 5
     // CHANGE BACK TO 5
     data.selectedTimeLimit = 5;
     // CHANGE BACK TO 5
     // CHANGE BACK TO 5
     timeSelection = 5;
-  } else if (event.target.name === '10s') {
+  } else if (event.target.name === '10-sec') {
     data.selectedTimeLimit = 10;
     timeSelection = 10;
-  } else if (event.target.name === '15s') {
+  } else if (event.target.name === '15-sec') {
     data.selectedTimeLimit = 15;
     timeSelection = 15;
-  } else if (event.target.name === '20s') {
+  } else if (event.target.name === '20-sec') {
     data.selectedTimeLimit = 20;
     timeSelection = 20;
   }
@@ -223,7 +223,7 @@ $timeLimitWrapper.addEventListener('click', handleTimeLimit);
 
 // DISPLAY COUNTDOWN
 function displayCountdown() {
-  $countdownTimer.removeAttribute('class');
+  $countdownWrapper.removeAttribute('class');
   $countdownText.textContent = timeSelection + 's left';
   countdownID = setInterval(updateCountdown, 1000);
 }
@@ -273,6 +273,7 @@ function checkAnswer(button) {
 function displayTotalScore() {
   var passingScore = Math.round(0.7 * data.quizArray.length);
   var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
+  $countdownWrapper.setAttribute('class', 'hidden');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'TOTAL SCORE';
 
@@ -543,7 +544,7 @@ function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'Select Category';
-  $countdownTimer.setAttribute('class', 'hidden');
+  $countdownWrapper.setAttribute('class', 'hidden');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');

@@ -14,9 +14,9 @@ body {
 
 .main-container {
   margin: 0 auto;
-  max-width: 475px;
-  min-height: 100vh;
-  padding: 2rem;
+  max-width: 500px;
+  min-height: 600px;
+  padding: 1rem;
 }
 
 .row {
@@ -36,17 +36,22 @@ body {
   width: 95%;
 }
 
-.col-sm-fourth {
-  width: 25%;
+.col-sm-third {
+  width: 33%;
 }
 
 @media screen and (min-width: 768px) {
   .main-container {
     max-width: 1000px;
+    padding: 2rem;
   }
 
   .col-lg-half {
     width: 50%;
+  }
+
+  .col-lg-fourth {
+    width: 25%;
   }
 
   #brand-icon {
@@ -58,8 +63,9 @@ body {
     font-size: 32px;
   }
 
-  .col-lg-15 {
-    width: 15%;
+  #main-heading,
+  #quiz-question-heading {
+    margin-top: 6rem;
   }
 
   .countdown-text {
@@ -69,6 +75,7 @@ body {
 
   .difficulty-button {
     max-width: 60%;
+    margin: 0;
   }
 
   .type-button {
@@ -82,5 +89,13 @@ body {
   input[name="im-crazy"],
   input[name="im-insane"] {
     max-width: 20%;
+  }
+
+  footer {
+    border-style: none;
+    bottom: 0;
+    margin: 0;
+    padding: 2rem 0;
+    position: absolute;
   }
 }
