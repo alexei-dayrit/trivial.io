@@ -1,13 +1,14 @@
 /* exported data */
 
 var data = {
-  quizArray: [],
   correctAnswer: '',
-  userAnswer: '',
-  selectedTimeLimit: 0,
-  currentQuestionNum: 0,
   correctScore: 0,
-  incorrectScore: 0
+  currentQuestionNum: 0,
+  incorrectScore: 0,
+  quizArray: [],
+  selectedTimeLimit: 0,
+  totalQuestions: 0,
+  userAnswer: ''
 };
 
 function handleBeforeUnload(event) {

@@ -11,6 +11,10 @@
 
 /* HEADER */
 
+header {
+  position: relative;
+}
+
 #brand-name {
   color: var(--white-text-color);
   cursor: pointer;
@@ -25,7 +29,7 @@
 
 #countdown-wrapper {
   position: absolute;
-  right: 18px;
+  right: 0;
 }
 
 .countdown-text {
@@ -67,6 +71,17 @@ form h3,
 
 #response-message-wrapper {
   margin: 2.5rem 0 0;
+}
+
+h5 {
+  margin: 1rem;
+}
+
+div#default-selection-wrapper {
+  color: var(--accent-color);
+  opacity: 0.5;
+  text-align: center;
+  width: 100%;
 }
 
 .correct-message {
@@ -122,8 +137,6 @@ input {
   width: 100%;
 }
 
-/* padding: 0.4rem 1rem; */
-
 .difficulty-button:hover {
   background-color: var(--white-text-color);
   color: var(--dark-gray-color);
@@ -162,7 +175,7 @@ input[name="im-insane"]:hover {
   color: var(--accent-color);
 }
 
-input.type-button:focus {
+input.time-button:focus {
   background-color: var(--accent-color);
   border: 2px solid var(--dark-gray-color);
   color: var(--dark-gray-color);
@@ -249,4 +262,8 @@ footer a {
 
 .text-upper {
   text-transform: uppercase;
+}
+
+.remove-margin-bottom {
+  margin-bottom: 0 !important;
 }
