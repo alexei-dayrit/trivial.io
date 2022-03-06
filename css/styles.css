@@ -42,7 +42,7 @@ header {
 
 #main-heading,
 #quiz-question-heading {
-  margin-bottom: 1.8rem;
+  margin-bottom: 2.5rem;
   margin-top: 6rem;
 }
 
@@ -64,7 +64,7 @@ form h3,
   padding-bottom: 4rem;
 }
 
-#answer-result {
+#response-message {
   color: var(--accent-color);
   margin-top: 1.8rem;
 }
@@ -143,7 +143,7 @@ input[name="im-insane"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
-  margin: 1rem 0 2rem;
+  margin: 2rem 0;
   width: 30%;
 }
 

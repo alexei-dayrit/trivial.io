@@ -91,35 +91,6 @@ function handleTimeLimit(event) {
   viewLengthSelection();
 }
 
-// TIME LIMIT LISTENER
-$timeLimitWrapper.addEventListener('click', handleTimeLimit);
-
-// DISPLAY COUNTDOWN
-function displayCountdown() {
-  $countdownTimer.removeAttribute('class');
-  $countdownText.textContent = timeSelection + 's left';
-  countdownID = setInterval(updateCountdown, 1000);
-}
-
-// START COUNTDOWN TIMER
-function updateCountdown() {
-  console.log('updated:', timeSelection);
-  if (timeSelection > 0) {
-    timeSelection--;
-    $countdownText.textContent = timeSelection + 's left';
-  } else {
-    $countdownText.textContent = "TIME'S UP!";
-    clearInterval(countdownID);
-  }
-}
-
-// RESET COUNTDOWN
-function resetCountdown() {
-  console.log('reseted time:', timeSelection);
-  timeSelection = data.selectedTimeLimit;
-  clearInterval(countdownID);
-}
-
 // HANDLE LENGTH CLICKS
 function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
@@ -202,7 +173,7 @@ function displayMultipleChoice(quizObject) {
 
 // FUNCTION TO DISPLAY NEXT QUESTION
 function displayNextQuestion() {
-  addClicks();
+  addAnswerClicks();
   data.currentQuestionNum++;
   var currentIndex = data.currentQuestionNum;
 
@@ -232,6 +203,37 @@ function displayTrueOrFalse(quizObject) {
   var $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
   displayCountdown();
+}
+
+// TIME LIMIT LISTENER
+$timeLimitWrapper.addEventListener('click', handleTimeLimit);
+
+// DISPLAY COUNTDOWN
+function displayCountdown() {
+  $countdownTimer.removeAttribute('class');
+  $countdownText.textContent = timeSelection + 's left';
+  countdownID = setInterval(updateCountdown, 1000);
+}
+
+// START COUNTDOWN TIMER
+function updateCountdown() {
+  console.log('updated:', timeSelection);
+  if (timeSelection > 0) {
+    timeSelection--;
+    $countdownText.textContent = timeSelection + 's left';
+  } else {
+    renderResponseMessage("TIME'S UP");
+    removeAnswerClicks();
+    $countdownText.setAttribute('class', 'countdown-text incorrect');
+    clearInterval(countdownID);
+  }
+}
+
+// RESET COUNTDOWN
+function resetCountdown() {
+  console.log('reseted time:', timeSelection);
+  timeSelection = data.selectedTimeLimit;
+  clearInterval(countdownID);
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
@@ -291,7 +293,7 @@ function handleMultipleChoiceClicks(event) {
   } else if (event.target.name === 'option4-ans') {
     data.userAnswer = event.target.value;
   }
-  removeClicks();
+  removeAnswerClicks();
   resetCountdown();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
@@ -310,7 +312,7 @@ function handleTrueFalseClicks(event) {
   } else if (event.target.name === 'false-ans') {
     data.userAnswer = event.target.value;
   }
-  removeClicks();
+  removeAnswerClicks();
   resetCountdown();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
@@ -320,15 +322,15 @@ function handleTrueFalseClicks(event) {
 }
 
 // REMOVE CLICKS ON ANSWER BUTTONS
-function removeClicks() {
-  if (clickCounter > 0) {
+function removeAnswerClicks() {
+  if (clickCounter > 0 || timeSelection === 0) {
     $multipleChoiceWrapper.removeEventListener('click', handleMultipleChoiceClicks);
     $trueFalseWrapper.removeEventListener('click', handleTrueFalseClicks);
   }
 }
 
 // ADD CLICKS ON ANSWER BUTTONS
-function addClicks() {
+function addAnswerClicks() {
   clickCounter = 0;
   $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
   $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
@@ -481,13 +483,13 @@ function renderResponseMessage(message) {
   $responseMessageWrapper.appendChild($responseMessageDiv);
 
   var $responseMessageHeader = document.createElement('h2');
-  $responseMessageHeader.setAttribute('id', 'answer-result');
+  $responseMessageHeader.setAttribute('id', 'response-message');
   $responseMessageDiv.appendChild($responseMessageHeader);
   $responseMessageHeader.textContent = message;
 
   if (message === 'Correct') {
     $responseMessageHeader.setAttribute('class', 'accent-message');
-  } else if (message === 'Incorrect') {
+  } else if (message === 'Incorrect' || message === "TIME'S UP") {
     $responseMessageHeader.setAttribute('class', 'incorrect');
   } else if (message === 'AMAZING!' || message === 'Good Job!' || message === 'Needs More Practice...') {
     $responseMessageHeader.setAttribute('class', 'score-message');
