@@ -112,14 +112,14 @@ function updateCountdown() {
 function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
+  } else if (event.target.name === 'five-qs') {
+    lengthSelection = '5';
   } else if (event.target.name === 'ten-qs') {
     lengthSelection = '10';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
     lengthSelection = '20';
-  } else if (event.target.name === 'thirty-qs') {
-    lengthSelection = '30';
   }
   viewTypeSelection();
 }
@@ -490,7 +490,6 @@ function renderQuizScore(score) {
   var $scoreHeading = document.createElement('h1');
   $scoreHeading.setAttribute('id', 'score-heading');
   $scoreDiv.appendChild($scoreHeading);
-
   $scoreHeading.textContent = score;
 }
 
