@@ -4,7 +4,7 @@ var data = {
   quizArray: [],
   correctAnswer: '',
   userAnswer: '',
-  timeLimit: 0,
+  selectedTimeLimit: 0,
   currentQuestionNum: 0,
   correctScore: 0,
   incorrectScore: 0

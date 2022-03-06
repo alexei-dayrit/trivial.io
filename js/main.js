@@ -76,12 +76,16 @@ function handleTimeLimit(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === '5s') {
+    data.selectedTimeLimit = 5;
     timeSelection = 5;
   } else if (event.target.name === '10s') {
+    data.selectedTimeLimit = 10;
     timeSelection = 10;
   } else if (event.target.name === '15s') {
+    data.selectedTimeLimit = 15;
     timeSelection = 15;
   } else if (event.target.name === '20s') {
+    data.selectedTimeLimit = 20;
     timeSelection = 20;
   }
   viewLengthSelection();
@@ -97,8 +101,9 @@ function displayCountdown() {
   countdownID = setInterval(updateCountdown, 1000);
 }
 
-// COUNTDOWN TIMER
+// START COUNTDOWN TIMER
 function updateCountdown() {
+  console.log('updated:', timeSelection);
   if (timeSelection > 0) {
     timeSelection--;
     $countdownText.textContent = timeSelection + 's left';
@@ -106,6 +111,13 @@ function updateCountdown() {
     $countdownText.textContent = "TIME'S UP!";
     clearInterval(countdownID);
   }
+}
+
+// RESET COUNTDOWN
+function resetCountdown() {
+  console.log('reseted time:', timeSelection);
+  timeSelection = data.selectedTimeLimit;
+  clearInterval(countdownID);
 }
 
 // HANDLE LENGTH CLICKS
@@ -280,6 +292,7 @@ function handleMultipleChoiceClicks(event) {
     data.userAnswer = event.target.value;
   }
   removeClicks();
+  resetCountdown();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
@@ -298,6 +311,7 @@ function handleTrueFalseClicks(event) {
     data.userAnswer = event.target.value;
   }
   removeClicks();
+  resetCountdown();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
