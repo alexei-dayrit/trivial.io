@@ -49,12 +49,22 @@ body {
     width: 50%;
   }
 
-  #brand-name {
-    margin: 0.5rem 0 0 !important;
+  #brand-icon {
+    padding-top: 0.3rem;
+  }
+
+  h1#brand-name {
+    margin: 0.5rem 0 0;
+    font-size: 32px;
   }
 
   .col-lg-15 {
     width: 15%;
+  }
+
+  .countdown-text {
+    margin: 1rem 0 0;
+    font-size: 24px;
   }
 
   .difficulty-button {

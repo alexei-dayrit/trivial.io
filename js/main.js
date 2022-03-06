@@ -5,6 +5,7 @@ var $brandName = document.querySelector('#brand-name');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
 var $countdownTimer = document.querySelector('#countdown-timer');
+var $countdownText = document.querySelector('.countdown-text');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
@@ -25,6 +26,7 @@ var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
 var $responseMessageWrapper = document.querySelector('#response-message-wrapper');
 var clickCounter = 0;
+var countdownID;
 
 // HANDLE BRAND CLICKS
 function handleBrandClicks(event) {
@@ -87,6 +89,24 @@ function handleTimeLimit(event) {
 
 // TIME LIMIT LISTENER
 $timeLimitWrapper.addEventListener('click', handleTimeLimit);
+
+// DISPLAY COUNTDOWN
+function displayCountdown() {
+  $countdownTimer.removeAttribute('class');
+  $countdownText.textContent = timeSelection + 's left';
+  countdownID = setInterval(updateCountdown, 1000);
+}
+
+// COUNTDOWN TIMER
+function updateCountdown() {
+  if (timeSelection > 0) {
+    timeSelection--;
+    $countdownText.textContent = timeSelection + 's left';
+  } else {
+    $countdownText.textContent = "TIME'S UP!";
+    clearInterval(countdownID);
+  }
+}
 
 // HANDLE LENGTH CLICKS
 function handleQuizLength(event) {
@@ -165,6 +185,7 @@ function displayMultipleChoice(quizObject) {
   $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
+  displayCountdown();
 }
 
 // FUNCTION TO DISPLAY NEXT QUESTION
@@ -198,6 +219,7 @@ function displayTrueOrFalse(quizObject) {
   $trueAns.value = 'True';
   var $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
+  displayCountdown();
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
@@ -335,6 +357,7 @@ function handleGameForm(event) {
     getGame(sessionCode);
   });
   xhrToken.send();
+  $beginButton.setAttribute('class', 'submit-button text-upper active-button');
   $beginButton.setAttribute('disabled', 'true');
 }
 
@@ -498,6 +521,7 @@ function viewCategorySelection() {
   removeChildNodes($responseMessageWrapper);
   clearData(data);
   $beginButton.removeAttribute('disabled');
+  $beginButton.setAttribute('class', 'submit-button text-upper');
   $gameForm.reset();
   $quizForm.reset();
 }
