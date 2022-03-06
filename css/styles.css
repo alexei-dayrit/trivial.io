@@ -176,6 +176,7 @@ input[name="im-insane"]:hover {
   color: var(--accent-color);
 }
 
+input.category-button:focus,
 input.time-button:focus {
   background-color: var(--accent-color);
   border: 2px solid var(--dark-gray-color);

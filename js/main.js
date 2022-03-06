@@ -44,6 +44,9 @@ function handleCategoryClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   }
+  $mainHeading.textContent = 'LOADING...';
+  $mainHeading.setAttribute('class', 'active-button');
+
   var $closestCategory = event.target.closest('[data-category-id]');
   var categoryID = $closestCategory.getAttribute('data-category-id');
   categorySelection = categoryID;
@@ -54,7 +57,7 @@ function handleCategoryClicks(event) {
     data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
   });
   xhrQuestionCount.send();
-  viewLengthSelection();
+  setTimeout(function () { skipSelections(); }, 1000);
 }
 
 // CATEGORY CLICK LISTENER
@@ -98,13 +101,16 @@ function handleTimeLimit(event) {
 
 // SKIP USER SELECTIONS
 function skipSelections() {
+  $mainHeading.removeAttribute('class');
   if (data.totalQuestions < 100) {
     $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+    $categoryWrapper.setAttribute('class', 'row hidden');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
     $mainHeading.setAttribute('class', 'remove-margin-bottom');
+    lengthSelection = '10';
     viewTimeLimitSelection();
   } else {
-    viewTypeSelection();
+    viewLengthSelection();
   }
 }
 
@@ -121,7 +127,7 @@ function handleQuizLength(event) {
   } else if (event.target.name === 'twenty-qs') {
     lengthSelection = '20';
   }
-  skipSelections();
+  viewTypeSelection();
 }
 
 // HANDLE LENGTH LISTENER
@@ -166,7 +172,6 @@ function decodeEntity(inputStr) {
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
-  data.userAnswer = '';
   answersArray.push(quizObject.correct_answer);
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
@@ -195,6 +200,7 @@ function displayNextQuestion() {
   addAnswerClicks();
   $countdownText.setAttribute('class', 'countdown-text');
   data.currentQuestionNum++;
+  data.userAnswer = '';
   var currentIndex = data.currentQuestionNum;
 
   if (timeSelection !== data.selectedTimeLimit) {
@@ -217,7 +223,6 @@ function displayNextQuestion() {
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
-  data.userAnswer = '';
   $quizHeadingWrapper.setAttribute('class', 'row');
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
   $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
@@ -250,11 +255,7 @@ function updateCountdown() {
     highlightCorrectAnswer();
     $countdownText.setAttribute('class', 'countdown-text incorrect');
     clearInterval(countdownID);
-    setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
-    setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
-    setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
-    setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
-    setTimeout(function () { displayNextQuestion(); }, 3000);
+    displayNextQuestionTimeout();
   }
 }
 
@@ -262,6 +263,15 @@ function updateCountdown() {
 function resetCountdown() {
   timeSelection = data.selectedTimeLimit;
   clearInterval(countdownID);
+}
+
+// NEXT QUESTION TIMEOUT
+function displayNextQuestionTimeout() {
+  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
+  setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
@@ -388,6 +398,8 @@ function getGame(token) {
   });
   xhrGame.send();
 }
+
+// if response.response_code !== 0, then generate general category any difficulty any type
 
 // HANDLE GAME FORM
 function handleGameForm(event) {
