@@ -11,23 +11,40 @@
 
 /* HEADER */
 
+header {
+  position: relative;
+}
+
 #brand-name {
   color: var(--white-text-color);
   cursor: pointer;
   font-family: var(--lexend-font);
-  margin: 0.5rem 0 0 1rem;
+  font-size: 28px;
+  margin: 1rem 0 0 1rem;
 }
 
 #brand-icon {
-  padding-top: 0.3rem;
+  padding-top: 0.6rem;
+  cursor: pointer;
+}
+
+#countdown-wrapper {
+  position: absolute;
+  right: 0;
+}
+
+.countdown-text {
+  color: var(--accent-color);
+  margin: 1.6rem 0 0;
+  font-size: 18px;
 }
 
 /* FORM */
 
 #main-heading,
 #quiz-question-heading {
-  margin-bottom: 1.8rem;
-  margin-top: 4rem;
+  margin-bottom: 2.5rem;
+  margin-top: 3rem;
 }
 
 form h2,
@@ -39,18 +56,33 @@ form h3,
 }
 
 #score-heading {
+  color: var(--accent-color);
   font-size: 40px;
   margin: 0;
-  color: var(--accent-color);
 }
 
 #category-wrapper {
   padding-bottom: 4rem;
 }
 
-#answer-result {
+#response-message {
   color: var(--accent-color);
-  margin-top: 1.8rem;
+  margin: 0;
+}
+
+#response-message-wrapper {
+  margin: 2.5rem 0 0;
+}
+
+h5 {
+  margin: 1rem;
+}
+
+div#default-selection-wrapper {
+  color: var(--accent-color);
+  opacity: 0.5;
+  text-align: center;
+  width: 100%;
 }
 
 .correct-message {
@@ -83,16 +115,17 @@ form h3,
 
 input {
   background-color: var(--light-gray-color);
-  border-radius: 0.6rem;
+  border-radius: 1.1rem;
   border-style: none;
   color: var(--white-text-color);
   cursor: pointer;
   font-family: inherit;
   font-weight: 500;
   letter-spacing: 0.07rem;
-  margin: 0.2rem;
+  margin: 0.25rem;
   padding: 0.4rem;
   text-align: center;
+  white-space: normal;
   width: 100%;
 }
 
@@ -101,6 +134,7 @@ input {
   color: var(--dark-gray-color);
   line-height: 2;
   margin: 0 0.8rem;
+  padding: 0.4rem 2rem;
   width: 100%;
 }
 
@@ -126,8 +160,9 @@ input[name="im-insane"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
-  margin: 1rem 0 2rem;
-  width: 30%;
+  margin: 2rem 0;
+  padding: 0.4rem 2rem;
+  width: 50%;
 }
 
 input:hover {
@@ -141,7 +176,8 @@ input[name="im-insane"]:hover {
   color: var(--accent-color);
 }
 
-input.type-button:focus {
+input.category-button:focus,
+input.time-button:focus {
   background-color: var(--accent-color);
   border: 2px solid var(--dark-gray-color);
   color: var(--dark-gray-color);
@@ -170,11 +206,19 @@ input:active {
   background-color: var(--dark-gray-color);
 }
 
+.active-button {
+  color: var(--accent-color);
+}
+
 /* FOOTER */
 footer {
-  bottom: 0;
-  margin: 4rem 0 2rem;
-  position: absolute;
+  background-color: var(--dark-gray-color);
+  border: 4px solid var(--light-gray-color);
+  bottom: 1px;
+  margin: 4rem 0 0;
+  padding: 1rem 0.5rem;
+  position: sticky;
+  width: 100%;
 }
 
 footer span {
@@ -220,4 +264,8 @@ footer a {
 
 .text-upper {
   text-transform: uppercase;
+}
+
+.remove-margin-bottom {
+  margin-bottom: 0 !important;
 }

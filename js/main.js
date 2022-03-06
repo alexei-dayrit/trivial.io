@@ -1,17 +1,22 @@
 /* global data */
 /* exported data */
 
-var $brandName = document.querySelector('#brand-name');
+var $htmlHeader = document.querySelector('header');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
+var $defaultSelectionWrapper = document.querySelector('#default-selection-wrapper');
+var $countdownWrapper = document.querySelector('#countdown-wrapper');
+var $countdownText = document.querySelector('.countdown-text');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
+var $timeLimitWrapper = document.querySelector('#time-limit-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
 var $beginButton = document.querySelector('input[type="submit"]');
 var categorySelection = '';
 var difficultySelection = '';
+var timeSelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
@@ -21,26 +26,38 @@ var $quizForm = document.querySelector('form[data-view="quiz-form"]');
 var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
 var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
 var $responseMessageWrapper = document.querySelector('#response-message-wrapper');
+var clickCounter = 0;
+var countdownID;
 
 // HANDLE BRAND CLICKS
-function handleBrandClicks(event) {
-  if (event.target.tagName === 'H1') {
+function handleHomeClick(event) {
+  if (event.target.tagName === 'H1' || event.target.tagName === 'IMG') {
     viewCategorySelection();
   }
 }
 
-// HANDLE BRAND LISTENER
-$brandName.addEventListener('click', handleBrandClicks);
+// BRAND CLICK LISTENER
+$htmlHeader.addEventListener('click', handleHomeClick);
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   }
+  $mainHeading.textContent = 'LOADING...';
+  $mainHeading.setAttribute('class', 'active-button');
+
   var $closestCategory = event.target.closest('[data-category-id]');
   var categoryID = $closestCategory.getAttribute('data-category-id');
   categorySelection = categoryID;
-  viewDifficultySelection();
+  var xhrQuestionCount = new XMLHttpRequest();
+  xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
+  xhrQuestionCount.responseType = 'json';
+  xhrQuestionCount.addEventListener('load', function () {
+    data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
+  });
+  xhrQuestionCount.send();
+  setTimeout(function () { skipSelections(); }, 1000);
 }
 
 // CATEGORY CLICK LISTENER
@@ -59,24 +76,56 @@ function handleDifficultyClicks(event) {
   } else if (event.target.name === 'im-insane') {
     difficultySelection = '';
   }
-  viewLengthSelection();
+  viewTimeLimitSelection();
 }
 
 // DIFFICULTY CLICK LISTENER
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 
+// HANDLE TIME LIMIT CLICKS
+function handleTimeLimit(event) {
+  if (event.target.name === '5-sec') {
+    data.selectedTimeLimit = 5;
+    timeSelection = 5;
+  } else if (event.target.name === '10-sec') {
+    data.selectedTimeLimit = 10;
+    timeSelection = 10;
+  } else if (event.target.name === '15-sec') {
+    data.selectedTimeLimit = 15;
+    timeSelection = 15;
+  } else if (event.target.name === '20-sec') {
+    data.selectedTimeLimit = 20;
+    timeSelection = 20;
+  }
+}
+
+// SKIP USER SELECTIONS
+function skipSelections() {
+  $mainHeading.removeAttribute('class');
+  if (data.totalQuestions < 100) {
+    $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+    $categoryWrapper.setAttribute('class', 'row hidden');
+    $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
+    $mainHeading.setAttribute('class', 'remove-margin-bottom');
+    lengthSelection = '10';
+    viewTimeLimitSelection();
+  } else {
+    viewLengthSelection();
+  }
+}
+
 // HANDLE LENGTH CLICKS
 function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
+  } else if (event.target.name === 'five-qs') {
+    lengthSelection = '5';
   } else if (event.target.name === 'ten-qs') {
     lengthSelection = '10';
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
   } else if (event.target.name === 'twenty-qs') {
     lengthSelection = '20';
-  } else if (event.target.name === 'thirty-qs') {
-    lengthSelection = '30';
   }
   viewTypeSelection();
 }
@@ -86,13 +135,16 @@ $lengthWrapper.addEventListener('click', handleQuizLength);
 
 // HANDLE TYPE CLICKS
 function handleQuizType(event) {
-  if (event.target.name === 'multiple-choice') {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  } else if (event.target.name === 'multiple-choice') {
     typeSelection = 'multiple';
   } else if (event.target.name === 'true-or-false') {
     typeSelection = 'boolean';
   } else if (event.target.name === 'any-type') {
     typeSelection = '';
   }
+  viewDifficultySelection();
 }
 
 // HANDLE TYPE LISTENER
@@ -120,7 +172,6 @@ function decodeEntity(inputStr) {
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
-  data.userAnswer = '';
   answersArray.push(quizObject.correct_answer);
   for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
@@ -129,7 +180,6 @@ function displayMultipleChoice(quizObject) {
     var decoded = decodeEntity(answersArray[a]);
     answersArray.splice(a, 1, decoded);
   }
-
   var randomizedArray = shuffle(answersArray);
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
   $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
@@ -142,12 +192,20 @@ function displayMultipleChoice(quizObject) {
   $option3.value = randomizedArray[2];
   var $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
+  displayCountdown();
 }
 
 // FUNCTION TO DISPLAY NEXT QUESTION
 function displayNextQuestion() {
+  addAnswerClicks();
+  $countdownText.setAttribute('class', 'countdown-text');
   data.currentQuestionNum++;
+  data.userAnswer = '';
   var currentIndex = data.currentQuestionNum;
+
+  if (timeSelection !== data.selectedTimeLimit) {
+    resetCountdown();
+  }
 
   if (data.quizArray[currentIndex] === undefined) {
     displayTotalScore();
@@ -165,7 +223,6 @@ function displayNextQuestion() {
 // FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
-  data.userAnswer = '';
   $quizHeadingWrapper.setAttribute('class', 'row');
   var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
   $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
@@ -174,6 +231,47 @@ function displayTrueOrFalse(quizObject) {
   $trueAns.value = 'True';
   var $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
+  displayCountdown();
+}
+
+// TIME LIMIT LISTENER
+$timeLimitWrapper.addEventListener('click', handleTimeLimit);
+
+// DISPLAY COUNTDOWN
+function displayCountdown() {
+  $countdownWrapper.removeAttribute('class');
+  $countdownText.textContent = timeSelection + 's left';
+  countdownID = setInterval(updateCountdown, 1000);
+}
+
+// START COUNTDOWN TIMER
+function updateCountdown() {
+  if (timeSelection > 0) {
+    timeSelection--;
+    $countdownText.textContent = timeSelection + 's left';
+  } else if (timeSelection === 0) {
+    renderResponseMessage("TIME'S UP");
+    removeAnswerClicks();
+    highlightCorrectAnswer();
+    $countdownText.setAttribute('class', 'countdown-text incorrect');
+    clearInterval(countdownID);
+    displayNextQuestionTimeout();
+  }
+}
+
+// RESET COUNTDOWN
+function resetCountdown() {
+  timeSelection = data.selectedTimeLimit;
+  clearInterval(countdownID);
+}
+
+// NEXT QUESTION TIMEOUT
+function displayNextQuestionTimeout() {
+  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
+  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
+  setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
 // CHECKS IF USER ANSWER IS CORRECT
@@ -194,6 +292,7 @@ function checkAnswer(button) {
 function displayTotalScore() {
   var passingScore = Math.round(0.7 * data.quizArray.length);
   var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
+  $countdownWrapper.setAttribute('class', 'hidden');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'TOTAL SCORE';
 
@@ -221,6 +320,7 @@ function highlightCorrectAnswer() {
 
 // HANDLE MULTIPLE CHOICE ANSWER CLICKS
 function handleMultipleChoiceClicks(event) {
+  clickCounter++;
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'option1-ans') {
@@ -232,6 +332,8 @@ function handleMultipleChoiceClicks(event) {
   } else if (event.target.name === 'option4-ans') {
     data.userAnswer = event.target.value;
   }
+  removeAnswerClicks();
+  resetCountdown();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
@@ -241,6 +343,7 @@ function handleMultipleChoiceClicks(event) {
 
 // HANDLE TRUE FALSE ANSWER CLICKS
 function handleTrueFalseClicks(event) {
+  clickCounter++;
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'true-ans') {
@@ -248,11 +351,28 @@ function handleTrueFalseClicks(event) {
   } else if (event.target.name === 'false-ans') {
     data.userAnswer = event.target.value;
   }
+  removeAnswerClicks();
+  resetCountdown();
   checkAnswer(event.target);
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
   setTimeout(function () { displayNextQuestion(); }, 3000);
+}
+
+// REMOVE CLICKS ON ANSWER BUTTONS
+function removeAnswerClicks() {
+  if (clickCounter > 0 || timeSelection === 0) {
+    $multipleChoiceWrapper.removeEventListener('click', handleMultipleChoiceClicks);
+    $trueFalseWrapper.removeEventListener('click', handleTrueFalseClicks);
+  }
+}
+
+// ADD CLICKS ON ANSWER BUTTONS
+function addAnswerClicks() {
+  clickCounter = 0;
+  $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
+  $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 }
 
 // MULTIPLE CHOICE CLICK LISTENER
@@ -272,14 +392,23 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
+    $mainHeading.removeAttribute('class');
+    $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
   });
   xhrGame.send();
 }
 
+// if response.response_code !== 0, then generate general category any difficulty any type
+
 // HANDLE GAME FORM
 function handleGameForm(event) {
   event.preventDefault();
+  if (data.selectedTimeLimit === 0) {
+    return;
+  }
+  removeHomeClicks($htmlHeader, handleHomeClick);
+  $beginButton.setAttribute('value', 'LOADING..');
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
@@ -289,6 +418,7 @@ function handleGameForm(event) {
     getGame(sessionCode);
   });
   xhrToken.send();
+  $beginButton.setAttribute('class', 'submit-button text-upper active-button');
   $beginButton.setAttribute('disabled', 'true');
 }
 
@@ -365,7 +495,7 @@ function renderTrueOrFalse() {
 
   var $quizQuestionHeading = document.createElement('h3');
   $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
-  $quizQuestionHeading.textContent = 'TESTER';
+  $quizQuestionHeading.textContent = '';
   $quizQuestionDiv.appendChild($quizQuestionHeading);
 
   var $trueDiv = document.createElement('div');
@@ -398,13 +528,13 @@ function renderResponseMessage(message) {
   $responseMessageWrapper.appendChild($responseMessageDiv);
 
   var $responseMessageHeader = document.createElement('h2');
-  $responseMessageHeader.setAttribute('id', 'answer-result');
+  $responseMessageHeader.setAttribute('id', 'response-message');
   $responseMessageDiv.appendChild($responseMessageHeader);
   $responseMessageHeader.textContent = message;
 
   if (message === 'Correct') {
     $responseMessageHeader.setAttribute('class', 'accent-message');
-  } else if (message === 'Incorrect') {
+  } else if (message === 'Incorrect' || message === "TIME'S UP") {
     $responseMessageHeader.setAttribute('class', 'incorrect');
   } else if (message === 'AMAZING!' || message === 'Good Job!' || message === 'Needs More Practice...') {
     $responseMessageHeader.setAttribute('class', 'score-message');
@@ -421,50 +551,80 @@ function renderQuizScore(score) {
   var $scoreHeading = document.createElement('h1');
   $scoreHeading.setAttribute('id', 'score-heading');
   $scoreDiv.appendChild($scoreHeading);
-
   $scoreHeading.textContent = score;
 }
 
 // CLEAR DATA MODEL
 function clearData(data) {
-  data.quizArray = [];
   data.correctAnswer = '';
-  data.userAnswer = '';
-  data.currentQuestionNum = 0;
   data.correctScore = 0;
+  data.currentQuestionNum = 0;
   data.incorrectScore = 0;
+  data.quizArray = [];
+  data.selectedTimeLimit = 0;
+  data.totalQuestions = 0;
+  data.userAnswer = '';
+}
+
+// REMOVE ALL GENERATED DOM
+function resetDOM() {
+  removeChildNodes($quizHeadingWrapper);
+  removeChildNodes($multipleChoiceWrapper);
+  removeChildNodes($trueFalseWrapper);
+  removeChildNodes($scoreWrapper);
+  removeChildNodes($responseMessageWrapper);
+}
+
+// ADD CLICK EVENT
+function addHomeClicks(element, handler) {
+  element.addEventListener('click', handler);
+}
+
+// REMOVE CLICK EVENT
+function removeHomeClicks(element, handler) {
+  element.removeEventListener('click', handler);
 }
 
 // VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $mainHeadingWrapper.setAttribute('class', 'row');
+  $mainHeading.removeAttribute('class');
   $mainHeading.textContent = 'Select Category';
+  $countdownWrapper.setAttribute('class', 'hidden');
+  $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
-  removeChildNodes($quizHeadingWrapper);
-  removeChildNodes($multipleChoiceWrapper);
-  removeChildNodes($trueFalseWrapper);
-  removeChildNodes($scoreWrapper);
-  removeChildNodes($responseMessageWrapper);
-  clearData(data);
   $beginButton.removeAttribute('disabled');
+  $beginButton.setAttribute('value', 'begin');
+  $beginButton.setAttribute('class', 'submit-button text-upper');
+  clearData(data);
+  resetCountdown();
   $gameForm.reset();
   $quizForm.reset();
+  resetDOM();
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
 function viewDifficultySelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center');
-  $categoryWrapper.setAttribute('class', 'row hidden');
+  $typeWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Difficulty';
+}
+
+// VIEW SWAP TO TIME LIMIT SELECT
+function viewTimeLimitSelection() {
+  $timeLimitWrapper.setAttribute('class', 'row justify-center');
+  $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $mainHeading.textContent = 'Select Time Limit';
 }
 
 // VIEW SWAP TO LENGTH SELECT
 function viewLengthSelection() {
   $lengthWrapper.setAttribute('class', 'row justify-center');
-  $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $categoryWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Quiz Length';
 }
 
@@ -487,6 +647,7 @@ function viewQuiz() {
     displayTrueOrFalse(data.quizArray[0]);
   }
   $quizHeadingWrapper.setAttribute('class', 'row');
-  $typeWrapper.setAttribute('class', 'row justify-center hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeadingWrapper.setAttribute('class', 'row hidden');
+  addHomeClicks($htmlHeader, handleHomeClick);
 }

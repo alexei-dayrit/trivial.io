@@ -14,9 +14,9 @@ body {
 
 .main-container {
   margin: 0 auto;
-  max-width: 475px;
-  min-height: 90vh;
-  padding: 2rem;
+  max-width: 500px;
+  min-height: 600px;
+  padding: 1rem;
 }
 
 .row {
@@ -36,32 +36,51 @@ body {
   width: 95%;
 }
 
-.col-sm-fourth {
-  width: 25%;
+.col-sm-third {
+  width: 33%;
 }
 
 @media screen and (min-width: 768px) {
   .main-container {
     max-width: 1000px;
+    padding: 2rem;
   }
 
   .col-lg-half {
     width: 50%;
   }
 
-  #brand-name {
-    margin: 0.5rem 0 0 !important;
+  .col-lg-fourth {
+    width: 25%;
   }
 
-  .col-lg-15 {
-    width: 15%;
+  #brand-icon {
+    padding-top: 0.3rem;
+  }
+
+  h1#brand-name {
+    margin: 0.5rem 0 0;
+    font-size: 32px;
+  }
+
+  #main-heading,
+  #quiz-question-heading {
+    margin-top: 6rem;
+  }
+
+  .countdown-text {
+    margin: 1rem 0 0;
+    font-size: 24px;
   }
 
   .difficulty-button {
-    max-width: 60%;
+    max-width: 80%;
+    margin: 0;
   }
 
-  .type-button {
+  .length-button,
+  .type-button,
+  .time-button {
     width: 40%;
   }
 
@@ -72,5 +91,13 @@ body {
   input[name="im-crazy"],
   input[name="im-insane"] {
     max-width: 20%;
+  }
+
+  footer {
+    border-style: none;
+    bottom: 0;
+    margin: 0;
+    padding: 2rem 0;
+    position: absolute;
   }
 }
