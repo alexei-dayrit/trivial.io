@@ -1,6 +1,7 @@
 /* global data */
 /* exported data */
 
+var $brandIcon = document.querySelector('#brand-icon');
 var $brandName = document.querySelector('#brand-name');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
@@ -30,14 +31,15 @@ var clickCounter = 0;
 var countdownID;
 
 // HANDLE BRAND CLICKS
-function handleBrandClicks(event) {
-  if (event.target.tagName === 'H1') {
+function handleHomeClick(event) {
+  if (event.target.tagName === 'H1' || event.target.tagName === 'IMG') {
     viewCategorySelection();
   }
 }
 
-// HANDLE BRAND LISTENER
-$brandName.addEventListener('click', handleBrandClicks);
+// BRAND CLICK LISTENER
+$brandName.addEventListener('click', handleHomeClick);
+$brandIcon.addEventListener('click', handleHomeClick);
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
@@ -103,7 +105,6 @@ function skipSelections() {
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
     $mainHeading.setAttribute('class', 'remove-margin-bottom');
     viewTimeLimitSelection();
-    console.log('SKIPPED OPTIONS!');
   } else {
     viewTypeSelection();
   }
@@ -383,9 +384,6 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
-    console.log('xhrGame status:', xhrGame.status);
-    console.log('xhrGame response:', xhrGame.response);
-    console.log('xhrGame responseURL:', xhrGame.responseURL);
     $mainHeading.removeAttribute('class');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
@@ -396,6 +394,12 @@ function getGame(token) {
 // HANDLE GAME FORM
 function handleGameForm(event) {
   event.preventDefault();
+  if (data.selectedTimeLimit === 0) {
+    return;
+  }
+  $brandIcon.removeEventListener('click', handleHomeClick);
+  $brandName.removeEventListener('click', handleHomeClick);
+  $beginButton.setAttribute('value', 'LOADING..');
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
@@ -566,6 +570,7 @@ function resetDOM() {
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $mainHeadingWrapper.setAttribute('class', 'row');
+  $mainHeading.removeAttribute('class');
   $mainHeading.textContent = 'Select Category';
   $countdownWrapper.setAttribute('class', 'hidden');
   $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
@@ -574,6 +579,7 @@ function viewCategorySelection() {
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $beginButton.removeAttribute('disabled');
+  $beginButton.setAttribute('value', 'begin');
   $beginButton.setAttribute('class', 'submit-button text-upper');
   resetDOM();
   clearData(data);
@@ -624,4 +630,6 @@ function viewQuiz() {
   $quizHeadingWrapper.setAttribute('class', 'row');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeadingWrapper.setAttribute('class', 'row hidden');
+  $brandName.addEventListener('click', handleHomeClick);
+  $brandIcon.addEventListener('click', handleHomeClick);
 }

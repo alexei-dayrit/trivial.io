@@ -74,11 +74,13 @@ body {
   }
 
   .difficulty-button {
-    max-width: 60%;
+    max-width: 80%;
     margin: 0;
   }
 
-  .type-button {
+  .length-button,
+  .type-button,
+  .time-button {
     width: 40%;
   }
 
