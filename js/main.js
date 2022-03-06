@@ -76,7 +76,11 @@ function handleTimeLimit(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === '5s') {
+    // CHANGE BACK TO 5
+    // CHANGE BACK TO 5
     data.selectedTimeLimit = 5;
+    // CHANGE BACK TO 5
+    // CHANGE BACK TO 5
     timeSelection = 5;
   } else if (event.target.name === '10s') {
     data.selectedTimeLimit = 10;
@@ -100,7 +104,7 @@ function handleQuizLength(event) {
     // CHANGE BACK TO 5
     // CHANGE BACK TO 5
     // CHANGE BACK TO 5
-    lengthSelection = '2';
+    lengthSelection = '5';
   } else if (event.target.name === 'ten-qs') {
     lengthSelection = '10';
   } else if (event.target.name === 'fifteen-qs') {
@@ -182,6 +186,10 @@ function displayNextQuestion() {
   data.currentQuestionNum++;
   var currentIndex = data.currentQuestionNum;
 
+  if (timeSelection !== data.selectedTimeLimit) {
+    resetCountdown();
+  }
+
   if (data.quizArray[currentIndex] === undefined) {
     displayTotalScore();
   } else if (data.quizArray[currentIndex].type === 'multiple') {
@@ -222,23 +230,28 @@ function displayCountdown() {
 
 // START COUNTDOWN TIMER
 function updateCountdown() {
-  console.log('updated:', timeSelection);
+  console.log('decremented time:', timeSelection);
   if (timeSelection > 0) {
     timeSelection--;
     $countdownText.textContent = timeSelection + 's left';
-  } else {
+  } else if (timeSelection === 0) {
     renderResponseMessage("TIME'S UP");
     removeAnswerClicks();
     highlightCorrectAnswer();
     $countdownText.setAttribute('class', 'countdown-text incorrect');
     clearInterval(countdownID);
+    setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
+    setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
+    setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
+    setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
+    setTimeout(function () { displayNextQuestion(); }, 3000);
   }
 }
 
 // RESET COUNTDOWN
 function resetCountdown() {
-  console.log('reseted time:', timeSelection);
   timeSelection = data.selectedTimeLimit;
+  console.log('reseted timeSelection:', timeSelection);
   clearInterval(countdownID);
 }
 
@@ -456,7 +469,7 @@ function renderTrueOrFalse() {
 
   var $quizQuestionHeading = document.createElement('h3');
   $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
-  $quizQuestionHeading.textContent = 'TESTER';
+  $quizQuestionHeading.textContent = '';
   $quizQuestionDiv.appendChild($quizQuestionHeading);
 
   var $trueDiv = document.createElement('div');
