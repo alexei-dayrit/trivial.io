@@ -96,7 +96,11 @@ function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'five-qs') {
-    lengthSelection = '5';
+    // CHANGE BACK TO 5
+    // CHANGE BACK TO 5
+    // CHANGE BACK TO 5
+    // CHANGE BACK TO 5
+    lengthSelection = '2';
   } else if (event.target.name === 'ten-qs') {
     lengthSelection = '10';
   } else if (event.target.name === 'fifteen-qs') {
@@ -174,6 +178,7 @@ function displayMultipleChoice(quizObject) {
 // FUNCTION TO DISPLAY NEXT QUESTION
 function displayNextQuestion() {
   addAnswerClicks();
+  $countdownText.setAttribute('class', 'countdown-text');
   data.currentQuestionNum++;
   var currentIndex = data.currentQuestionNum;
 
@@ -224,6 +229,7 @@ function updateCountdown() {
   } else {
     renderResponseMessage("TIME'S UP");
     removeAnswerClicks();
+    highlightCorrectAnswer();
     $countdownText.setAttribute('class', 'countdown-text incorrect');
     clearInterval(countdownID);
   }
