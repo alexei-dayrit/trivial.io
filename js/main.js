@@ -581,11 +581,11 @@ function viewCategorySelection() {
   $beginButton.removeAttribute('disabled');
   $beginButton.setAttribute('value', 'begin');
   $beginButton.setAttribute('class', 'submit-button text-upper');
-  resetDOM();
   clearData(data);
   resetCountdown();
   $gameForm.reset();
   $quizForm.reset();
+  resetDOM();
 }
 
 // VIEW SWAP TO DIFFICULTY SELECT
