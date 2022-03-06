@@ -1,8 +1,7 @@
 /* global data */
 /* exported data */
 
-var $brandIcon = document.querySelector('#brand-icon');
-var $brandName = document.querySelector('#brand-name');
+var $htmlHeader = document.querySelector('header');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
 var $defaultSelectionWrapper = document.querySelector('#default-selection-wrapper');
@@ -38,8 +37,7 @@ function handleHomeClick(event) {
 }
 
 // BRAND CLICK LISTENER
-$brandName.addEventListener('click', handleHomeClick);
-$brandIcon.addEventListener('click', handleHomeClick);
+$htmlHeader.addEventListener('click', handleHomeClick);
 
 // HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
@@ -397,8 +395,7 @@ function handleGameForm(event) {
   if (data.selectedTimeLimit === 0) {
     return;
   }
-  $brandIcon.removeEventListener('click', handleHomeClick);
-  $brandName.removeEventListener('click', handleHomeClick);
+  removeHomeClicks($htmlHeader, handleHomeClick);
   $beginButton.setAttribute('value', 'LOADING..');
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
@@ -566,6 +563,16 @@ function resetDOM() {
   removeChildNodes($responseMessageWrapper);
 }
 
+// ADD CLICK EVENT
+function addHomeClicks(element, handler) {
+  element.addEventListener('click', handler);
+}
+
+// REMOVE CLICK EVENT
+function removeHomeClicks(element, handler) {
+  element.removeEventListener('click', handler);
+}
+
 // VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
@@ -630,6 +637,5 @@ function viewQuiz() {
   $quizHeadingWrapper.setAttribute('class', 'row');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeadingWrapper.setAttribute('class', 'row hidden');
-  $brandName.addEventListener('click', handleHomeClick);
-  $brandIcon.addEventListener('click', handleHomeClick);
+  addHomeClicks($htmlHeader, handleHomeClick);
 }
