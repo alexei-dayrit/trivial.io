@@ -37,7 +37,7 @@ body {
 }
 
 .col-sm-third {
-  width: 33%;
+  width: calc(100% / 3);
 }
 
 @media screen and (min-width: 768px) {
@@ -59,8 +59,8 @@ body {
   }
 
   h1#brand-name {
-    margin: 0.5rem 0 0;
     font-size: 32px;
+    margin: 0.5rem 0 0;
   }
 
   #main-heading,
@@ -69,13 +69,13 @@ body {
   }
 
   .countdown-text {
-    margin: 1rem 0 0;
     font-size: 24px;
+    margin: 1rem 0 0;
   }
 
   .difficulty-button {
-    max-width: 80%;
     margin: 0;
+    max-width: 80%;
   }
 
   .length-button,

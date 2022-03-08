@@ -9,8 +9,6 @@
   --white-text-color: #d1d0c5;
 }
 
-/* HEADER */
-
 header {
   position: relative;
 }
@@ -24,8 +22,8 @@ header {
 }
 
 #brand-icon {
-  padding-top: 0.6rem;
   cursor: pointer;
+  padding-top: 0.6rem;
 }
 
 #countdown-wrapper {
@@ -38,8 +36,6 @@ header {
   margin: 1.6rem 0 0;
   font-size: 18px;
 }
-
-/* FORM */
 
 #main-heading,
 #quiz-question-heading {
@@ -110,8 +106,6 @@ div#default-selection-wrapper {
   background-color: var(--incorrect-color);
   color: var(--dark-gray-color);
 }
-
-/* BUTTONS */
 
 input {
   background-color: var(--light-gray-color);
@@ -194,11 +188,11 @@ input:active {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   font-size: 24px;
+  height: 60px;
   margin-top: 1.8rem;
   padding: 0;
   text-align: center;
   width: 45%;
-  height: 60px;
 }
 
 .submit-button:hover {
@@ -210,7 +204,6 @@ input:active {
   color: var(--accent-color);
 }
 
-/* FOOTER */
 footer {
   background-color: var(--dark-gray-color);
   border: 4px solid var(--light-gray-color);
@@ -235,8 +228,6 @@ footer a {
 .footer-logo-item {
   padding: 0 0.4rem;
 }
-
-/* UTILITY CLASSES */
 
 .align-center {
   align-items: center;
