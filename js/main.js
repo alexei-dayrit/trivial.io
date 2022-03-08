@@ -29,17 +29,14 @@ var $responseMessageWrapper = document.querySelector('#response-message-wrapper'
 var clickCounter = 0;
 var countdownID;
 
-// HANDLE BRAND CLICKS
 function handleHomeClick(event) {
   if (event.target.tagName === 'H1' || event.target.tagName === 'IMG') {
     viewCategorySelection();
   }
 }
 
-// BRAND CLICK LISTENER
 $htmlHeader.addEventListener('click', handleHomeClick);
 
-// HANDLE CATEGORY CLICKS
 function handleCategoryClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -60,10 +57,8 @@ function handleCategoryClicks(event) {
   setTimeout(function () { skipSelections(); }, 1000);
 }
 
-// CATEGORY CLICK LISTENER
 $categoryWrapper.addEventListener('click', handleCategoryClicks);
 
-// HANDLE DIFFICULTY CLICKS
 function handleDifficultyClicks(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -79,10 +74,8 @@ function handleDifficultyClicks(event) {
   viewTimeLimitSelection();
 }
 
-// DIFFICULTY CLICK LISTENER
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 
-// HANDLE TIME LIMIT CLICKS
 function handleTimeLimit(event) {
   if (event.target.name === '5-sec') {
     data.selectedTimeLimit = 5;
@@ -99,7 +92,6 @@ function handleTimeLimit(event) {
   }
 }
 
-// SKIP USER SELECTIONS
 function skipSelections() {
   $mainHeading.removeAttribute('class');
   if (data.totalQuestions < 100) {
@@ -114,7 +106,6 @@ function skipSelections() {
   }
 }
 
-// HANDLE LENGTH CLICKS
 function handleQuizLength(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -130,10 +121,8 @@ function handleQuizLength(event) {
   viewTypeSelection();
 }
 
-// HANDLE LENGTH LISTENER
 $lengthWrapper.addEventListener('click', handleQuizLength);
 
-// HANDLE TYPE CLICKS
 function handleQuizType(event) {
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -147,10 +136,8 @@ function handleQuizType(event) {
   viewDifficultySelection();
 }
 
-// HANDLE TYPE LISTENER
 $typeWrapper.addEventListener('click', handleQuizType);
 
-// ARRAY RANDOMIZER
 function shuffle(array) {
   for (var i = array.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -161,14 +148,12 @@ function shuffle(array) {
   return array;
 }
 
-// DECODE HTML
 function decodeEntity(inputStr) {
   var textarea = document.createElement('textarea');
   textarea.innerHTML = inputStr;
   return textarea.value;
 }
 
-// FUNCTION TO DISPLAY ONE MULTIPLE CHOICE QUESTION
 function displayMultipleChoice(quizObject) {
   var answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
@@ -195,18 +180,15 @@ function displayMultipleChoice(quizObject) {
   displayCountdown();
 }
 
-// FUNCTION TO DISPLAY NEXT QUESTION
 function displayNextQuestion() {
   addAnswerClicks();
   $countdownText.setAttribute('class', 'countdown-text');
   data.currentQuestionNum++;
   data.userAnswer = '';
   var currentIndex = data.currentQuestionNum;
-
   if (timeSelection !== data.selectedTimeLimit) {
     resetCountdown();
   }
-
   if (data.quizArray[currentIndex] === undefined) {
     displayTotalScore();
   } else if (data.quizArray[currentIndex].type === 'multiple') {
@@ -220,7 +202,6 @@ function displayNextQuestion() {
   }
 }
 
-// FUNCTION TO DISPLAY ONE TRUE/FALSE QUESTION
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
   $quizHeadingWrapper.setAttribute('class', 'row');
@@ -234,17 +215,14 @@ function displayTrueOrFalse(quizObject) {
   displayCountdown();
 }
 
-// TIME LIMIT LISTENER
 $timeLimitWrapper.addEventListener('click', handleTimeLimit);
 
-// DISPLAY COUNTDOWN
 function displayCountdown() {
   $countdownWrapper.removeAttribute('class');
   $countdownText.textContent = timeSelection + 's left';
   countdownID = setInterval(updateCountdown, 1000);
 }
 
-// START COUNTDOWN TIMER
 function updateCountdown() {
   if (timeSelection > 0) {
     timeSelection--;
@@ -259,13 +237,11 @@ function updateCountdown() {
   }
 }
 
-// RESET COUNTDOWN
 function resetCountdown() {
   timeSelection = data.selectedTimeLimit;
   clearInterval(countdownID);
 }
 
-// NEXT QUESTION TIMEOUT
 function displayNextQuestionTimeout() {
   setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
   setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
@@ -274,7 +250,6 @@ function displayNextQuestionTimeout() {
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
-// CHECKS IF USER ANSWER IS CORRECT
 function checkAnswer(button) {
   if (data.userAnswer === data.correctAnswer) {
     data.correctScore++;
@@ -288,14 +263,12 @@ function checkAnswer(button) {
   }
 }
 
-// DISPLAYS TOTAL SCORE
 function displayTotalScore() {
   var passingScore = Math.round(0.7 * data.quizArray.length);
   var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
   $countdownWrapper.setAttribute('class', 'hidden');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'TOTAL SCORE';
-
   if (data.correctScore === data.quizArray.length) {
     renderQuizScore(percentCorrect);
     renderResponseMessage('AMAZING!');
@@ -308,7 +281,6 @@ function displayTotalScore() {
   }
 }
 
-// HIGHLIGHTS CORRECT ANSWER
 function highlightCorrectAnswer() {
   var $allAnswerButtons = document.querySelectorAll('.answer-button');
   for (var i = 0; i < $allAnswerButtons.length; i++) {
@@ -318,7 +290,6 @@ function highlightCorrectAnswer() {
   }
 }
 
-// HANDLE MULTIPLE CHOICE ANSWER CLICKS
 function handleMultipleChoiceClicks(event) {
   clickCounter++;
   if (event.target.tagName !== 'INPUT') {
@@ -341,7 +312,6 @@ function handleMultipleChoiceClicks(event) {
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
-// HANDLE TRUE FALSE ANSWER CLICKS
 function handleTrueFalseClicks(event) {
   clickCounter++;
   if (event.target.tagName !== 'INPUT') {
@@ -360,7 +330,6 @@ function handleTrueFalseClicks(event) {
   setTimeout(function () { displayNextQuestion(); }, 3000);
 }
 
-// REMOVE CLICKS ON ANSWER BUTTONS
 function removeAnswerClicks() {
   if (clickCounter > 0 || timeSelection === 0) {
     $multipleChoiceWrapper.removeEventListener('click', handleMultipleChoiceClicks);
@@ -368,20 +337,15 @@ function removeAnswerClicks() {
   }
 }
 
-// ADD CLICKS ON ANSWER BUTTONS
 function addAnswerClicks() {
   clickCounter = 0;
   $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
   $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 }
 
-// MULTIPLE CHOICE CLICK LISTENER
 $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
-
-// TRUE FALSE CLICK LISTENER
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
-// GET GAME URL FROM API
 function getGame(token) {
   var xhrGame = new XMLHttpRequest();
   xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
@@ -399,9 +363,6 @@ function getGame(token) {
   xhrGame.send();
 }
 
-// if response.response_code !== 0, then generate general category any difficulty any type
-
-// HANDLE GAME FORM
 function handleGameForm(event) {
   event.preventDefault();
   if (data.selectedTimeLimit === 0) {
@@ -422,17 +383,14 @@ function handleGameForm(event) {
   $beginButton.setAttribute('disabled', 'true');
 }
 
-// GAME FORM SUBMIT LISTENER
 $gameForm.addEventListener('submit', handleGameForm);
 
-// REMOVES DOM TREE
 function removeChildNodes(parent) {
   while (parent.childNodes.length > 0) {
     parent.removeChild(parent.firstChild);
   }
 }
 
-// RENDER MULTIPLE CHOICE QUESTION
 function renderMultipleChoice() {
   var $quizQuestionDiv = document.createElement('div');
   $quizQuestionDiv.setAttribute('class', 'col-sm-full');
@@ -487,7 +445,6 @@ function renderMultipleChoice() {
   $option4Div.appendChild($option4);
 }
 
-// RENDER TRUE/FALSE QUESTION
 function renderTrueOrFalse() {
   var $quizQuestionDiv = document.createElement('div');
   $quizQuestionDiv.setAttribute('class', 'col-sm-full');
@@ -521,7 +478,6 @@ function renderTrueOrFalse() {
   $falseDiv.appendChild($falseAns);
 }
 
-// RENDER CORRECT/INCORRECT RESULT
 function renderResponseMessage(message) {
   var $responseMessageDiv = document.createElement('div');
   $responseMessageDiv.setAttribute('class', 'col-sm-full');
@@ -542,7 +498,6 @@ function renderResponseMessage(message) {
   return message;
 }
 
-// RENDER QUIZ SCORE
 function renderQuizScore(score) {
   var $scoreDiv = document.createElement('div');
   $scoreDiv.setAttribute('class', 'col-sm-full');
@@ -554,7 +509,6 @@ function renderQuizScore(score) {
   $scoreHeading.textContent = score;
 }
 
-// CLEAR DATA MODEL
 function clearData(data) {
   data.correctAnswer = '';
   data.correctScore = 0;
@@ -566,7 +520,6 @@ function clearData(data) {
   data.userAnswer = '';
 }
 
-// REMOVE ALL GENERATED DOM
 function resetDOM() {
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
@@ -575,17 +528,14 @@ function resetDOM() {
   removeChildNodes($responseMessageWrapper);
 }
 
-// ADD CLICK EVENT
 function addHomeClicks(element, handler) {
   element.addEventListener('click', handler);
 }
 
-// REMOVE CLICK EVENT
 function removeHomeClicks(element, handler) {
   element.removeEventListener('click', handler);
 }
 
-// VIEW SWAP TO HOME/CATEGORY SELECT
 function viewCategorySelection() {
   $categoryWrapper.setAttribute('class', 'row');
   $mainHeadingWrapper.setAttribute('class', 'row');
@@ -607,35 +557,30 @@ function viewCategorySelection() {
   resetDOM();
 }
 
-// VIEW SWAP TO DIFFICULTY SELECT
 function viewDifficultySelection() {
   $difficultyWrapper.setAttribute('class', 'row justify-center');
   $typeWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Difficulty';
 }
 
-// VIEW SWAP TO TIME LIMIT SELECT
 function viewTimeLimitSelection() {
   $timeLimitWrapper.setAttribute('class', 'row justify-center');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Time Limit';
 }
 
-// VIEW SWAP TO LENGTH SELECT
 function viewLengthSelection() {
   $lengthWrapper.setAttribute('class', 'row justify-center');
   $categoryWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Quiz Length';
 }
 
-// VIEW SWAP TO TYPE SELECT
 function viewTypeSelection() {
   $typeWrapper.setAttribute('class', 'row justify-center');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Quiz Type';
 }
 
-// VIEW SWAP TO QUIZ
 function viewQuiz() {
   if (data.quizArray[0].type === 'multiple') {
     $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
