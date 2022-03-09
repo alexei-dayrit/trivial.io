@@ -20,6 +20,7 @@ var timeSelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $skippedWrapper = document.querySelector('#skipped-selections-wrapper');
 var $scoreWrapper = document.querySelector('#score-wrapper');
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
@@ -98,9 +99,11 @@ function skipSelections() {
     $lengthWrapper.setAttribute('class', 'row justify-center hidden');
     $categoryWrapper.setAttribute('class', 'row hidden');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
-    $mainHeading.setAttribute('class', 'remove-margin-bottom');
+    $mainHeading.textContent = 'Default Values Selected';
+    $mainHeading.setAttribute('class', 'decrease-margin-bottom');
     lengthSelection = '10';
-    viewTimeLimitSelection();
+    $skippedWrapper.setAttribute('class', 'row');
+    setTimeout(function () { viewTimeLimitSelection(); }, 3000);
   } else {
     viewLengthSelection();
   }
@@ -566,6 +569,7 @@ function viewDifficultySelection() {
 function viewTimeLimitSelection() {
   $timeLimitWrapper.setAttribute('class', 'row justify-center');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $skippedWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Time Limit';
 }
 

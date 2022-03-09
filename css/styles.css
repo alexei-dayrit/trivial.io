@@ -45,10 +45,15 @@ header {
 
 form h2,
 form h3,
-#score-heading {
+#score-heading,
+#skipped-heading {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
+}
+
+#skipped-heading {
+  line-height: 1.6;
 }
 
 #score-heading {
@@ -58,7 +63,7 @@ form h3,
 }
 
 #category-wrapper {
-  padding-bottom: 4rem;
+  padding-bottom: 2rem;
 }
 
 #response-message {
@@ -206,12 +211,10 @@ input:active {
 
 footer {
   background-color: var(--dark-gray-color);
-  border: 4px solid var(--light-gray-color);
-  bottom: 1px;
+  bottom: 0;
   margin: 4rem 0 0;
-  padding: 1rem 0.5rem;
-  position: sticky;
-  width: 100%;
+  padding: 1rem 0;
+  position: absolute;
 }
 
 footer span {
@@ -257,6 +260,6 @@ footer a {
   text-transform: uppercase;
 }
 
-.remove-margin-bottom {
-  margin-bottom: 0 !important;
+.decrease-margin-bottom {
+  margin-bottom: 0.5rem !important;
 }

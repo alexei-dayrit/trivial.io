@@ -5,7 +5,6 @@ body {
   letter-spacing: 1px;
   line-height: 1.2;
   overflow-x: hidden;
-  position: relative;
 }
 
 .hidden {
@@ -13,10 +12,12 @@ body {
 }
 
 .main-container {
+  min-height: 700px;
   margin: 0 auto;
   max-width: 500px;
-  min-height: 600px;
   padding: 1rem;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .row {
@@ -90,14 +91,12 @@ body {
 
   input[name="im-crazy"],
   input[name="im-insane"] {
-    max-width: 20%;
+    max-width: 25%;
   }
 
   footer {
-    border-style: none;
-    bottom: 0;
+    bottom: 1px;
     margin: 0;
     padding: 2rem 0;
-    position: absolute;
   }
 }

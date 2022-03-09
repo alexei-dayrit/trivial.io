@@ -43,8 +43,9 @@
         </div>
         <div id="default-selection-wrapper" class="row justify-center hidden">
           <div class="col-sm-full flex justify-center">
-            <h5>Question Type: Any</h5>
+            <h5>Question Count: 10</h5>
             <h5>Difficulty: Any</h5>
+            <h5>Question Type: Any</h5>
           </div>
         </div>
         <div id="category-wrapper" class="row">
@@ -204,8 +205,15 @@
           </div>
         </div>
       </form>
-      <div id="score-wrapper" class="row">
+      <div id="skipped-selections-wrapper" class="row hidden">
+        <div class="col-sm-full">
+          <h3 id="skipped-heading">
+            Not enough questions in this category.
+            <br> Default values will be selected for you.
+          </h3>
+        </div>
       </div>
+      <div id="score-wrapper" class="row"></div>
       <form data-view="quiz-form">
         <div id="quiz-heading-wrapper" class="row hidden"></div>
         <div id="multiple-choice-wrapper" class="row justify-center hidden"></div>
