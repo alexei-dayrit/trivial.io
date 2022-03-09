@@ -209,6 +209,37 @@ input:active {
   color: var(--accent-color);
 }
 
+/* SPINNER */
+.lds-dual-ring {
+  display: inline-block;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  width: 40px;
+}
+
+.lds-dual-ring::after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid var(--accent-color);
+  border-color: var(--accent-color) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 footer {
   background-color: var(--dark-gray-color);
   bottom: 0;

@@ -7,6 +7,7 @@ var $mainHeading = document.querySelector('#main-heading');
 var $defaultSelectionWrapper = document.querySelector('#default-selection-wrapper');
 var $countdownWrapper = document.querySelector('#countdown-wrapper');
 var $countdownText = document.querySelector('.countdown-text');
+var $loadSpinner = document.querySelector('#load-spinner');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
@@ -44,6 +45,7 @@ function handleCategoryClicks(event) {
   }
   $mainHeading.textContent = 'LOADING...';
   $mainHeading.setAttribute('class', 'active-button');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring');
 
   var $closestCategory = event.target.closest('[data-category-id]');
   var categoryID = $closestCategory.getAttribute('data-category-id');
@@ -52,11 +54,16 @@ function handleCategoryClicks(event) {
   xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
   xhrQuestionCount.responseType = 'json';
   xhrQuestionCount.addEventListener('load', function () {
+    console.log('response:', xhrQuestionCount.response);
+    console.log('response code:', xhrQuestionCount.response.response_code);
+    console.log('response status:', xhrQuestionCount.status);
     data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
   });
   xhrQuestionCount.send();
   setTimeout(function () { skipSelections(); }, 1000);
 }
+
+// if response status isn't === 200 then display a message
 
 $categoryWrapper.addEventListener('click', handleCategoryClicks);
 
@@ -105,6 +112,7 @@ function skipSelections() {
     $skippedWrapper.setAttribute('class', 'row');
     setTimeout(function () { viewTimeLimitSelection(); }, 3000);
   } else {
+    $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
     viewLengthSelection();
   }
 }
@@ -359,6 +367,10 @@ function getGame(token) {
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
+    console.log('xhrGame status:', xhrGame.status);
+    console.log('xhrGame response:', xhrGame.response);
+    console.log('xhrGame response code:', xhrGame.response.response_code);
+    console.log('xhrGame responseURL:', xhrGame.responseURL);
     $mainHeading.removeAttribute('class');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
@@ -366,11 +378,14 @@ function getGame(token) {
   xhrGame.send();
 }
 
+// if response code isn't === 0 then display message or if status isn't === 200 display message
+
 function handleGameForm(event) {
   event.preventDefault();
   if (data.selectedTimeLimit === 0) {
     return;
   }
+  $loadSpinner.setAttribute('class', 'lds-dual-ring');
   removeHomeClicks($htmlHeader, handleHomeClick);
   $beginButton.setAttribute('value', 'LOADING..');
   var xhrToken = new XMLHttpRequest();
@@ -570,6 +585,7 @@ function viewTimeLimitSelection() {
   $timeLimitWrapper.setAttribute('class', 'row justify-center');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $skippedWrapper.setAttribute('class', 'row hidden');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $mainHeading.textContent = 'Select Time Limit';
 }
 
@@ -596,6 +612,7 @@ function viewQuiz() {
     displayTrueOrFalse(data.quizArray[0]);
   }
   $quizHeadingWrapper.setAttribute('class', 'row');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeadingWrapper.setAttribute('class', 'row hidden');
   addHomeClicks($htmlHeader, handleHomeClick);
