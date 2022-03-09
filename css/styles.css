@@ -46,14 +46,22 @@ header {
 form h2,
 form h3,
 #score-heading,
-#skipped-heading {
+#skipped-heading,
+#empty-result-heading,
+#network-error-heading {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
 }
 
-#skipped-heading {
+#skipped-heading,
+#empty-result-heading,
+#network-error-heading {
   line-height: 1.6;
+}
+
+#empty-result-heading {
+  margin: 0;
 }
 
 #score-heading {

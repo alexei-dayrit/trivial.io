@@ -206,14 +206,6 @@
           </div>
         </div>
       </form>
-      <div id="skipped-selections-wrapper" class="row hidden">
-        <div class="col-sm-full">
-          <h3 id="skipped-heading">
-            Not enough questions in this category.
-            <br> Default values will be selected for you.
-          </h3>
-        </div>
-      </div>
       <div id="score-wrapper" class="row"></div>
       <form data-view="quiz-form">
         <div id="quiz-heading-wrapper" class="row hidden"></div>
@@ -222,6 +214,30 @@
         <div id="response-message-wrapper" class="row">
         </div>
       </form>
+      <div id="skipped-selections-wrapper" class="row hidden">
+        <div class="col-sm-full">
+          <h3 id="skipped-heading">
+            Not enough questions in this category.
+            <br> Default values will be selected for you.
+          </h3>
+        </div>
+      </div>
+      <div id="empty-result-wrapper" class="row hidden">
+        <div class="col-sm-full">
+          <h3 id="empty-result-heading">
+            No results from API database! <br>
+            Please refresh the page and try again.
+          </h3>
+        </div>
+      </div>
+      <div id="network-error-wrapper" class="row hidden">
+        <div class="col-sm-full">
+          <h3 id="network-error-heading">
+            Sorry, there was an error connecting to the network! <br>
+            Please check your internet connection, then refresh and try again.
+          </h3>
+        </div>
+      </div>
     </main>
     <footer class="row">
       <div class="col-sm-full">

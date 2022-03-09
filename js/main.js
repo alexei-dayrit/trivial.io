@@ -22,6 +22,8 @@ var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
 var $skippedWrapper = document.querySelector('#skipped-selections-wrapper');
+var $emptyResultWrapper = document.querySelector('#empty-result-wrapper');
+var $networkErrorWrapper = document.querySelector('#network-error-wrapper');
 var $scoreWrapper = document.querySelector('#score-wrapper');
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
@@ -54,6 +56,9 @@ function handleCategoryClicks(event) {
   xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
   xhrQuestionCount.responseType = 'json';
   xhrQuestionCount.addEventListener('load', function () {
+    if (xhrQuestionCount.status !== 200) {
+      console.log('hi');
+    }
     console.log('response:', xhrQuestionCount.response);
     console.log('response code:', xhrQuestionCount.response.response_code);
     console.log('response status:', xhrQuestionCount.status);
@@ -63,7 +68,15 @@ function handleCategoryClicks(event) {
   setTimeout(function () { skipSelections(); }, 1000);
 }
 
-// if response status isn't === 200 then display a message
+function displaySearchError() {
+  $mainHeading.textContent = 'ERROR';
+  $mainHeading.setAttribute('class', 'incorrect decrease-margin-bottom');
+  $emptyResultWrapper.setAttribute('class', 'row');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
+  $categoryWrapper.setAttribute('class', 'row hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
+  $skippedWrapper.setAttribute('class', 'row hidden');
+}
 
 $categoryWrapper.addEventListener('click', handleCategoryClicks);
 
@@ -102,7 +115,7 @@ function handleTimeLimit(event) {
 
 function skipSelections() {
   $mainHeading.removeAttribute('class');
-  if (data.totalQuestions < 100) {
+  if (data.totalQuestions < 10) {
     $lengthWrapper.setAttribute('class', 'row justify-center hidden');
     $categoryWrapper.setAttribute('class', 'row hidden');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
@@ -364,6 +377,9 @@ function getGame(token) {
     '&' + 'type=' + typeSelection + '&' + 'token=' + token);
   xhrGame.responseType = 'json';
   xhrGame.addEventListener('load', function () {
+    if (xhrGame.response.response_code !== 0) {
+      displaySearchError();
+    }
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
@@ -371,14 +387,14 @@ function getGame(token) {
     console.log('xhrGame response:', xhrGame.response);
     console.log('xhrGame response code:', xhrGame.response.response_code);
     console.log('xhrGame responseURL:', xhrGame.responseURL);
-    $mainHeading.removeAttribute('class');
+    // $mainHeading.removeAttribute('class');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
   });
   xhrGame.send();
 }
 
-// if response code isn't === 0 then display message or if status isn't === 200 display message
+// if response code isn't === 0 then display message or if status isn't === 200 display msg
 
 function handleGameForm(event) {
   event.preventDefault();
