@@ -89,8 +89,8 @@ body {
     max-width: 25%;
   }
 
-  input[name="im-crazy"],
-  input[name="im-insane"] {
+  input[name="any-difficulty"],
+  input[name="any-category"] {
     max-width: 25%;
   }
 

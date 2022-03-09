@@ -145,8 +145,8 @@
               class="category-button text-capitalize" value="cartoon &amp; animations">
           </div>
           <div class="col-sm-full flex justify-center text-capitalize">
-            <input data-category-id="" type="button" name="im-crazy" class="category-button text-capitalize"
-              value="i'm crazy">
+            <input data-category-id="" type="button" name="any-category" class="category-button text-capitalize"
+              value="any">
           </div>
         </div>
         <div id="length-wrapper" class="row justify-center hidden">
@@ -185,7 +185,7 @@
             <input type="button" name="hard" class="difficulty-button text-capitalize" value="hard">
           </div>
           <div class="col-sm-full flex justify-center">
-            <input type="button" name="im-insane" class="difficulty-button text-capitalize" value="im insane">
+            <input type="button" name="any-difficulty" class="difficulty-button text-capitalize" value="any">
           </div>
         </div>
         <div id="time-limit-wrapper" class="row justify-center hidden">
@@ -200,6 +200,9 @@
           </div>
           <div class="col-sm-full flex justify-center">
             <input type="button" name="20-sec" class="time-button" value="20 sec">
+          </div>
+          <div class="col-sm-full flex justify-center">
+            <h3 class="ready-text">Ready to start?</h3>
           </div>
           <div class="col-sm-full flex justify-center height-77px">
             <input type="submit" name="submit" class="submit-button text-upper" value="begin">
@@ -217,8 +220,8 @@
       <div id="skipped-selections-wrapper" class="row hidden">
         <div class="col-sm-full">
           <h3 id="skipped-heading">
-            Not enough questions in this category.
-            <br> Default values will be selected for you.
+            Not enough questions in this category. <br>
+            Default values will be selected for you.
           </h3>
         </div>
       </div>
@@ -227,14 +230,6 @@
           <h3 id="empty-result-heading">
             No results from API database! <br>
             Please refresh the page and try again.
-          </h3>
-        </div>
-      </div>
-      <div id="network-error-wrapper" class="row hidden">
-        <div class="col-sm-full">
-          <h3 id="network-error-heading">
-            Sorry, there was an error connecting to the network! <br>
-            Please check your internet connection, then refresh and try again.
           </h3>
         </div>
       </div>

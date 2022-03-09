@@ -60,6 +60,7 @@ form h3,
   line-height: 1.6;
 }
 
+#skipped-heading,
 #empty-result-heading {
   margin: 0;
 }
@@ -81,6 +82,13 @@ form h3,
 
 #response-message-wrapper {
   margin: 2.5rem 0 0;
+}
+
+.ready-text {
+  color: var(--accent-color);
+  margin-bottom: 0;
+  margin-top: 1rem;
+  opacity: 0.8;
 }
 
 h5 {
@@ -162,8 +170,8 @@ input[name="hard"] {
   background-color: #de785d;
 }
 
-input[name="im-crazy"],
-input[name="im-insane"] {
+input[name="any-difficulty"],
+input[name="any-category"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
@@ -177,8 +185,8 @@ input:hover {
   color: var(--dark-gray-color);
 }
 
-input[name="im-crazy"]:hover,
-input[name="im-insane"]:hover {
+input[name="any-difficulty"]:hover,
+input[name="any-category"]:hover {
   background-color: var(--heading-text-color);
   color: var(--accent-color);
 }
@@ -202,7 +210,7 @@ input:active {
   font-family: var(--lexend-font);
   font-size: 24px;
   height: 60px;
-  margin-top: 1.8rem;
+  margin-top: 0;
   padding: 0;
   text-align: center;
   width: 45%;

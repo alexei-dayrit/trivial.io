@@ -10,6 +10,7 @@ var $countdownText = document.querySelector('.countdown-text');
 var $loadSpinner = document.querySelector('#load-spinner');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
+var $allCategoryButtons = document.querySelectorAll('.category-button');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $timeLimitWrapper = document.querySelector('#time-limit-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
@@ -23,7 +24,6 @@ var typeSelection = '';
 var sessionCode = '';
 var $skippedWrapper = document.querySelector('#skipped-selections-wrapper');
 var $emptyResultWrapper = document.querySelector('#empty-result-wrapper');
-var $networkErrorWrapper = document.querySelector('#network-error-wrapper');
 var $scoreWrapper = document.querySelector('#score-wrapper');
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
@@ -57,25 +57,13 @@ function handleCategoryClicks(event) {
   xhrQuestionCount.responseType = 'json';
   xhrQuestionCount.addEventListener('load', function () {
     if (xhrQuestionCount.status !== 200) {
-      console.log('hi');
+      displaySearchError();
     }
-    console.log('response:', xhrQuestionCount.response);
-    console.log('response code:', xhrQuestionCount.response.response_code);
-    console.log('response status:', xhrQuestionCount.status);
     data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
   });
   xhrQuestionCount.send();
+  removeClicks($categoryWrapper, handleCategoryClicks);
   setTimeout(function () { skipSelections(); }, 1000);
-}
-
-function displaySearchError() {
-  $mainHeading.textContent = 'ERROR';
-  $mainHeading.setAttribute('class', 'incorrect decrease-margin-bottom');
-  $emptyResultWrapper.setAttribute('class', 'row');
-  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
-  $categoryWrapper.setAttribute('class', 'row hidden');
-  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
-  $skippedWrapper.setAttribute('class', 'row hidden');
 }
 
 $categoryWrapper.addEventListener('click', handleCategoryClicks);
@@ -115,7 +103,7 @@ function handleTimeLimit(event) {
 
 function skipSelections() {
   $mainHeading.removeAttribute('class');
-  if (data.totalQuestions < 10) {
+  if (data.totalQuestions < 100) {
     $lengthWrapper.setAttribute('class', 'row justify-center hidden');
     $categoryWrapper.setAttribute('class', 'row hidden');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
@@ -213,6 +201,8 @@ function displayNextQuestion() {
   if (timeSelection !== data.selectedTimeLimit) {
     resetCountdown();
   }
+  // $htmlHeader.addEventListener('click', handleHomeClick);
+  // if home button clicked then stop displaying total score
   if (data.quizArray[currentIndex] === undefined) {
     displayTotalScore();
   } else if (data.quizArray[currentIndex].type === 'multiple') {
@@ -288,6 +278,9 @@ function checkAnswer(button) {
 }
 
 function displayTotalScore() {
+  if ($mainHeading.textContent === 'Select Category') {
+    return;
+  }
   var passingScore = Math.round(0.7 * data.quizArray.length);
   var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
   $countdownWrapper.setAttribute('class', 'hidden');
@@ -387,14 +380,11 @@ function getGame(token) {
     console.log('xhrGame response:', xhrGame.response);
     console.log('xhrGame response code:', xhrGame.response.response_code);
     console.log('xhrGame responseURL:', xhrGame.responseURL);
-    // $mainHeading.removeAttribute('class');
     $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
   });
   xhrGame.send();
 }
-
-// if response code isn't === 0 then display message or if status isn't === 200 display msg
 
 function handleGameForm(event) {
   event.preventDefault();
@@ -402,7 +392,7 @@ function handleGameForm(event) {
     return;
   }
   $loadSpinner.setAttribute('class', 'lds-dual-ring');
-  removeHomeClicks($htmlHeader, handleHomeClick);
+  removeClicks($htmlHeader, handleHomeClick);
   $beginButton.setAttribute('value', 'LOADING..');
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
@@ -543,6 +533,17 @@ function renderQuizScore(score) {
   $scoreHeading.textContent = score;
 }
 
+function displaySearchError() {
+  $mainHeading.textContent = 'ERROR';
+  $mainHeading.setAttribute('class', 'incorrect decrease-margin-bottom');
+  $emptyResultWrapper.setAttribute('class', 'row');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
+  $categoryWrapper.setAttribute('class', 'row hidden');
+  $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
+  $skippedWrapper.setAttribute('class', 'row hidden');
+}
+
 function clearData(data) {
   data.correctAnswer = '';
   data.correctScore = 0;
@@ -566,7 +567,7 @@ function addHomeClicks(element, handler) {
   element.addEventListener('click', handler);
 }
 
-function removeHomeClicks(element, handler) {
+function removeClicks(element, handler) {
   element.removeEventListener('click', handler);
 }
 
