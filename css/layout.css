@@ -5,7 +5,6 @@ body {
   letter-spacing: 1px;
   line-height: 1.2;
   overflow-x: hidden;
-  position: relative;
 }
 
 .hidden {
@@ -13,10 +12,12 @@ body {
 }
 
 .main-container {
+  min-height: 700px;
   margin: 0 auto;
   max-width: 500px;
-  min-height: 600px;
   padding: 1rem;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .row {
@@ -73,14 +74,10 @@ body {
     margin: 1rem 0 0;
   }
 
-  .difficulty-button {
-    margin: 0;
-    max-width: 80%;
-  }
-
   .length-button,
   .type-button,
-  .time-button {
+  .time-button,
+  .difficulty-button {
     width: 40%;
   }
 
@@ -88,16 +85,14 @@ body {
     max-width: 25%;
   }
 
-  input[name="im-crazy"],
-  input[name="im-insane"] {
-    max-width: 20%;
+  input[name="any-difficulty"],
+  input[name="any-category"] {
+    max-width: 25%;
   }
 
   footer {
-    border-style: none;
-    bottom: 0;
+    bottom: 1px;
     margin: 0;
     padding: 2rem 0;
-    position: absolute;
   }
 }

@@ -31,6 +31,7 @@
           <div id="countdown-wrapper" class="">
             <p class="countdown-text"></p>
           </div>
+          <div id="load-spinner" class="lds-dual-ring hidden"></div>
         </div>
       </div>
     </header>
@@ -41,10 +42,11 @@
             <h2 id="main-heading">Select Category</h2>
           </div>
         </div>
-        <div id="default-selection-wrapper" class="row justify-center hidden">
+        <div id="user-selection-wrapper" class="row justify-center hidden">
           <div class="col-sm-full flex justify-center">
-            <h5>Question Type: Any</h5>
-            <h5>Difficulty: Any</h5>
+            <h5 class="question-count-text text-capitalize"></h5>
+            <h5 class="question-type-text text-capitalize"></h5>
+            <h5 class="question-difficulty-text text-capitalize"></h5>
           </div>
         </div>
         <div id="category-wrapper" class="row">
@@ -143,8 +145,8 @@
               class="category-button text-capitalize" value="cartoon &amp; animations">
           </div>
           <div class="col-sm-full flex justify-center text-capitalize">
-            <input data-category-id="" type="button" name="im-crazy" class="category-button text-capitalize"
-              value="i'm crazy">
+            <input data-category-id="" type="button" name="any-category" class="category-button text-capitalize"
+              value="any">
           </div>
         </div>
         <div id="length-wrapper" class="row justify-center hidden">
@@ -173,17 +175,17 @@
           </div>
         </div>
         <div id="difficulty-wrapper" class="row justify-center hidden">
-          <div class="col-sm-third col-lg-fourth flex justify-center">
+          <div class="col-sm-full flex justify-center">
             <input type="button" name="easy" class="difficulty-button text-capitalize" value="easy">
           </div>
-          <div class="col-sm-third col-lg-fourth flex justify-center">
+          <div class="col-sm-full flex justify-center">
             <input type="button" name="med" class="difficulty-button text-capitalize" value="medium">
           </div>
-          <div class="col-sm-third col-lg-fourth flex justify-center">
+          <div class="col-sm-full flex justify-center">
             <input type="button" name="hard" class="difficulty-button text-capitalize" value="hard">
           </div>
           <div class="col-sm-full flex justify-center">
-            <input type="button" name="im-insane" class="difficulty-button text-capitalize" value="im insane">
+            <input type="button" name="any-difficulty" class="difficulty-button text-capitalize" value="any">
           </div>
         </div>
         <div id="time-limit-wrapper" class="row justify-center hidden">
@@ -199,13 +201,14 @@
           <div class="col-sm-full flex justify-center">
             <input type="button" name="20-sec" class="time-button" value="20 sec">
           </div>
+        </div>
+        <div id="begin-wrapper" class="row justify-center hidden">
           <div class="col-sm-full flex justify-center height-77px">
             <input type="submit" name="submit" class="submit-button text-upper" value="begin">
           </div>
         </div>
       </form>
-      <div id="score-wrapper" class="row">
-      </div>
+      <div id="score-wrapper" class="row"></div>
       <form data-view="quiz-form">
         <div id="quiz-heading-wrapper" class="row hidden"></div>
         <div id="multiple-choice-wrapper" class="row justify-center hidden"></div>
@@ -213,6 +216,22 @@
         <div id="response-message-wrapper" class="row">
         </div>
       </form>
+      <div id="skipped-selections-wrapper" class="row hidden">
+        <div class="col-sm-full">
+          <h3 id="skipped-heading">
+            Sorry, not enough questions in API database. <br>
+            Default values will be selected for you.
+          </h3>
+        </div>
+      </div>
+      <div id="empty-result-wrapper" class="row hidden">
+        <div class="col-sm-full">
+          <h3 id="empty-result-heading">
+            Not enough results from API database! <br>
+            Please refresh the page and try a different configuration.
+          </h3>
+        </div>
+      </div>
     </main>
     <footer class="row">
       <div class="col-sm-full">

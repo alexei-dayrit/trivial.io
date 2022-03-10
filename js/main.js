@@ -4,15 +4,20 @@
 var $htmlHeader = document.querySelector('header');
 var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
 var $mainHeading = document.querySelector('#main-heading');
-var $defaultSelectionWrapper = document.querySelector('#default-selection-wrapper');
+var $userSelectionWrapper = document.querySelector('#user-selection-wrapper');
+var $questionCountText = document.querySelector('.question-count-text');
+var $questionTypeText = document.querySelector('.question-type-text');
+var $questionDifficultyText = document.querySelector('.question-difficulty-text');
 var $countdownWrapper = document.querySelector('#countdown-wrapper');
 var $countdownText = document.querySelector('.countdown-text');
+var $loadSpinner = document.querySelector('#load-spinner');
 var $gameForm = document.querySelector('form[data-view="create-game"]');
 var $categoryWrapper = document.querySelector('#category-wrapper');
 var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
 var $timeLimitWrapper = document.querySelector('#time-limit-wrapper');
 var $lengthWrapper = document.querySelector('#length-wrapper');
 var $typeWrapper = document.querySelector('#type-wrapper');
+var $beginWrapper = document.querySelector('#begin-wrapper');
 var $beginButton = document.querySelector('input[type="submit"]');
 var categorySelection = '';
 var difficultySelection = '';
@@ -20,6 +25,8 @@ var timeSelection = '';
 var lengthSelection = '';
 var typeSelection = '';
 var sessionCode = '';
+var $skippedWrapper = document.querySelector('#skipped-selections-wrapper');
+var $emptyResultWrapper = document.querySelector('#empty-result-wrapper');
 var $scoreWrapper = document.querySelector('#score-wrapper');
 var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
 var $quizForm = document.querySelector('form[data-view="quiz-form"]');
@@ -43,7 +50,7 @@ function handleCategoryClicks(event) {
   }
   $mainHeading.textContent = 'LOADING...';
   $mainHeading.setAttribute('class', 'active-button');
-
+  $loadSpinner.setAttribute('class', 'lds-dual-ring');
   var $closestCategory = event.target.closest('[data-category-id]');
   var categoryID = $closestCategory.getAttribute('data-category-id');
   categorySelection = categoryID;
@@ -51,9 +58,13 @@ function handleCategoryClicks(event) {
   xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
   xhrQuestionCount.responseType = 'json';
   xhrQuestionCount.addEventListener('load', function () {
+    if (xhrQuestionCount.status !== 200) {
+      displaySearchError();
+    }
     data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
   });
   xhrQuestionCount.send();
+  removeClicks($categoryWrapper, handleCategoryClicks);
   setTimeout(function () { skipSelections(); }, 1000);
 }
 
@@ -71,6 +82,7 @@ function handleDifficultyClicks(event) {
   } else if (event.target.name === 'im-insane') {
     difficultySelection = '';
   }
+  $questionDifficultyText.textContent = 'Difficulty: ' + difficultySelection;
   viewTimeLimitSelection();
 }
 
@@ -90,35 +102,54 @@ function handleTimeLimit(event) {
     data.selectedTimeLimit = 20;
     timeSelection = 20;
   }
+  viewReadyScreen();
 }
+
+$timeLimitWrapper.addEventListener('click', handleTimeLimit);
 
 function skipSelections() {
   $mainHeading.removeAttribute('class');
-  if (data.totalQuestions < 100) {
+  addClicks($categoryWrapper, handleCategoryClicks);
+  removeClicks($htmlHeader, handleHomeClick);
+  if (lengthSelection === '') {
+    lengthSelection = 10;
+  }
+  if (data.totalQuestions < 100 || lengthSelection === '15' || lengthSelection === '20') {
+    $loadSpinner.setAttribute('class', 'lds-dual-ring');
     $lengthWrapper.setAttribute('class', 'row justify-center hidden');
     $categoryWrapper.setAttribute('class', 'row hidden');
-    $defaultSelectionWrapper.setAttribute('class', 'row justify-center');
-    $mainHeading.setAttribute('class', 'remove-margin-bottom');
-    lengthSelection = '10';
-    viewTimeLimitSelection();
+    $userSelectionWrapper.setAttribute('class', 'row justify-center');
+    $mainHeading.textContent = 'Default Values Selected';
+    $mainHeading.setAttribute('class', 'decrease-margin-bottom');
+    $questionCountText.textContent = 'Questions: ' + lengthSelection;
+    $questionTypeText.textContent = 'Type: Any';
+    $questionDifficultyText.textContent = 'Difficulty: Any';
+    $skippedWrapper.setAttribute('class', 'row');
+    setTimeout(function () { viewTimeLimitSelection(); }, 3000);
   } else {
+    $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
     viewLengthSelection();
   }
 }
 
 function handleQuizLength(event) {
-  if (event.target.tagName !== 'INPUT') {
-    return;
-  } else if (event.target.name === 'five-qs') {
+  if (event.target.name === 'five-qs') {
     lengthSelection = '5';
+    $questionCountText.textContent = 'Questions: ' + lengthSelection;
+    $loadSpinner.setAttribute('class', 'lds-dual-ring');
+    viewTypeSelection();
   } else if (event.target.name === 'ten-qs') {
     lengthSelection = '10';
+    $questionCountText.textContent = 'Questions: ' + lengthSelection;
+    $loadSpinner.setAttribute('class', 'lds-dual-ring');
+    viewTypeSelection();
   } else if (event.target.name === 'fifteen-qs') {
     lengthSelection = '15';
+    skipSelections();
   } else if (event.target.name === 'twenty-qs') {
     lengthSelection = '20';
+    skipSelections();
   }
-  viewTypeSelection();
 }
 
 $lengthWrapper.addEventListener('click', handleQuizLength);
@@ -133,6 +164,7 @@ function handleQuizType(event) {
   } else if (event.target.name === 'any-type') {
     typeSelection = '';
   }
+  $questionTypeText.textContent = 'Type: ' + event.target.value;
   viewDifficultySelection();
 }
 
@@ -215,8 +247,6 @@ function displayTrueOrFalse(quizObject) {
   displayCountdown();
 }
 
-$timeLimitWrapper.addEventListener('click', handleTimeLimit);
-
 function displayCountdown() {
   $countdownWrapper.removeAttribute('class');
   $countdownText.textContent = timeSelection + 's left';
@@ -264,6 +294,9 @@ function checkAnswer(button) {
 }
 
 function displayTotalScore() {
+  if ($mainHeading.textContent === 'Select Category') {
+    return;
+  }
   var passingScore = Math.round(0.7 * data.quizArray.length);
   var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
   $countdownWrapper.setAttribute('class', 'hidden');
@@ -353,11 +386,13 @@ function getGame(token) {
     '&' + 'type=' + typeSelection + '&' + 'token=' + token);
   xhrGame.responseType = 'json';
   xhrGame.addEventListener('load', function () {
+    if (xhrGame.response.response_code !== 0) {
+      displaySearchError();
+    }
     for (var i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
-    $mainHeading.removeAttribute('class');
-    $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
+    $userSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
   });
   xhrGame.send();
@@ -368,7 +403,8 @@ function handleGameForm(event) {
   if (data.selectedTimeLimit === 0) {
     return;
   }
-  removeHomeClicks($htmlHeader, handleHomeClick);
+  $loadSpinner.setAttribute('class', 'lds-dual-ring');
+  removeClicks($htmlHeader, handleHomeClick);
   $beginButton.setAttribute('value', 'LOADING..');
   var xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
@@ -509,7 +545,20 @@ function renderQuizScore(score) {
   $scoreHeading.textContent = score;
 }
 
-function clearData(data) {
+function displaySearchError() {
+  $mainHeading.textContent = 'ERROR';
+  $mainHeading.setAttribute('class', 'incorrect decrease-margin-bottom');
+  $emptyResultWrapper.setAttribute('class', 'row');
+  $beginWrapper.setAttribute('class', 'row justify-center hidden');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
+  $categoryWrapper.setAttribute('class', 'row hidden');
+  $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
+  $skippedWrapper.setAttribute('class', 'row hidden');
+  addClicks($htmlHeader, handleHomeClick);
+}
+
+function clearDataModel(data) {
   data.correctAnswer = '';
   data.correctScore = 0;
   data.currentQuestionNum = 0;
@@ -520,6 +569,14 @@ function clearData(data) {
   data.userAnswer = '';
 }
 
+function clearVarsMainJS() {
+  categorySelection = '';
+  difficultySelection = '';
+  timeSelection = '';
+  lengthSelection = '';
+  typeSelection = '';
+}
+
 function resetDOM() {
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
@@ -528,11 +585,17 @@ function resetDOM() {
   removeChildNodes($responseMessageWrapper);
 }
 
-function addHomeClicks(element, handler) {
+function resetUserSelectionText() {
+  $questionCountText.textContent = 'Questions: 10';
+  $questionTypeText.textContent = 'Type: Any';
+  $questionDifficultyText.textContent = 'Difficulty: Any';
+}
+
+function addClicks(element, handler) {
   element.addEventListener('click', handler);
 }
 
-function removeHomeClicks(element, handler) {
+function removeClicks(element, handler) {
   element.removeEventListener('click', handler);
 }
 
@@ -542,15 +605,19 @@ function viewCategorySelection() {
   $mainHeading.removeAttribute('class');
   $mainHeading.textContent = 'Select Category';
   $countdownWrapper.setAttribute('class', 'hidden');
-  $defaultSelectionWrapper.setAttribute('class', 'row justify-center hidden');
+  $userSelectionWrapper.setAttribute('class', 'row justify-center hidden');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
   $typeWrapper.setAttribute('class', 'row justify-center hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $beginButton.removeAttribute('disabled');
+  $beginWrapper.setAttribute('class', 'row justify-center hidden');
+  $emptyResultWrapper.setAttribute('class', 'row hidden');
+  resetUserSelectionText();
   $beginButton.setAttribute('value', 'begin');
   $beginButton.setAttribute('class', 'submit-button text-upper');
-  clearData(data);
+  clearDataModel(data);
+  clearVarsMainJS();
   resetCountdown();
   $gameForm.reset();
   $quizForm.reset();
@@ -564,18 +631,34 @@ function viewDifficultySelection() {
 }
 
 function viewTimeLimitSelection() {
+  addClicks($htmlHeader, handleHomeClick);
   $timeLimitWrapper.setAttribute('class', 'row justify-center');
+  $userSelectionWrapper.setAttribute('class', 'row justify-center');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
+  $lengthWrapper.setAttribute('class', 'row justify-center hidden');
+  $skippedWrapper.setAttribute('class', 'row hidden');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $mainHeading.textContent = 'Select Time Limit';
+  $mainHeading.setAttribute('class', 'decrease-margin-bottom');
+}
+
+function viewReadyScreen() {
+  $mainHeading.textContent = 'Ready to start?';
+  $mainHeading.setAttribute('class', 'accent-color decrease-margin-bottom font-size-30');
+  $beginWrapper.setAttribute('class', 'row justify-center');
+  $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
 }
 
 function viewLengthSelection() {
+  addClicks($htmlHeader, handleHomeClick);
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center');
   $categoryWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Quiz Length';
 }
 
 function viewTypeSelection() {
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $typeWrapper.setAttribute('class', 'row justify-center');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Quiz Type';
@@ -592,7 +675,9 @@ function viewQuiz() {
     displayTrueOrFalse(data.quizArray[0]);
   }
   $quizHeadingWrapper.setAttribute('class', 'row');
+  $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
+  $beginWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeadingWrapper.setAttribute('class', 'row hidden');
-  addHomeClicks($htmlHeader, handleHomeClick);
+  addClicks($htmlHeader, handleHomeClick);
 }

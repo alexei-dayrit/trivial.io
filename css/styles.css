@@ -45,10 +45,24 @@ header {
 
 form h2,
 form h3,
-#score-heading {
+#score-heading,
+#skipped-heading,
+#empty-result-heading,
+#network-error-heading {
   color: var(--heading-text-color);
   font-family: var(--lexend-font);
   text-align: center;
+}
+
+#skipped-heading,
+#empty-result-heading,
+#network-error-heading {
+  line-height: 1.6;
+}
+
+#skipped-heading,
+#empty-result-heading {
+  margin: 0;
 }
 
 #score-heading {
@@ -58,7 +72,7 @@ form h3,
 }
 
 #category-wrapper {
-  padding-bottom: 4rem;
+  padding-bottom: 2rem;
 }
 
 #response-message {
@@ -74,7 +88,7 @@ h5 {
   margin: 1rem;
 }
 
-div#default-selection-wrapper {
+div#user-selection-wrapper {
   color: var(--accent-color);
   opacity: 0.5;
   text-align: center;
@@ -124,12 +138,7 @@ input {
 }
 
 .difficulty-button {
-  border-style: none;
   color: var(--dark-gray-color);
-  line-height: 2;
-  margin: 0 0.8rem;
-  padding: 0.4rem 2rem;
-  width: 100%;
 }
 
 .difficulty-button:hover {
@@ -149,12 +158,12 @@ input[name="hard"] {
   background-color: #de785d;
 }
 
-input[name="im-crazy"],
-input[name="im-insane"] {
+input[name="any-difficulty"],
+input[name="any-category"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
-  margin: 2rem 0;
+  margin: 1rem 0;
   padding: 0.4rem 2rem;
   width: 50%;
 }
@@ -164,8 +173,8 @@ input:hover {
   color: var(--dark-gray-color);
 }
 
-input[name="im-crazy"]:hover,
-input[name="im-insane"]:hover {
+input[name="any-difficulty"]:hover,
+input[name="any-category"]:hover {
   background-color: var(--heading-text-color);
   color: var(--accent-color);
 }
@@ -189,7 +198,7 @@ input:active {
   font-family: var(--lexend-font);
   font-size: 24px;
   height: 60px;
-  margin-top: 1.8rem;
+  margin-top: 0;
   padding: 0;
   text-align: center;
   width: 45%;
@@ -204,14 +213,43 @@ input:active {
   color: var(--accent-color);
 }
 
+/* SPINNER */
+.lds-dual-ring {
+  display: inline-block;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  width: 40px;
+}
+
+.lds-dual-ring::after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid var(--accent-color);
+  border-color: var(--accent-color) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 footer {
   background-color: var(--dark-gray-color);
-  border: 4px solid var(--light-gray-color);
-  bottom: 1px;
+  bottom: 0;
   margin: 4rem 0 0;
-  padding: 1rem 0.5rem;
-  position: sticky;
-  width: 100%;
+  padding: 1rem 0;
+  position: absolute;
 }
 
 footer span {
@@ -229,8 +267,16 @@ footer a {
   padding: 0 0.4rem;
 }
 
+.accent-color {
+  color: var(--accent-color);
+}
+
 .align-center {
   align-items: center;
+}
+
+.font-size-30 {
+  font-size: 30px;
 }
 
 .flex {
@@ -257,6 +303,6 @@ footer a {
   text-transform: uppercase;
 }
 
-.remove-margin-bottom {
-  margin-bottom: 0 !important;
+.decrease-margin-bottom {
+  margin-bottom: 0.5rem !important;
 }
