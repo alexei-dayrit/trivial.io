@@ -84,18 +84,11 @@ form h3,
   margin: 2.5rem 0 0;
 }
 
-.ready-text {
-  color: var(--accent-color);
-  margin-bottom: 0;
-  margin-top: 1rem;
-  opacity: 0.8;
-}
-
 h5 {
   margin: 1rem;
 }
 
-div#default-selection-wrapper {
+div#user-selection-wrapper {
   color: var(--accent-color);
   opacity: 0.5;
   text-align: center;
@@ -145,12 +138,7 @@ input {
 }
 
 .difficulty-button {
-  border-style: none;
   color: var(--dark-gray-color);
-  line-height: 2;
-  margin: 0 0.8rem;
-  padding: 0.4rem 2rem;
-  width: 100%;
 }
 
 .difficulty-button:hover {
@@ -175,7 +163,7 @@ input[name="any-category"] {
   background-color: var(--dark-gray-color);
   color: var(--light-gray-color);
   line-height: 2;
-  margin: 2rem 0;
+  margin: 1rem 0;
   padding: 0.4rem 2rem;
   width: 50%;
 }
@@ -279,8 +267,16 @@ footer a {
   padding: 0 0.4rem;
 }
 
+.accent-color {
+  color: var(--accent-color);
+}
+
 .align-center {
   align-items: center;
+}
+
+.font-size-30 {
+  font-size: 30px;
 }
 
 .flex {

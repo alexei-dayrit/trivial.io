@@ -74,14 +74,10 @@ body {
     margin: 1rem 0 0;
   }
 
-  .difficulty-button {
-    margin: 0;
-    max-width: 80%;
-  }
-
   .length-button,
   .type-button,
-  .time-button {
+  .time-button,
+  .difficulty-button {
     width: 40%;
   }
 
