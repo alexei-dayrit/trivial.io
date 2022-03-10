@@ -267,12 +267,12 @@ footer a {
   text-decoration: none;
 }
 
-.credit-link {
-  color: var(--white-text-color);
+#credits-btn {
+  cursor: pointer;
 }
 
-.credit-wrapper {
-  margin-top: 2rem;
+.credit-link {
+  color: var(--white-text-color);
 }
 
 .footer-logo-item {
