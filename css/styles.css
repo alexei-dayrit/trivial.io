@@ -218,7 +218,6 @@ input:active {
   color: var(--accent-color);
 }
 
-/* SPINNER */
 .lds-dual-ring {
   display: inline-block;
   height: 40px;
@@ -318,5 +317,4 @@ footer a {
 
 .decrease-margin-bottom {
   margin-bottom: 0.5rem !important;
-}
 }
