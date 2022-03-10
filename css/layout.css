@@ -44,7 +44,7 @@ body {
 @media screen and (min-width: 768px) {
   .main-container {
     max-width: 1000px;
-    padding: 2rem;
+    padding: 1rem;
   }
 
   .col-lg-half {
@@ -66,7 +66,7 @@ body {
 
   #main-heading,
   #quiz-question-heading {
-    margin-top: 6rem;
+    margin-top: 4rem;
   }
 
   .countdown-text {
