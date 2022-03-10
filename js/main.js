@@ -115,6 +115,7 @@ function skipSelections() {
     lengthSelection = 10;
   }
   if (data.totalQuestions < 100 || lengthSelection === '15' || lengthSelection === '20') {
+    $loadSpinner.setAttribute('class', 'lds-dual-ring');
     $lengthWrapper.setAttribute('class', 'row justify-center hidden');
     $categoryWrapper.setAttribute('class', 'row hidden');
     $userSelectionWrapper.setAttribute('class', 'row justify-center');
