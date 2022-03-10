@@ -13,6 +13,11 @@ header {
   position: relative;
 }
 
+header a {
+  color: var(--white-text-color);
+  text-decoration: none;
+}
+
 #brand-name {
   color: var(--white-text-color);
   cursor: pointer;
@@ -263,6 +268,14 @@ footer a {
   text-decoration: none;
 }
 
+.credit-link {
+  color: var(--white-text-color);
+}
+
+.credit-wrapper {
+  margin-top: 2rem;
+}
+
 .footer-logo-item {
   padding: 0 0.4rem;
 }
@@ -305,4 +318,5 @@ footer a {
 
 .decrease-margin-bottom {
   margin-bottom: 0.5rem !important;
+}
 }
