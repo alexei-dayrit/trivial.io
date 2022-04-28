@@ -8,7 +8,15 @@ A web application for anyone who wants to expand their knowledge with random tri
 - HTML5
 - CSS3
 
-#### Live Link: <https://alexei-dayrit.github.io/trivial.io/>
+### Live Link: <https://alexei-dayrit.github.io/trivial.io/>
+
+## Features
+
+- User can create a game
+- User can answer a question
+- User can take an entire quiz
+- User can see their score
+- User can set a time limit
 
 ## Preview
 
