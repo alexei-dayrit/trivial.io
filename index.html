@@ -20,9 +20,9 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link
     href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap"
     rel="stylesheet">
@@ -34,10 +34,12 @@
       <div class="col-sm-full">
         <div class="row">
           <div class="col-sm-5 flex align-center">
-            <img id="brand-icon" src="images/brand-icon-32px.png" alt="Brand Icon">
+            <button id="brand-icon">
+              <img src="images/brand-icon-32px.png" alt="Brand Icon">
+            </button>
           </div>
           <div class="col-sm-95 flex align-center">
-            <h1 id="brand-name">Trivial.io</h1>
+            <button id="brand-name" class="test">Trivial.io</button>
           </div>
           <div id="countdown-wrapper" class="">
             <p class="countdown-text"></p>
@@ -246,14 +248,8 @@
       <div id="credits-wrapper" class="row hidden">
         <div class="col-sm-full flex justify-center">
           <h4>
-            <a class="credit-link" href="https://www.flaticon.com/free-icons/comment" title="comment icons">
-              Comment icons created by Freepik - Flaticon
-            </a>
-          </h4>
-        </div>
-        <div class="col-sm-full flex justify-center">
-          <h4>
-            <a class="credit-link" href="https://www.flaticon.com/free-icons/question" title="question icons">
+            <a class="credit-link" href="https://www.flaticon.com/free-icons/question" title="question icons"
+              target="_blank" rel="noopener noreferrer">
               Question icons created by Freepik - Flaticon
             </a>
           </h4>
@@ -275,7 +271,7 @@
           </div>
           <div id="credits-btn" class="col-sm-one-fourth footer-logo-item flex align-center">
             <a>
-              <img src="images/quotes-credit-16px.png" alt="Credits Logo"><span>Credits</span>
+              <i class="fa-solid fa-quote-right"></i><span>Credits</span>
             </a>
           </div>
         </div>

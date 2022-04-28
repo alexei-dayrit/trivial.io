@@ -55,11 +55,11 @@ body {
     width: 25%;
   }
 
-  #brand-icon {
-    padding-top: 0.3rem;
+  button#brand-icon {
+    padding-top: 0.45rem;
   }
 
-  h1#brand-name {
+  button#brand-name {
     font-size: 32px;
     margin: 0.5rem 0 0;
   }
