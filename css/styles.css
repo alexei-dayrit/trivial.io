@@ -9,6 +9,11 @@
   --white-text-color: #d1d0c5;
 }
 
+.test {
+  background-color: transparent;
+  border: none;
+}
+
 header {
   position: relative;
 }
@@ -18,7 +23,9 @@ header a {
   text-decoration: none;
 }
 
-#brand-name {
+button#brand-name {
+  background-color: transparent;
+  border: none;
   color: var(--white-text-color);
   cursor: pointer;
   font-family: var(--lexend-font);
@@ -26,9 +33,11 @@ header a {
   margin: 1rem 0 0 1rem;
 }
 
-#brand-icon {
+button#brand-icon {
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-  padding-top: 0.6rem;
+  padding-top: 0.8rem;
 }
 
 #countdown-wrapper {
@@ -263,7 +272,7 @@ footer span {
 }
 
 footer a {
-  color: black;
+  color: var(--heading-text-color);
   text-decoration: none;
 }
 

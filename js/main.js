@@ -39,7 +39,7 @@ var clickCounter = 0;
 var countdownID;
 
 function handleHomeClick(event) {
-  if (event.target.tagName === 'H1' || event.target.tagName === 'IMG') {
+  if (event.target.tagName === 'BUTTON' || event.target.tagName === 'IMG') {
     viewCategorySelection();
   }
 }
