@@ -1,6 +1,6 @@
 # trivial.io
 
-A web application for anyone who wants to expand their knowledge with random trivia.
+A web application for anyone who wants to expand their knowledge by playing and answering random trivia.
 
 ## Technologies Used
 
