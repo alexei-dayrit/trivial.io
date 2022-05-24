@@ -11,9 +11,9 @@ const data = {
   userAnswer: ''
 };
 
-function handleBeforeUnload(event) {
+const handleBeforeUnload = event => {
   const dataJSON = JSON.stringify(data);
   localStorage.setItem('quiz-crack-local-storage', dataJSON);
-}
+};
 
 window.addEventListener('beforeunload', handleBeforeUnload);

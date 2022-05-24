@@ -38,21 +38,21 @@ let sessionCode = '';
 let clickCounter = 0;
 let countdownID;
 
-function handleHomeClick(event) {
+const handleHomeClick = event => {
   if (event.target.tagName === 'BUTTON' || event.target.tagName === 'IMG') {
     viewCategorySelection();
   }
-}
+};
 
 $htmlHeader.addEventListener('click', handleHomeClick);
 
-function handleCreditsClick(event) {
+const handleCreditsClick = event => {
   viewCredits();
-}
+};
 
 $creditsButton.addEventListener('click', handleCreditsClick);
 
-function handleCategoryClicks(event) {
+const handleCategoryClicks = event => {
   if (event.target.tagName !== 'INPUT') {
     return;
   }
@@ -65,7 +65,7 @@ function handleCategoryClicks(event) {
   const xhrQuestionCount = new XMLHttpRequest();
   xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
   xhrQuestionCount.responseType = 'json';
-  xhrQuestionCount.addEventListener('load', function () {
+  xhrQuestionCount.addEventListener('load', () => {
     if (xhrQuestionCount.status !== 200) {
       displaySearchError();
     }
@@ -75,12 +75,12 @@ function handleCategoryClicks(event) {
   removeClicks($categoryWrapper, handleCategoryClicks);
   removeClicks($creditsButton, handleCreditsClick);
   removeClicks($htmlHeader, handleHomeClick);
-  setTimeout(function () { skipSelections(); }, 1000);
-}
+  setTimeout(() => { skipSelections(); }, 1000);
+};
 
 $categoryWrapper.addEventListener('click', handleCategoryClicks);
 
-function handleDifficultyClicks(event) {
+const handleDifficultyClicks = event => {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'easy') {
@@ -94,11 +94,14 @@ function handleDifficultyClicks(event) {
   }
   $questionDifficultyText.textContent = 'Difficulty: ' + difficultySelection;
   viewTimeLimitSelection();
-}
+};
 
 $difficultyWrapper.addEventListener('click', handleDifficultyClicks);
 
-function handleTimeLimit(event) {
+const handleTimeLimit = event => {
+  if (event.target.tagName !== 'INPUT') {
+    return;
+  }
   if (event.target.name === '5-sec') {
     data.selectedTimeLimit = 5;
     timeSelection = 5;
@@ -113,11 +116,11 @@ function handleTimeLimit(event) {
     timeSelection = 20;
   }
   viewReadyScreen();
-}
+};
 
 $timeLimitWrapper.addEventListener('click', handleTimeLimit);
 
-function skipSelections() {
+const skipSelections = () => {
   $mainHeading.removeAttribute('class');
   addClicks($categoryWrapper, handleCategoryClicks);
   removeClicks($htmlHeader, handleHomeClick);
@@ -136,14 +139,14 @@ function skipSelections() {
     $questionTypeText.textContent = 'Type: Any';
     $questionDifficultyText.textContent = 'Difficulty: Any';
     $skippedWrapper.setAttribute('class', 'row');
-    setTimeout(function () { viewTimeLimitSelection(); }, 3000);
+    setTimeout(() => { viewTimeLimitSelection(); }, 3000);
   } else {
     $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
     viewLengthSelection();
   }
-}
+};
 
-function handleQuizLength(event) {
+const handleQuizLength = event => {
   if (event.target.name === 'five-qs') {
     lengthSelection = '5';
     $questionCountText.textContent = 'Questions: ' + lengthSelection;
@@ -161,11 +164,11 @@ function handleQuizLength(event) {
     lengthSelection = '20';
     skipSelections();
   }
-}
+};
 
 $lengthWrapper.addEventListener('click', handleQuizLength);
 
-function handleQuizType(event) {
+const handleQuizType = event => {
   if (event.target.tagName !== 'INPUT') {
     return;
   } else if (event.target.name === 'multiple-choice') {
@@ -177,11 +180,11 @@ function handleQuizType(event) {
   }
   $questionTypeText.textContent = 'Type: ' + event.target.value;
   viewDifficultySelection();
-}
+};
 
 $typeWrapper.addEventListener('click', handleQuizType);
 
-function shuffle(array) {
+const shuffle = array => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];
@@ -189,15 +192,15 @@ function shuffle(array) {
     array[j] = temp;
   }
   return array;
-}
+};
 
-function decodeEntity(inputStr) {
+const decodeEntity = inputStr => {
   const textarea = document.createElement('textarea');
   textarea.innerHTML = inputStr;
   return textarea.value;
-}
+};
 
-function displayMultipleChoice(quizObject) {
+const displayMultipleChoice = quizObject => {
   const answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
   answersArray.push(quizObject.correct_answer);
@@ -221,9 +224,9 @@ function displayMultipleChoice(quizObject) {
   const $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
   displayCountdown();
-}
+};
 
-function displayNextQuestion() {
+const displayNextQuestion = () => {
   addAnswerClicks();
   $countdownText.setAttribute('class', 'countdown-text');
   data.currentQuestionNum++;
@@ -243,9 +246,9 @@ function displayNextQuestion() {
     renderTrueOrFalse();
     displayTrueOrFalse(data.quizArray[currentIndex]);
   }
-}
+};
 
-function displayTrueOrFalse(quizObject) {
+const displayTrueOrFalse = quizObject => {
   data.correctAnswer = quizObject.correct_answer;
   $quizHeadingWrapper.setAttribute('class', 'row');
   const $quizQuestionHeading = document.querySelector('#quiz-question-heading');
@@ -256,15 +259,15 @@ function displayTrueOrFalse(quizObject) {
   const $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
   displayCountdown();
-}
+};
 
-function displayCountdown() {
+const displayCountdown = () => {
   $countdownWrapper.removeAttribute('class');
   $countdownText.textContent = timeSelection + 's left';
   countdownID = setInterval(updateCountdown, 1000);
-}
+};
 
-function updateCountdown() {
+const updateCountdown = () => {
   if (timeSelection > 0) {
     timeSelection--;
     $countdownText.textContent = timeSelection + 's left';
@@ -276,22 +279,22 @@ function updateCountdown() {
     clearInterval(countdownID);
     displayNextQuestionTimeout();
   }
-}
+};
 
-function resetCountdown() {
+const resetCountdown = () => {
   timeSelection = data.selectedTimeLimit;
   clearInterval(countdownID);
-}
+};
 
-function displayNextQuestionTimeout() {
-  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
-  setTimeout(function () { displayNextQuestion(); }, 3000);
-}
+const displayNextQuestionTimeout = () => {
+  setTimeout(() => { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($multipleChoiceWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($trueFalseWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($responseMessageWrapper); }, 3000);
+  setTimeout(() => { displayNextQuestion(); }, 3000);
+};
 
-function checkAnswer(button) {
+const checkAnswer = button => {
   if (data.userAnswer === data.correctAnswer) {
     data.correctScore++;
     button.setAttribute('class', 'right-answer');
@@ -302,9 +305,9 @@ function checkAnswer(button) {
     renderResponseMessage('Incorrect');
     highlightCorrectAnswer();
   }
-}
+};
 
-function displayTotalScore() {
+const displayTotalScore = () => {
   if ($mainHeading.textContent === 'Select Category') {
     return;
   }
@@ -323,18 +326,18 @@ function displayTotalScore() {
     renderQuizScore(percentCorrect);
     renderResponseMessage('Needs More Practice...');
   }
-}
+};
 
-function highlightCorrectAnswer() {
+const highlightCorrectAnswer = () => {
   const $allAnswerButtons = document.querySelectorAll('.answer-button');
   for (let i = 0; i < $allAnswerButtons.length; i++) {
     if ($allAnswerButtons[i].value === data.correctAnswer) {
       $allAnswerButtons[i].setAttribute('class', 'right-answer');
     }
   }
-}
+};
 
-function handleMultipleChoiceClicks(event) {
+const handleMultipleChoiceClicks = event => {
   clickCounter++;
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -350,13 +353,13 @@ function handleMultipleChoiceClicks(event) {
   removeAnswerClicks();
   resetCountdown();
   checkAnswer(event.target);
-  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($multipleChoiceWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
-  setTimeout(function () { displayNextQuestion(); }, 3000);
-}
+  setTimeout(() => { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($multipleChoiceWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($responseMessageWrapper); }, 3000);
+  setTimeout(() => { displayNextQuestion(); }, 3000);
+};
 
-function handleTrueFalseClicks(event) {
+const handleTrueFalseClicks = event => {
   clickCounter++;
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -368,35 +371,35 @@ function handleTrueFalseClicks(event) {
   removeAnswerClicks();
   resetCountdown();
   checkAnswer(event.target);
-  setTimeout(function () { removeChildNodes($quizHeadingWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($trueFalseWrapper); }, 3000);
-  setTimeout(function () { removeChildNodes($responseMessageWrapper); }, 3000);
-  setTimeout(function () { displayNextQuestion(); }, 3000);
-}
+  setTimeout(() => { removeChildNodes($quizHeadingWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($trueFalseWrapper); }, 3000);
+  setTimeout(() => { removeChildNodes($responseMessageWrapper); }, 3000);
+  setTimeout(() => { displayNextQuestion(); }, 3000);
+};
 
-function removeAnswerClicks() {
+const removeAnswerClicks = () => {
   if (clickCounter > 0 || timeSelection === 0) {
     $multipleChoiceWrapper.removeEventListener('click', handleMultipleChoiceClicks);
     $trueFalseWrapper.removeEventListener('click', handleTrueFalseClicks);
   }
-}
+};
 
-function addAnswerClicks() {
+const addAnswerClicks = () => {
   clickCounter = 0;
   $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
   $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
-}
+};
 
 $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
-function getGame(token) {
+const getGame = token => {
   const xhrGame = new XMLHttpRequest();
   xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
     '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
     '&' + 'type=' + typeSelection + '&' + 'token=' + token);
   xhrGame.responseType = 'json';
-  xhrGame.addEventListener('load', function () {
+  xhrGame.addEventListener('load', () => {
     if (xhrGame.response.response_code !== 0) {
       displaySearchError();
     }
@@ -407,9 +410,9 @@ function getGame(token) {
     viewQuiz();
   });
   xhrGame.send();
-}
+};
 
-function handleGameForm(event) {
+const handleGameForm = event => {
   event.preventDefault();
   if (data.selectedTimeLimit === 0) {
     return;
@@ -421,7 +424,7 @@ function handleGameForm(event) {
   const xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
-  xhrToken.addEventListener('load', function getSessionToken() {
+  xhrToken.addEventListener('load', () => {
     const xhrTokenCode = xhrToken.response.token;
     sessionCode = xhrTokenCode;
     getGame(sessionCode);
@@ -429,17 +432,17 @@ function handleGameForm(event) {
   xhrToken.send();
   $beginButton.setAttribute('class', 'submit-button text-upper active-button');
   $beginButton.setAttribute('disabled', 'true');
-}
+};
 
 $gameForm.addEventListener('submit', handleGameForm);
 
-function removeChildNodes(parent) {
+const removeChildNodes = parent => {
   while (parent.childNodes.length > 0) {
     parent.removeChild(parent.firstChild);
   }
-}
+};
 
-function renderMultipleChoice() {
+const renderMultipleChoice = () => {
   const $quizQuestionDiv = document.createElement('div');
   $quizQuestionDiv.setAttribute('class', 'col-sm-full');
   $quizHeadingWrapper.appendChild($quizQuestionDiv);
@@ -491,9 +494,9 @@ function renderMultipleChoice() {
   $option4.setAttribute('class', 'answer-button text-capitalize');
   $option4.setAttribute('value', 'Loading');
   $option4Div.appendChild($option4);
-}
+};
 
-function renderTrueOrFalse() {
+const renderTrueOrFalse = () => {
   const $quizQuestionDiv = document.createElement('div');
   $quizQuestionDiv.setAttribute('class', 'col-sm-full');
   $quizHeadingWrapper.appendChild($quizQuestionDiv);
@@ -524,9 +527,9 @@ function renderTrueOrFalse() {
   $falseAns.setAttribute('class', 'answer-button text-capitalize');
   $falseAns.setAttribute('value', 'Loading');
   $falseDiv.appendChild($falseAns);
-}
+};
 
-function renderResponseMessage(message) {
+const renderResponseMessage = message => {
   const $responseMessageDiv = document.createElement('div');
   $responseMessageDiv.setAttribute('class', 'col-sm-full');
   $responseMessageWrapper.appendChild($responseMessageDiv);
@@ -544,9 +547,9 @@ function renderResponseMessage(message) {
     $responseMessageHeader.setAttribute('class', 'score-message');
   }
   return message;
-}
+};
 
-function renderQuizScore(score) {
+const renderQuizScore = score => {
   const $scoreDiv = document.createElement('div');
   $scoreDiv.setAttribute('class', 'col-sm-full');
   $scoreWrapper.appendChild($scoreDiv);
@@ -555,9 +558,9 @@ function renderQuizScore(score) {
   $scoreHeading.setAttribute('id', 'score-heading');
   $scoreDiv.appendChild($scoreHeading);
   $scoreHeading.textContent = score;
-}
+};
 
-function displaySearchError() {
+const displaySearchError = () => {
   $mainHeading.textContent = 'ERROR';
   $mainHeading.setAttribute('class', 'incorrect decrease-margin-bottom');
   $emptyResultWrapper.setAttribute('class', 'row');
@@ -569,9 +572,9 @@ function displaySearchError() {
   $skippedWrapper.setAttribute('class', 'row hidden');
   addClicks($htmlHeader, handleHomeClick);
   addClicks($creditsButton, handleCreditsClick);
-}
+};
 
-function clearDataModel(data) {
+const clearDataModel = data => {
   data.correctAnswer = '';
   data.correctScore = 0;
   data.currentQuestionNum = 0;
@@ -580,31 +583,31 @@ function clearDataModel(data) {
   data.selectedTimeLimit = 0;
   data.totalQuestions = 0;
   data.userAnswer = '';
-}
+};
 
-function clearVarsMainJS() {
+const clearVarsMainJS = () => {
   categorySelection = '';
   difficultySelection = '';
   timeSelection = '';
   lengthSelection = '';
   typeSelection = '';
-}
+};
 
-function resetDOM() {
+const resetDOM = () => {
   removeChildNodes($quizHeadingWrapper);
   removeChildNodes($multipleChoiceWrapper);
   removeChildNodes($trueFalseWrapper);
   removeChildNodes($scoreWrapper);
   removeChildNodes($responseMessageWrapper);
-}
+};
 
-function resetUserSelectionText() {
+const resetUserSelectionText = () => {
   $questionCountText.textContent = 'Questions: 10';
   $questionTypeText.textContent = 'Type: Any';
   $questionDifficultyText.textContent = 'Difficulty: Any';
-}
+};
 
-function resetPage() {
+const resetPage = () => {
   $countdownWrapper.setAttribute('class', 'hidden');
   $userSelectionWrapper.setAttribute('class', 'row justify-center hidden');
   $difficultyWrapper.setAttribute('class', 'row justify-center hidden');
@@ -623,17 +626,17 @@ function resetPage() {
   resetDOM();
   $gameForm.reset();
   $quizForm.reset();
-}
+};
 
-function addClicks(element, handler) {
+const addClicks = (element, handler) => {
   element.addEventListener('click', handler);
-}
+};
 
-function removeClicks(element, handler) {
+const removeClicks = (element, handler) => {
   element.removeEventListener('click', handler);
-}
+};
 
-function viewCategorySelection() {
+const viewCategorySelection = () => {
   $categoryWrapper.setAttribute('class', 'row');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.removeAttribute('class');
@@ -641,24 +644,24 @@ function viewCategorySelection() {
   $creditsWrapper.setAttribute('class', 'row hidden');
   addClicks($creditsButton, handleCreditsClick);
   resetPage();
-}
+};
 
-function viewCredits() {
+const viewCredits = () => {
   $creditsWrapper.setAttribute('class', 'row');
   $categoryWrapper.setAttribute('class', 'row hidden');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.removeAttribute('class');
   $mainHeading.textContent = 'Credits Page';
   resetPage();
-}
+};
 
-function viewDifficultySelection() {
+const viewDifficultySelection = () => {
   $difficultyWrapper.setAttribute('class', 'row justify-center');
   $typeWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Difficulty';
-}
+};
 
-function viewTimeLimitSelection() {
+const viewTimeLimitSelection = () => {
   addClicks($htmlHeader, handleHomeClick);
   addClicks($creditsButton, handleCreditsClick);
   $timeLimitWrapper.setAttribute('class', 'row justify-center');
@@ -669,32 +672,32 @@ function viewTimeLimitSelection() {
   $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $mainHeading.textContent = 'Select Time Limit';
   $mainHeading.setAttribute('class', 'decrease-margin-bottom');
-}
+};
 
-function viewReadyScreen() {
+const viewReadyScreen = () => {
   $mainHeading.textContent = 'Ready to start?';
   $mainHeading.setAttribute('class', 'accent-color decrease-margin-bottom font-size-30');
   $beginWrapper.setAttribute('class', 'row justify-center');
   $timeLimitWrapper.setAttribute('class', 'row justify-center hidden');
-}
+};
 
-function viewLengthSelection() {
+const viewLengthSelection = () => {
   addClicks($htmlHeader, handleHomeClick);
   addClicks($creditsButton, handleCreditsClick);
   $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $lengthWrapper.setAttribute('class', 'row justify-center');
   $categoryWrapper.setAttribute('class', 'row hidden');
   $mainHeading.textContent = 'Select Quiz Length';
-}
+};
 
-function viewTypeSelection() {
+const viewTypeSelection = () => {
   $loadSpinner.setAttribute('class', 'lds-dual-ring hidden');
   $typeWrapper.setAttribute('class', 'row justify-center');
   $lengthWrapper.setAttribute('class', 'row justify-center hidden');
   $mainHeading.textContent = 'Select Quiz Type';
-}
+};
 
-function viewQuiz() {
+const viewQuiz = () => {
   if (data.quizArray[0].type === 'multiple') {
     $multipleChoiceWrapper.setAttribute('class', 'row justify-center');
     renderMultipleChoice();
@@ -711,4 +714,4 @@ function viewQuiz() {
   $mainHeadingWrapper.setAttribute('class', 'row hidden');
   addClicks($htmlHeader, handleHomeClick);
   addClicks($creditsButton, handleCreditsClick);
-}
+};
