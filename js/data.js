@@ -1,6 +1,6 @@
 /* exported data */
 
-var data = {
+const data = {
   correctAnswer: '',
   correctScore: 0,
   currentQuestionNum: 0,
@@ -12,7 +12,7 @@ var data = {
 };
 
 function handleBeforeUnload(event) {
-  var dataJSON = JSON.stringify(data);
+  const dataJSON = JSON.stringify(data);
   localStorage.setItem('quiz-crack-local-storage', dataJSON);
 }
 

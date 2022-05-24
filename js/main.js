@@ -1,42 +1,42 @@
 /* global data */
 /* exported data */
 
-var $htmlHeader = document.querySelector('header');
-var $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
-var $mainHeading = document.querySelector('#main-heading');
-var $userSelectionWrapper = document.querySelector('#user-selection-wrapper');
-var $questionCountText = document.querySelector('.question-count-text');
-var $questionTypeText = document.querySelector('.question-type-text');
-var $questionDifficultyText = document.querySelector('.question-difficulty-text');
-var $countdownWrapper = document.querySelector('#countdown-wrapper');
-var $countdownText = document.querySelector('.countdown-text');
-var $loadSpinner = document.querySelector('#load-spinner');
-var $gameForm = document.querySelector('form[data-view="create-game"]');
-var $categoryWrapper = document.querySelector('#category-wrapper');
-var $difficultyWrapper = document.querySelector('#difficulty-wrapper');
-var $timeLimitWrapper = document.querySelector('#time-limit-wrapper');
-var $lengthWrapper = document.querySelector('#length-wrapper');
-var $typeWrapper = document.querySelector('#type-wrapper');
-var $beginWrapper = document.querySelector('#begin-wrapper');
-var $beginButton = document.querySelector('input[type="submit"]');
-var $skippedWrapper = document.querySelector('#skipped-selections-wrapper');
-var $emptyResultWrapper = document.querySelector('#empty-result-wrapper');
-var $scoreWrapper = document.querySelector('#score-wrapper');
-var $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
-var $quizForm = document.querySelector('form[data-view="quiz-form"]');
-var $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
-var $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
-var $responseMessageWrapper = document.querySelector('#response-message-wrapper');
-var $creditsWrapper = document.querySelector('#credits-wrapper');
-var $creditsButton = document.querySelector('#credits-btn');
-var categorySelection = '';
-var difficultySelection = '';
-var timeSelection = '';
-var lengthSelection = '';
-var typeSelection = '';
-var sessionCode = '';
-var clickCounter = 0;
-var countdownID;
+const $htmlHeader = document.querySelector('header');
+const $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
+const $mainHeading = document.querySelector('#main-heading');
+const $userSelectionWrapper = document.querySelector('#user-selection-wrapper');
+const $questionCountText = document.querySelector('.question-count-text');
+const $questionTypeText = document.querySelector('.question-type-text');
+const $questionDifficultyText = document.querySelector('.question-difficulty-text');
+const $countdownWrapper = document.querySelector('#countdown-wrapper');
+const $countdownText = document.querySelector('.countdown-text');
+const $loadSpinner = document.querySelector('#load-spinner');
+const $gameForm = document.querySelector('form[data-view="create-game"]');
+const $categoryWrapper = document.querySelector('#category-wrapper');
+const $difficultyWrapper = document.querySelector('#difficulty-wrapper');
+const $timeLimitWrapper = document.querySelector('#time-limit-wrapper');
+const $lengthWrapper = document.querySelector('#length-wrapper');
+const $typeWrapper = document.querySelector('#type-wrapper');
+const $beginWrapper = document.querySelector('#begin-wrapper');
+const $beginButton = document.querySelector('input[type="submit"]');
+const $skippedWrapper = document.querySelector('#skipped-selections-wrapper');
+const $emptyResultWrapper = document.querySelector('#empty-result-wrapper');
+const $scoreWrapper = document.querySelector('#score-wrapper');
+const $quizHeadingWrapper = document.querySelector('#quiz-heading-wrapper');
+const $quizForm = document.querySelector('form[data-view="quiz-form"]');
+const $multipleChoiceWrapper = document.querySelector('#multiple-choice-wrapper');
+const $trueFalseWrapper = document.querySelector('#true-or-false-wrapper');
+const $responseMessageWrapper = document.querySelector('#response-message-wrapper');
+const $creditsWrapper = document.querySelector('#credits-wrapper');
+const $creditsButton = document.querySelector('#credits-btn');
+let categorySelection = '';
+let difficultySelection = '';
+let timeSelection = '';
+let lengthSelection = '';
+let typeSelection = '';
+let sessionCode = '';
+let clickCounter = 0;
+let countdownID;
 
 function handleHomeClick(event) {
   if (event.target.tagName === 'BUTTON' || event.target.tagName === 'IMG') {
@@ -59,10 +59,10 @@ function handleCategoryClicks(event) {
   $mainHeading.textContent = 'LOADING...';
   $mainHeading.setAttribute('class', 'active-button');
   $loadSpinner.setAttribute('class', 'lds-dual-ring');
-  var $closestCategory = event.target.closest('[data-category-id]');
-  var categoryID = $closestCategory.getAttribute('data-category-id');
+  const $closestCategory = event.target.closest('[data-category-id]');
+  const categoryID = $closestCategory.getAttribute('data-category-id');
   categorySelection = categoryID;
-  var xhrQuestionCount = new XMLHttpRequest();
+  const xhrQuestionCount = new XMLHttpRequest();
   xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
   xhrQuestionCount.responseType = 'json';
   xhrQuestionCount.addEventListener('load', function () {
@@ -182,9 +182,9 @@ function handleQuizType(event) {
 $typeWrapper.addEventListener('click', handleQuizType);
 
 function shuffle(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
     array[i] = array[j];
     array[j] = temp;
   }
@@ -192,33 +192,33 @@ function shuffle(array) {
 }
 
 function decodeEntity(inputStr) {
-  var textarea = document.createElement('textarea');
+  const textarea = document.createElement('textarea');
   textarea.innerHTML = inputStr;
   return textarea.value;
 }
 
 function displayMultipleChoice(quizObject) {
-  var answersArray = [];
+  const answersArray = [];
   data.correctAnswer = quizObject.correct_answer;
   answersArray.push(quizObject.correct_answer);
-  for (var i = 0; i < quizObject.incorrect_answers.length; i++) {
+  for (let i = 0; i < quizObject.incorrect_answers.length; i++) {
     answersArray.push(quizObject.incorrect_answers[i]);
   }
-  for (var a = 0; a < answersArray.length; a++) {
-    var decoded = decodeEntity(answersArray[a]);
+  for (let a = 0; a < answersArray.length; a++) {
+    const decoded = decodeEntity(answersArray[a]);
     answersArray.splice(a, 1, decoded);
   }
-  var randomizedArray = shuffle(answersArray);
-  var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
+  const randomizedArray = shuffle(answersArray);
+  const $quizQuestionHeading = document.querySelector('#quiz-question-heading');
   $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
 
-  var $option1 = document.querySelector('input[name=option1-ans]');
+  const $option1 = document.querySelector('input[name=option1-ans]');
   $option1.value = randomizedArray[0];
-  var $option2 = document.querySelector('input[name=option2-ans]');
+  const $option2 = document.querySelector('input[name=option2-ans]');
   $option2.value = randomizedArray[1];
-  var $option3 = document.querySelector('input[name=option3-ans]');
+  const $option3 = document.querySelector('input[name=option3-ans]');
   $option3.value = randomizedArray[2];
-  var $option4 = document.querySelector('input[name=option4-ans]');
+  const $option4 = document.querySelector('input[name=option4-ans]');
   $option4.value = randomizedArray[3];
   displayCountdown();
 }
@@ -228,7 +228,7 @@ function displayNextQuestion() {
   $countdownText.setAttribute('class', 'countdown-text');
   data.currentQuestionNum++;
   data.userAnswer = '';
-  var currentIndex = data.currentQuestionNum;
+  const currentIndex = data.currentQuestionNum;
   if (timeSelection !== data.selectedTimeLimit) {
     resetCountdown();
   }
@@ -248,12 +248,12 @@ function displayNextQuestion() {
 function displayTrueOrFalse(quizObject) {
   data.correctAnswer = quizObject.correct_answer;
   $quizHeadingWrapper.setAttribute('class', 'row');
-  var $quizQuestionHeading = document.querySelector('#quiz-question-heading');
+  const $quizQuestionHeading = document.querySelector('#quiz-question-heading');
   $quizQuestionHeading.textContent = decodeEntity(quizObject.question);
 
-  var $trueAns = document.querySelector('input[name=true-ans]');
+  const $trueAns = document.querySelector('input[name=true-ans]');
   $trueAns.value = 'True';
-  var $falseAns = document.querySelector('input[name=false-ans]');
+  const $falseAns = document.querySelector('input[name=false-ans]');
   $falseAns.value = 'False';
   displayCountdown();
 }
@@ -308,8 +308,8 @@ function displayTotalScore() {
   if ($mainHeading.textContent === 'Select Category') {
     return;
   }
-  var passingScore = Math.round(0.7 * data.quizArray.length);
-  var percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
+  const passingScore = Math.round(0.7 * data.quizArray.length);
+  const percentCorrect = Math.round(((data.correctScore / data.quizArray.length) * 100)) + '%';
   $countdownWrapper.setAttribute('class', 'hidden');
   $mainHeadingWrapper.setAttribute('class', 'row');
   $mainHeading.textContent = 'TOTAL SCORE';
@@ -326,8 +326,8 @@ function displayTotalScore() {
 }
 
 function highlightCorrectAnswer() {
-  var $allAnswerButtons = document.querySelectorAll('.answer-button');
-  for (var i = 0; i < $allAnswerButtons.length; i++) {
+  const $allAnswerButtons = document.querySelectorAll('.answer-button');
+  for (let i = 0; i < $allAnswerButtons.length; i++) {
     if ($allAnswerButtons[i].value === data.correctAnswer) {
       $allAnswerButtons[i].setAttribute('class', 'right-answer');
     }
@@ -391,7 +391,7 @@ $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
 function getGame(token) {
-  var xhrGame = new XMLHttpRequest();
+  const xhrGame = new XMLHttpRequest();
   xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
     '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
     '&' + 'type=' + typeSelection + '&' + 'token=' + token);
@@ -400,7 +400,7 @@ function getGame(token) {
     if (xhrGame.response.response_code !== 0) {
       displaySearchError();
     }
-    for (var i = 0; i < xhrGame.response.results.length; i++) {
+    for (let i = 0; i < xhrGame.response.results.length; i++) {
       data.quizArray.push(xhrGame.response.results[i]);
     }
     $userSelectionWrapper.setAttribute('class', 'row justify-center hidden');
@@ -418,11 +418,11 @@ function handleGameForm(event) {
   removeClicks($htmlHeader, handleHomeClick);
   removeClicks($creditsButton, handleCreditsClick);
   $beginButton.setAttribute('value', 'LOADING..');
-  var xhrToken = new XMLHttpRequest();
+  const xhrToken = new XMLHttpRequest();
   xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
   xhrToken.responseType = 'json';
   xhrToken.addEventListener('load', function getSessionToken() {
-    var xhrTokenCode = xhrToken.response.token;
+    const xhrTokenCode = xhrToken.response.token;
     sessionCode = xhrTokenCode;
     getGame(sessionCode);
   });
@@ -440,52 +440,52 @@ function removeChildNodes(parent) {
 }
 
 function renderMultipleChoice() {
-  var $quizQuestionDiv = document.createElement('div');
+  const $quizQuestionDiv = document.createElement('div');
   $quizQuestionDiv.setAttribute('class', 'col-sm-full');
   $quizHeadingWrapper.appendChild($quizQuestionDiv);
 
-  var $quizQuestionHeading = document.createElement('h3');
+  const $quizQuestionHeading = document.createElement('h3');
   $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
   $quizQuestionDiv.appendChild($quizQuestionHeading);
 
-  var $option1Div = document.createElement('div');
+  const $option1Div = document.createElement('div');
   $option1Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $multipleChoiceWrapper.appendChild($option1Div);
 
-  var $option1 = document.createElement('input');
+  const $option1 = document.createElement('input');
   $option1.setAttribute('type', 'button');
   $option1.setAttribute('name', 'option1-ans');
   $option1.setAttribute('class', 'answer-button text-capitalize');
   $option1.setAttribute('value', 'Loading');
   $option1Div.appendChild($option1);
 
-  var $option2Div = document.createElement('div');
+  const $option2Div = document.createElement('div');
   $option2Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $multipleChoiceWrapper.appendChild($option2Div);
 
-  var $option2 = document.createElement('input');
+  const $option2 = document.createElement('input');
   $option2.setAttribute('type', 'button');
   $option2.setAttribute('name', 'option2-ans');
   $option2.setAttribute('class', 'answer-button text-capitalize');
   $option2.setAttribute('value', 'Loading');
   $option2Div.appendChild($option2);
 
-  var $option3Div = document.createElement('div');
+  const $option3Div = document.createElement('div');
   $option3Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $multipleChoiceWrapper.appendChild($option3Div);
 
-  var $option3 = document.createElement('input');
+  const $option3 = document.createElement('input');
   $option3.setAttribute('type', 'button');
   $option3.setAttribute('name', 'option3-ans');
   $option3.setAttribute('class', 'answer-button text-capitalize');
   $option3.setAttribute('value', 'Loading');
   $option3Div.appendChild($option3);
 
-  var $option4Div = document.createElement('div');
+  const $option4Div = document.createElement('div');
   $option4Div.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $multipleChoiceWrapper.appendChild($option4Div);
 
-  var $option4 = document.createElement('input');
+  const $option4 = document.createElement('input');
   $option4.setAttribute('type', 'button');
   $option4.setAttribute('name', 'option4-ans');
   $option4.setAttribute('class', 'answer-button text-capitalize');
@@ -494,31 +494,31 @@ function renderMultipleChoice() {
 }
 
 function renderTrueOrFalse() {
-  var $quizQuestionDiv = document.createElement('div');
+  const $quizQuestionDiv = document.createElement('div');
   $quizQuestionDiv.setAttribute('class', 'col-sm-full');
   $quizHeadingWrapper.appendChild($quizQuestionDiv);
 
-  var $quizQuestionHeading = document.createElement('h3');
+  const $quizQuestionHeading = document.createElement('h3');
   $quizQuestionHeading.setAttribute('id', 'quiz-question-heading');
   $quizQuestionHeading.textContent = '';
   $quizQuestionDiv.appendChild($quizQuestionHeading);
 
-  var $trueDiv = document.createElement('div');
+  const $trueDiv = document.createElement('div');
   $trueDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $trueFalseWrapper.appendChild($trueDiv);
 
-  var $trueAns = document.createElement('input');
+  const $trueAns = document.createElement('input');
   $trueAns.setAttribute('type', 'button');
   $trueAns.setAttribute('name', 'true-ans');
   $trueAns.setAttribute('class', 'answer-button text-capitalize');
   $trueAns.setAttribute('value', 'Loading');
   $trueDiv.appendChild($trueAns);
 
-  var $falseDiv = document.createElement('div');
+  const $falseDiv = document.createElement('div');
   $falseDiv.setAttribute('class', 'col-sm-full col-lg-half flex justify-center');
   $trueFalseWrapper.appendChild($falseDiv);
 
-  var $falseAns = document.createElement('input');
+  const $falseAns = document.createElement('input');
   $falseAns.setAttribute('type', 'button');
   $falseAns.setAttribute('name', 'false-ans');
   $falseAns.setAttribute('class', 'answer-button text-capitalize');
@@ -527,11 +527,11 @@ function renderTrueOrFalse() {
 }
 
 function renderResponseMessage(message) {
-  var $responseMessageDiv = document.createElement('div');
+  const $responseMessageDiv = document.createElement('div');
   $responseMessageDiv.setAttribute('class', 'col-sm-full');
   $responseMessageWrapper.appendChild($responseMessageDiv);
 
-  var $responseMessageHeader = document.createElement('h2');
+  const $responseMessageHeader = document.createElement('h2');
   $responseMessageHeader.setAttribute('id', 'response-message');
   $responseMessageDiv.appendChild($responseMessageHeader);
   $responseMessageHeader.textContent = message;
@@ -547,11 +547,11 @@ function renderResponseMessage(message) {
 }
 
 function renderQuizScore(score) {
-  var $scoreDiv = document.createElement('div');
+  const $scoreDiv = document.createElement('div');
   $scoreDiv.setAttribute('class', 'col-sm-full');
   $scoreWrapper.appendChild($scoreDiv);
 
-  var $scoreHeading = document.createElement('h1');
+  const $scoreHeading = document.createElement('h1');
   $scoreHeading.setAttribute('id', 'score-heading');
   $scoreDiv.appendChild($scoreHeading);
   $scoreHeading.textContent = score;
