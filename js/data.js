@@ -7,6 +7,7 @@ const data = {
   incorrectScore: 0,
   quizArray: [],
   selectedTimeLimit: 0,
+  sessionToken: '',
   totalQuestions: 0,
   userAnswer: ''
 };
