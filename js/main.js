@@ -34,7 +34,7 @@ let difficultySelection = '';
 let timeSelection = '';
 let lengthSelection = '';
 let typeSelection = '';
-let sessionCode = '';
+let sessionToken = '';
 let clickCounter = 0;
 let countdownID;
 
@@ -52,6 +52,20 @@ const handleCreditsClick = event => {
 
 $creditsButton.addEventListener('click', handleCreditsClick);
 
+const fetchCategory = async categorySelection => {
+  try {
+    const response = await fetch(`https://opentdb.com/api_count.php?category=${categorySelection}`);
+    if (response.status !== 200) {
+      displaySearchError();
+    }
+    const category = await response.json();
+    const totalQuestionCount = category.category_question_count.total_question_count;
+    data.totalQuestions += totalQuestionCount;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const handleCategoryClicks = event => {
   if (event.target.tagName !== 'INPUT') {
     return;
@@ -60,18 +74,8 @@ const handleCategoryClicks = event => {
   $mainHeading.setAttribute('class', 'active-button');
   $loadSpinner.setAttribute('class', 'lds-dual-ring');
   const $closestCategory = event.target.closest('[data-category-id]');
-  const categoryID = $closestCategory.getAttribute('data-category-id');
-  categorySelection = categoryID;
-  const xhrQuestionCount = new XMLHttpRequest();
-  xhrQuestionCount.open('GET', 'https://opentdb.com/api_count.php?category=' + categoryID);
-  xhrQuestionCount.responseType = 'json';
-  xhrQuestionCount.addEventListener('load', () => {
-    if (xhrQuestionCount.status !== 200) {
-      displaySearchError();
-    }
-    data.totalQuestions += xhrQuestionCount.response.category_question_count.total_question_count;
-  });
-  xhrQuestionCount.send();
+  categorySelection = $closestCategory.getAttribute('data-category-id');
+  fetchCategory(categorySelection);
   removeClicks($categoryWrapper, handleCategoryClicks);
   removeClicks($creditsButton, handleCreditsClick);
   removeClicks($htmlHeader, handleHomeClick);
@@ -393,23 +397,31 @@ const addAnswerClicks = () => {
 $multipleChoiceWrapper.addEventListener('click', handleMultipleChoiceClicks);
 $trueFalseWrapper.addEventListener('click', handleTrueFalseClicks);
 
-const getGame = token => {
-  const xhrGame = new XMLHttpRequest();
-  xhrGame.open('GET', 'https://opentdb.com/api.php?amount=' + lengthSelection +
-    '&' + 'category=' + categorySelection + '&' + 'difficulty=' + difficultySelection +
-    '&' + 'type=' + typeSelection + '&' + 'token=' + token);
-  xhrGame.responseType = 'json';
-  xhrGame.addEventListener('load', () => {
-    if (xhrGame.response.response_code !== 0) {
-      displaySearchError();
-    }
-    for (let i = 0; i < xhrGame.response.results.length; i++) {
-      data.quizArray.push(xhrGame.response.results[i]);
+const fetchGame = async token => {
+  try {
+    const response = await fetch(`https://opentdb.com/api.php?amount=${lengthSelection}` +
+    `&category=${categorySelection}&difficulty=${difficultySelection}&type=${typeSelection}` +
+    `&token=${token}`);
+    const questions = await response.json();
+    for (let i = 0; i < questions.results.length; i++) {
+      data.quizArray.push(questions.results[i]);
     }
     $userSelectionWrapper.setAttribute('class', 'row justify-center hidden');
     viewQuiz();
-  });
-  xhrGame.send();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const fetchGameToken = async () => {
+  try {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const tokenObj = await response.json();
+    sessionToken = tokenObj.token;
+    fetchGame(sessionToken);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const handleGameForm = event => {
@@ -421,15 +433,7 @@ const handleGameForm = event => {
   removeClicks($htmlHeader, handleHomeClick);
   removeClicks($creditsButton, handleCreditsClick);
   $beginButton.setAttribute('value', 'LOADING..');
-  const xhrToken = new XMLHttpRequest();
-  xhrToken.open('GET', 'https://opentdb.com/api_token.php?command=request');
-  xhrToken.responseType = 'json';
-  xhrToken.addEventListener('load', () => {
-    const xhrTokenCode = xhrToken.response.token;
-    sessionCode = xhrTokenCode;
-    getGame(sessionCode);
-  });
-  xhrToken.send();
+  fetchGameToken();
   $beginButton.setAttribute('class', 'submit-button text-upper active-button');
   $beginButton.setAttribute('disabled', 'true');
 };
