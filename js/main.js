@@ -1,5 +1,6 @@
 /* global data */
 /* exported data */
+/* exported tokens */
 
 const $htmlHeader = document.querySelector('header');
 const $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
@@ -34,7 +35,6 @@ let difficultySelection = '';
 let timeSelection = '';
 let lengthSelection = '';
 let typeSelection = '';
-let sessionToken = '';
 let clickCounter = 0;
 let countdownID;
 
@@ -417,8 +417,10 @@ const fetchGameToken = async () => {
   try {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const tokenObj = await response.json();
-    sessionToken = tokenObj.token;
-    fetchGame(sessionToken);
+    tokens.session = tokenObj.token;
+    const tokenJSON = JSON.stringify(tokens);
+    localStorage.setItem('trivial.io-local-storage', tokenJSON);
+    fetchGame(tokens.session);
   } catch (err) {
     console.error(err);
   }
@@ -433,7 +435,9 @@ const handleGameForm = event => {
   removeClicks($htmlHeader, handleHomeClick);
   removeClicks($creditsButton, handleCreditsClick);
   $beginButton.setAttribute('value', 'LOADING..');
-  fetchGameToken();
+  if (!tokens.session) {
+    fetchGameToken();
+  }
   $beginButton.setAttribute('class', 'submit-button text-upper active-button');
   $beginButton.setAttribute('disabled', 'true');
 };

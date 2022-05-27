@@ -1,4 +1,5 @@
 /* exported data */
+/* exported tokens */
 
 const data = {
   correctAnswer: '',
@@ -7,14 +8,17 @@ const data = {
   incorrectScore: 0,
   quizArray: [],
   selectedTimeLimit: 0,
-  sessionToken: '',
   totalQuestions: 0,
   userAnswer: ''
 };
 
-const handleBeforeUnload = event => {
-  const dataJSON = JSON.stringify(data);
-  localStorage.setItem('quiz-crack-local-storage', dataJSON);
+const tokens = {
+  session: ''
 };
 
-window.addEventListener('beforeunload', handleBeforeUnload);
+// const handleBeforeUnload = event => {
+//   const tokensJSON = JSON.stringify(tokens);
+//   localStorage.setItem('trivial.io-local-storage', tokensJSON);
+// };
+
+// window.addEventListener('beforeunload', handleBeforeUnload);
