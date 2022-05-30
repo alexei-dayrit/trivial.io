@@ -50,8 +50,7 @@
         "js/main.js"
       ],
       "globals": {
-        "data": "readonly",
-        "tokens": "readonly"
+        "data": "readonly"
       }
     }
   ]

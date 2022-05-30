@@ -1,6 +1,5 @@
 /* global data */
 /* exported data */
-/* exported tokens */
 
 const $htmlHeader = document.querySelector('header');
 const $mainHeadingWrapper = document.querySelector('#main-heading-wrapper');
@@ -417,10 +416,11 @@ const fetchGameToken = async () => {
   try {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const tokenObj = await response.json();
-    tokens.session = tokenObj.token;
-    const tokenJSON = JSON.stringify(tokens);
-    localStorage.setItem('trivial.io-local-storage', tokenJSON);
-    fetchGame(tokens.session);
+    data.token = tokenObj.token;
+
+    const dataJSON = JSON.stringify(data);
+    localStorage.setItem('trivial.io-local-storage', dataJSON);
+    fetchGame(data.token);
   } catch (err) {
     console.error(err);
   }
@@ -428,22 +428,16 @@ const fetchGameToken = async () => {
 
 const handleGameForm = event => {
   event.preventDefault();
-  if (data.selectedTimeLimit === 0) {
-    return;
-  }
+  if (data.selectedTimeLimit === 0) return;
   $loadSpinner.setAttribute('class', 'lds-dual-ring');
   removeClicks($htmlHeader, handleHomeClick);
   removeClicks($creditsButton, handleCreditsClick);
   $beginButton.setAttribute('value', 'LOADING..');
-  if (!tokens.session) {
-    fetchGameToken();
-  }
+  (!data.token) ? fetchGameToken() : fetchGame(data.token);
   $beginButton.setAttribute('class', 'submit-button text-upper active-button');
   $beginButton.setAttribute('disabled', 'true');
 };
-
 $gameForm.addEventListener('submit', handleGameForm);
-
 const removeChildNodes = parent => {
   while (parent.childNodes.length > 0) {
     parent.removeChild(parent.firstChild);
